@@ -12,7 +12,8 @@ import Chatting from "./component/Chatting";
 
 function App() {
   const user = localStorage.getItem("user");
-  const { start } = useContext(GlobalContext);
+  const { start,expenses } = useContext(GlobalContext);
+  console.log(expenses[expenses.length-1]);
   return (
     <div className="relative">
       {user ? (

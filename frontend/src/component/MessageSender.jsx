@@ -45,43 +45,44 @@ const MessageSender = () => {
   };
 
   const handleExpense = (input) => {
-  const words = input.trim().split(/\s+/);
-  
-  // Find the index of the first numeric word
-  const numIndex = words.findIndex(word => /^-?\d+$/.test(word));
-  
-  // If no number is found, abort parsing
-  if (numIndex === -1) return;
+    const words = input.trim().split(/\s+/);
+    
+    // Find the index of the first numeric word
+    const numIndex = words.findIndex(word => /^-?\d+$/.test(word));
+    
+    // If no number is found, abort parsing
+    if (numIndex === -1) {
+      console.log("no amount present");
+      return ;
+    }
 
-  const number = parseInt(words[numIndex], 10);
-  
-  // Slice array to cleanly extract parts without looping state updates
-  const extractedCat = words.slice(0, numIndex).join(" ");
-  const extractedReason = words.slice(numIndex + 1).join(" ");
+    const number = parseInt(words[numIndex], 10);
 
-  // Isolate hashtags from the reason if they exist
-  const hashtags = words.filter(word => word.startsWith("#")).join(" ");
-  const cleanReason = extractedReason.replace(/#\S+/g, "").trim();
+    // Slice array to cleanly extract parts without looping state updates
+    const extractedCat = words.slice(0, numIndex).join(" ");
+    const extractedReason = words.slice(numIndex + 1).join(" ");
 
- 
+    // Isolate hashtags from the reason if they exist
+    const hashtags = words.filter(word => word.startsWith("#")).join(" ");
+    const cleanReason = extractedReason.replace(/#\S+/g, "").trim();
 
-  // 2. Append directly to your global object/array state safely
-  const newRecord = {
-    id: Date.now(),
-    expense: number < 0 ? Math.abs(number) : 0,
-    income: number > 0 ? number : 0,
-    category: extractedCat,
-    reason: cleanReason,
-    hashtags: hashtags,
-    date:new Date().getDate(),
-    month:new Date().getMonth() + 1,
-    year:new Date().getFullYear(),
+
+
+    // 2. Append directly to your global object/array state safely
+    const newRecord = {
+      id: Date.now(),
+      expense: number < 0 ? Math.abs(number) : 0,
+      income: number > 0 ? number : 0,
+      category: extractedCat,
+      reason: cleanReason,
+      hashtags: hashtags,
+      date: new Date().getDate(),
+      month: new Date().getMonth() + 1,
+      year: new Date().getFullYear(),
+    };
+    console.log(newRecord);
+    handleExpenses(newRecord);
   };
-
-
-  // Assuming expenses is an array in your GlobalContext:
-  handleExpenses(newRecord);
-};
 
 
   return (
