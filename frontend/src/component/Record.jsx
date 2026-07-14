@@ -1,14 +1,18 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../api/Context";
 import MenuMessage from "./MenuMessage";
 import RecordMessage from "./RecordMessage";
 
 const Record = ({ record, msgIndex }) => {
-  const { expenses, inputMessages, messages } = useContext(GlobalContext);
+  const {
+    inputMessages,
+    messages,
+  } = useContext(GlobalContext);
 
   // Prevents crashing if arrays are completely empty
   const menuMsg = inputMessages[inputMessages.length - 1] === "/menu";
-  const lastExpense = record || { income: 0, expense: 0, reason: "None" };
+  const lastExpense = record || { income: 0, expense: 0, reason: "None" }
+
   // 1. Get the current date parameters dynamically
   const currentDate = new Date();
   const currentDayNum = currentDate.getDate();

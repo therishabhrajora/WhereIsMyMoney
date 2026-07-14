@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import MenuMessage from "./MenuMessage";
+import StatisticsMessage from "./StatisticsMessage";
 
 const RecordMessage = (props) => {
   const {
@@ -28,13 +29,12 @@ const RecordMessage = (props) => {
 
   const renderMsg = () => {
     if (todayExpenseOpen) {
-        console.log("hello");
       return <MenuMessage
         todayExpenses={todayExpenses}
         monthExpenses={monthExpenses}
       />;
     } else if (staticsOpen) {
-      return <h1>statics open</h1>;
+      return <StatisticsMessage currentMo/>
     } else {
       return (
         <table className="w-full text-sm table-fixed border-separate border-spacing-y-1">
@@ -105,7 +105,7 @@ const RecordMessage = (props) => {
                 onClick={() => staticsClick(msgIndex)}
                 className="py-2.5 px-4 cursor-pointer hover:bg-slate-200 transition-colors border-l border-slate-300 rounded-r-lg"
               >
-                Statics
+                Statistics
               </td>
             </tr>
             <tr className="font-semibold text-center text-slate-800 bg-slate-100">
@@ -113,7 +113,7 @@ const RecordMessage = (props) => {
                 colSpan={2}
                 className="py-2.5 px-4 cursor-pointer hover:bg-slate-200 transition-colors rounded-l-lg"
               >
-                back
+                Back
               </td>
             </tr>
           </tbody>

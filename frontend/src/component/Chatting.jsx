@@ -41,7 +41,7 @@ const Chatting = () => {
                       
                   //   </div>
                   // </div>
-                  <Record record={message} msgIndex={index}/>
+                  <Record     key={index} record={message} msgIndex={index}/>
                 );
             }
 
