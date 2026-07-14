@@ -11,14 +11,7 @@ export const GlobalProvider = ({ children }) => {
   const [messages, setMessages] = useState([]);
   const [inputMessages, setInputMessages] = useState([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [expenses, setExpenses] = useState({
-    id:Date.now(),
-    expense:0,
-    income:0,
-    category:"",
-    reason:"",
-    hastags:"",
-  });
+  const [expenses, setExpenses] = useState([]);
 
   const handleChat = (newMessage) => {
     setMessages((prev) => [...prev, newMessage]);
@@ -26,6 +19,9 @@ export const GlobalProvider = ({ children }) => {
   const handleInputMessages = (newMessage) => {
     setInputMessages((prev) => [...prev, newMessage]);
   };
+  const handleExpenses = (newExpense) => {
+    setExpenses((prev) => [...prev, newExpense]);
+  }
 
   // Consolidate values inside a single data container package object
   const valuePackage = {
@@ -42,9 +38,12 @@ export const GlobalProvider = ({ children }) => {
     isMenuOpen,
     setIsMenuOpen,
     expenses,
-    setExpenses
+    setExpenses,
+    handleExpenses,
   };
-
+  console.log("messages", messages[messages.length - 1]);
+  console.log("input", inputMessages[inputMessages.length - 1]);
+  console.log("expenses", expenses[expenses.length - 1]);
   return (
     <GlobalContext.Provider value={valuePackage}>
       {children}

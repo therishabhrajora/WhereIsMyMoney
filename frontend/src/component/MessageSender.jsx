@@ -2,6 +2,7 @@ import { SendIcon, Menu as MenuIcon, X } from "lucide-react";
 import { useContext, useState } from "react";
 import { Menu } from "./Menu";
 import { GlobalContext } from "../api/Context";
+import MenuMessage from "./MenuMessage";
 // Import Menu from your file structure here, or use the export from above
 // import Menu from "./Menu";
 
@@ -12,7 +13,8 @@ const MessageSender = () => {
     handleInputMessages,
     handleChat,
     expenses,
-    setExpenses,
+    setMessages,
+    handleExpenses
   } = useContext(GlobalContext);
   const [input, setInput] = useState("");
   const [expense, setExpense] = useState(0);
@@ -36,40 +38,51 @@ const MessageSender = () => {
     handleExpense(input);
     handleInputMessages(input);
     handleChat(input);
+    handleChat("menuMessage");
 
     // FIXED: This will now successfully clear the textbox on submit
     setInput("");
   };
 
   const handleExpense = (input) => {
-    const cleanInput = input.trim();
-    let numIndex=0;
-    const words = input.split(/\s+/);
-    for (let i=0;i<words.length;i++) {
-      const cleanWord = words[i].trim();
+  const words = input.trim().split(/\s+/);
+  
+  // Find the index of the first numeric word
+  const numIndex = words.findIndex(word => /^-?\d+$/.test(word));
+  
+  // If no number is found, abort parsing
+  if (numIndex === -1) return;
 
-      // Ignore empty array slots caused by double punctuation
-      if (cleanWord === "") continue;
-      const matchNumber = /^-?\d+$/.test(words[i]);
-      if (matchNumber) {
-        numIndex=i;
-        const number=parseInt(words[i],10);
-        if(number<0){
-          setExpense(number);
-        }else{
-          setIncome(number);
-        }
-        break;
-      }
-    }
+  const number = parseInt(words[numIndex], 10);
+  
+  // Slice array to cleanly extract parts without looping state updates
+  const extractedCat = words.slice(0, numIndex).join(" ");
+  const extractedReason = words.slice(numIndex + 1).join(" ");
 
-    for(let i=0;i<numIndex;i++){  
-      setCat(cat.concat(words[i]));
-    }
-    for(let i=numIndex+1;i<words.length;i++){
-      setReason(reason.concat(words[i]));
-    }
+  // Isolate hashtags from the reason if they exist
+  const hashtags = words.filter(word => word.startsWith("#")).join(" ");
+  const cleanReason = extractedReason.replace(/#\S+/g, "").trim();
+
+ 
+
+  // 2. Append directly to your global object/array state safely
+  const newRecord = {
+    id: Date.now(),
+    expense: number < 0 ? Math.abs(number) : 0,
+    income: number > 0 ? number : 0,
+    category: extractedCat,
+    reason: cleanReason,
+    hashtags: hashtags,
+    date:new Date().getDate(),
+    month:new Date().getMonth() + 1,
+    year:new Date().getFullYear(),
   };
+
+
+  // Assuming expenses is an array in your GlobalContext:
+  handleExpenses(newRecord);
+};
+
 
   return (
     /* Container layout anchor element keeping Menu popup and Chatbar tied together safely */

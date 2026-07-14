@@ -10,7 +10,7 @@ const DefaultMessage = () => {
   };
 
   return (
-    <div className="relative bg-slate-50 p-6 mb-12 font-sans antialiased text-slate-800">
+    <div className="relative min-h-screen bg-slate-50 p-6 font-sans antialiased text-slate-800">
       <div className="mx-auto max-w-2xl">
         {/* Header Section */}
         <Brand />

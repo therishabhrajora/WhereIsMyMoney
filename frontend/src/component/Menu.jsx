@@ -15,11 +15,11 @@ export const Menu = () => {
     handleChat(command);
     handleInputMessages(command);
     if (command === "/start") {
-      handleChat(<StartMessage />);
+      handleChat("startMessage");
     } else if (command === "/help") {
-      handleChat(<Introduction />);
+      handleChat("introduction");
     } else if (command === "/menu") {
-      handleChat(<MenuMessage />);
+      handleChat("menuMessage");
     }
 
     setIsMenuOpen(!isMenuOpen);
