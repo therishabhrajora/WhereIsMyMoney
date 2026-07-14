@@ -10,7 +10,7 @@ export const GlobalProvider = ({ children }) => {
   const [messages, setMessages] = useState([]);
   const [inputMessages, setInputMessages] = useState([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [expenses, setExpenses] = useState(data);
+  const [expenses, setExpenses] = useState([]);
 
   const handleChat = (newMessage) => {
     setMessages((prev) => [...prev, newMessage]);

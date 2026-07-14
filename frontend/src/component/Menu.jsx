@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { GlobalContext } from "../api/Context";
 import StartMessage from "./StartMessage";
 
-import MenuMessage from "./MenuMessage";
+import Record from "./Record";
 import DefaultMessage from "./DefaultMessage";
 import Introduction from "./Introduction";
 
@@ -19,7 +19,7 @@ export const Menu = () => {
     } else if (command === "/help") {
       handleChat("introduction");
     } else if (command === "/menu") {
-      handleChat("menuMessage");
+      handleChat("Record");
     }
 
     setIsMenuOpen(!isMenuOpen);

@@ -2,7 +2,7 @@ import { useContext, useEffect, useRef } from "react";
 import { GlobalContext } from "../api/Context";
 import StartMessage from "./StartMessage";
 import Introduction from "./Introduction";
-import MenuMessage from "./MenuMessage";
+import Record from "./Record";
 
 const Chatting = () => {
   const { messages, inputMessages } = useContext(GlobalContext);
@@ -10,10 +10,12 @@ const Chatting = () => {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+  console.log(messages);
   return (
     <div className="bg-slate-50">
       <div className="mx-auto max-w-2xl pb-16 ">
         {messages.map((message, index) => {
+          console.log(message);
           if (inputMessages.includes(message)) {
             return (
               <div
@@ -29,17 +31,17 @@ const Chatting = () => {
             switch (message) {
               case "startMessage": return <StartMessage />;
               case "introduction": return <Introduction />;
-              case "menuMessage": return <MenuMessage />;
               default:
                 return (
-                  <div
-                    key={index}
-                    className="flex w-full justify-start mb-2 animate-in fade-in slide-in-from-bottom-1"
-                  >
-                    <div className="max-w-[75%] rounded-2xl rounded-tl-none px-4 py-2 text-sm font-medium text-slate-100 ">
-                      {message}
-                    </div>
-                  </div>
+                  // <div
+                  //   key={index}
+                  //   className="flex w-full justify-start mb-2 animate-in fade-in slide-in-from-bottom-1"
+                  // >
+                  //   <div className="max-w-[75%] rounded-2xl rounded-tl-none px-4 py-2 text-sm font-medium text-slate-100 ">
+                      
+                  //   </div>
+                  // </div>
+                  <Record record={message}/>
                 );
             }
 

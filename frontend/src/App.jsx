@@ -6,14 +6,13 @@ import PrivateRoutel from "./component/PrivateRoute";
 import DefaultMessage from "./component/DefaultMessage";
 import MessageSender from "./component/MessageSender";
 import StartMessage from "./component/StartMessage";
-import MenuMessage from "./component/MenuMessage";
+import Record from "./component/Record";
 import { GlobalContext } from "./api/Context";
 import Chatting from "./component/Chatting";
 
 function App() {
   const user = localStorage.getItem("user");
   const { start,expenses } = useContext(GlobalContext);
-  console.log(expenses[expenses.length-1]);
   return (
     <div className="relative">
       {user ? (

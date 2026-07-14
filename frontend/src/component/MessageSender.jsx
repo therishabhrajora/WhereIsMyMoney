@@ -2,9 +2,8 @@ import { SendIcon, Menu as MenuIcon, X } from "lucide-react";
 import { useContext, useState } from "react";
 import { Menu } from "./Menu";
 import { GlobalContext } from "../api/Context";
-import MenuMessage from "./MenuMessage";
-// Import Menu from your file structure here, or use the export from above
-// import Menu from "./Menu";
+import Record from "./Record";
+
 
 const MessageSender = () => {
   const {
@@ -35,10 +34,15 @@ const MessageSender = () => {
     if (input.trim() === "") {
       return;
     }
-    handleExpense(input);
-    handleInputMessages(input);
     handleChat(input);
-    handleChat("menuMessage");
+    const numberExist = handleExpense(input);
+    handleInputMessages(input);
+    if (numberExist) {
+      setInput("");
+      return;
+    }
+
+    // handleChat("Record");
 
     // FIXED: This will now successfully clear the textbox on submit
     setInput("");
@@ -46,14 +50,13 @@ const MessageSender = () => {
 
   const handleExpense = (input) => {
     const words = input.trim().split(/\s+/);
-    
+
     // Find the index of the first numeric word
     const numIndex = words.findIndex(word => /^-?\d+$/.test(word));
-    
+
     // If no number is found, abort parsing
     if (numIndex === -1) {
-      console.log("no amount present");
-      return ;
+      return true;
     }
 
     const number = parseInt(words[numIndex], 10);
@@ -80,7 +83,10 @@ const MessageSender = () => {
       month: new Date().getMonth() + 1,
       year: new Date().getFullYear(),
     };
-    console.log(newRecord);
+    const obj={
+      new:newRecord
+    }
+    handleChat(newRecord);
     handleExpenses(newRecord);
   };
 
