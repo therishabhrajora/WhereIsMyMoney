@@ -15,7 +15,7 @@ const StartMessage = () => {
   };
 
   return (
-    <div className="w-full max-w-sm  bg-white flex gap-1 flex-col animate-in fade-in duration-200">
+    <div className="w-[75%] max-w-sm  bg-white flex gap-1 flex-col animate-in fade-in duration-200">
       
       {/* Component Header Block */}
       <div className="mb-1 flex items-center gap-2 p-2 rounded-xl hover:text-emerald-700 text-emerald-500 shadow">

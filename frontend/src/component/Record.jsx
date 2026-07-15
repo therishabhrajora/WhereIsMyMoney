@@ -15,6 +15,8 @@ const Record = ({ record, msgIndex }) => {
 
   // 1. Get the current date parameters dynamically
   const currentDate = new Date();
+  const currentTime = currentDate.getHours();
+  const currentMinutes = currentDate.getMinutes();
   const currentDayNum = currentDate.getDate();
   const currentMonthNum = currentDate.getMonth() + 1; // JS months are 0-11
   const currentYearNum = currentDate.getFullYear();
@@ -67,20 +69,27 @@ const Record = ({ record, msgIndex }) => {
     }, 0);
 
   return (
-    <div className="w-full max-w-sm rounded-2xl flex flex-col gap-1 shadow-sm overflow-hidden animate-in fade-in duration-200 bg-transparent">
+    <div className="w-[75%] mb-4 max-w-sm rounded-2xl flex flex-col space-y-4 border-stone-200 shadow-sm border-b border-r border-l overflow-hidden animate-in fade-in duration-200 bg-transparent">
       {menuMsg ? (
-        <MenuMessage
-          monthExpenses={monthExpenses}
-          todayExpenses={todayExpenses}
-        />
+        <>
+          <MenuMessage
+            monthExpenses={monthExpenses}
+            todayExpenses={todayExpenses}
+          />
+          <p className="text-[10px] text-right mr-2 mb-3 opacity-50">{currentTime<10 ? <span>0{currentTime}</span>:currentTime}:{currentTime<10 ? <span>0{currentTime}</span>:currentTime}</p>
+        </>
+
       ) : (
-        <RecordMessage
-          monthExpenses={monthExpenses}
-          todayExpenses={todayExpenses}
-          categoryExpenses={categoryExpenses}
-          lastExpense={lastExpense}
-          msgIndex={msgIndex}
-        />
+        <>
+          <RecordMessage
+            monthExpenses={monthExpenses}
+            todayExpenses={todayExpenses}
+            categoryExpenses={categoryExpenses}
+            lastExpense={lastExpense}
+            msgIndex={msgIndex}
+          />
+          <p className="text-[10px] text-right mr-2 mb-3 opacity-50">{currentTime<10 ? <span>0{currentTime}</span>:currentTime}:{currentTime<10 ? <span>0{currentTime}</span>:currentTime}</p>
+        </>
       )}
     </div>
   );

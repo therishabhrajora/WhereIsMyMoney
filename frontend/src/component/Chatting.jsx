@@ -11,6 +11,9 @@ const Chatting = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
   console.log(messages);
+  const currentDate = new Date();
+  const currentTime = currentDate.getHours();
+  const currentMinutes = currentDate.getMinutes();
   return (
     <div className="bg-slate-50">
       <div className="mx-auto max-w-2xl pb-16 ">
@@ -20,11 +23,13 @@ const Chatting = () => {
             return (
               <div
                 key={index}
-                className="flex w-full  justify-end mb-2 animate-in fade-in slide-in-from-bottom-1 "
+                className="flex w-full  justify-end  mb-2  animate-in fade-in slide-in-from-bottom-1 "
               >
-                <div className="max-w-[75%] rounded-2xl rounded-tr-none bg-emerald-600 px-4 py-2 text-sm font-medium text-white shadow-sm">
+                <div className="max-w-[75%] rounded-2xl rounded-br-none bg-emerald-600 pl-4 pr-2  py-1 text-sm font-medium text-white shadow-sm">
                   {message}
+                  <p className="text-[10px] text-right  opacity-50">{currentTime<10 ? <span>0{currentTime}</span>:currentTime}:{currentTime<10 ? <span>0{currentTime}</span>:currentTime}</p>
                 </div>
+
               </div>
             );
           } else {
@@ -38,10 +43,10 @@ const Chatting = () => {
                   //   className="flex w-full justify-start mb-2 animate-in fade-in slide-in-from-bottom-1"
                   // >
                   //   <div className="max-w-[75%] rounded-2xl rounded-tl-none px-4 py-2 text-sm font-medium text-slate-100 ">
-                      
+
                   //   </div>
                   // </div>
-                  <Record     key={index} record={message} msgIndex={index}/>
+                  <Record key={index} record={message} msgIndex={index} />
                 );
             }
 

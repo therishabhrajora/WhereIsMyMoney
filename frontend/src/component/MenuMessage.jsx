@@ -4,35 +4,72 @@ import { GlobalContext } from "../api/Context";
 const MenuMessage = () => {
   const { expenses } = useContext(GlobalContext);
   const currentDate = new Date();
-  const currentDayNum = currentDate.getDate();
-  const currentMonthNum = currentDate.getMonth() + 1; // JS months are 0-11
-  const currentYearNum = currentDate.getFullYear();
-  let [date, setDate] = useState(currentDayNum);
 
-  const todayExpenses = expenses
-    .filter(
-      (item) =>
-        Number(item.date) === currentDayNum &&
-        Number(item.month) === currentMonthNum &&
-        Number(item.year) === currentYearNum,
-    )
-    .reduce((sum, item) => {
-      const expenseValue = Number(item.expense || 0);
-      const incomeValue = Number(item.income || 0);
+  let [date, setDate] = useState(currentDate);
+  const [backBtn, setSetBackbtn] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
-      return expenseValue === 0 ? sum + incomeValue : sum - expenseValue;
-    }, 0);
+  const currentDayNum = date.getDate();
+  const currentMonthNum = date.getMonth() + 1; // JS months are 0-11
+  const currentYearNum = date.getFullYear();
+
+  // 1. Get the array items first
+  const todayExpensesData = expenses.filter(
+    (item) =>
+      Number(item.date) === currentDayNum &&
+      Number(item.month) === currentMonthNum &&
+      Number(item.year) === currentYearNum,
+  );
+
+  // 2. Reuse the array above to calculate the mathematical sum total
+  const todayExpenses = todayExpensesData.reduce((sum, item) => {
+    const expenseValue = Number(item.expense || 0);
+    const incomeValue = Number(item.income || 0);
+    return expenseValue === 0 ? sum + incomeValue : sum - expenseValue;
+  }, 0);
+
+  // Calculate total expense grouped by category
+  const categoryTotals = todayExpensesData.reduce((acc, item) => {
+    const cat = item.category;
+    const expenseValue = Number(item.expense || 0);
+    const incomeValue = Number(item.income || 0);
+
+    // Initialize the category object with separate counters if it doesn't exist
+    if (!acc[cat]) {
+      acc[cat] = { expense: 0, income: 0 };
+    }
+
+    // Accumulate income and expenses separately
+    acc[cat].expense += expenseValue;
+    acc[cat].income += incomeValue;
+
+    return acc;
+  }, {});
+  // This creates a structure like: 
+  // { "Food": { expense: 450, income: 0 }, "Salary": { expense: 0, income: 50000 } }
+  // Result format look: { "Transportation": 80, "Food": 450 }
 
 
   const nextDay = () => {
-    setDate(++date);
+    const next = new Date(date);
+    next.setDate(date.getDate() + 1); // Safely adds 1 day
+    setDate(next);
 
   }
   const prevDay = () => {
-    setDate(--date);
+    const prev = new Date(date);
+    prev.setDate(date.getDate() - 1); // Safely subtracts 1 day
+    setDate(prev);
   }
+
+  const toggleBackBtn = () => {
+    setSetBackbtn(true);
+  }
+
+
+
   return (
-    <table className="w-full text-sm table-fixed border-separate border-spacing-y-1">
+    <table className="w-full text-sm table-fixed border-separate border-spacing-y-1 ">
       <tbody>
         <tr className="bg-white">
           <td colSpan={2} className="p-4 text-slate-700 rounded-t-2xl">
@@ -44,23 +81,59 @@ const MenuMessage = () => {
                 Expenses:{todayExpenses}
               </p>
             </div>
-            <div className="pt-3 space-y-1">
-              <div className="text-slate-300 font-mono text-xs pb-1">
-                -----
-              </div>
-              <p className="text-slate-600">
 
-              </p>
-              <p className="text-slate-600">
-
-              </p>
-              <p className="text-slate-600">
-
-              </p>
-            </div>
           </td>
         </tr>
-        {/* Fixed backdrop filter structure for rows */}
+        {Object.entries(categoryTotals).map(([categoryName, totals], index) => (
+          <tr key={categoryName || index} onClick={() => setSelectedCategory(selectedCategory === categoryName ? null : categoryName)} className="border-b border-slate-100 hover:bg-slate-200 transition-colors text-slate-800 bg-slate-100">
+            {/* Category Name Column */}
+            <td className="p-4 text-slate-700 font-medium">
+              {categoryName}
+            </td>
+
+            {/* Totals Summary Column */}
+            <td className="p-4 text-right space-y-1">
+              {totals.income > 0 && (
+                <div className="text-emerald-600 font-semibold">
+                  +{totals.income}
+                </div>
+              )}
+              {totals.expense > 0 && (
+                <div className="text-rose-600 font-semibold">
+                  -{totals.expense}
+                </div>
+              )}
+            </td>
+          </tr>
+        ))}
+        {selectedCategory && (
+          <tr className="bg-slate-50">
+            <td colSpan={2} className="p-4 text-slate-700">
+              <div className="text-xs font-mono text-slate-400 mb-2 text-center">
+                ----- {currentYearNum}-{String(currentMonthNum).padStart(2, '0')}-{String(currentDayNum).padStart(2, '0')} -----
+              </div>
+              <ul className="space-y-1.5 list-disc list-inside text-sm">
+                {todayExpensesData
+                  .filter((item) => item.category === selectedCategory)
+                  .map((item) => {
+                    const isIncome = Number(item.expense || 0) === 0;
+                    const amount = isIncome ? `+${item.income}` : `-${item.expense}`;
+                    const colorClass = isIncome ? "text-emerald-600" : "text-rose-600";
+
+                    return (
+                      <li key={item.id} className="font-mono flex justify-between items-center py-0.5 border-b border-dashed border-slate-200 last:border-0">
+                        <span className="text-slate-600">{item.reason || "No description"}</span>
+                        <span className={`${colorClass} font-semibold`}>{amount}</span>
+                      </li>
+                    );
+                  })}
+              </ul>
+            </td>
+          </tr>
+        )}
+
+
+
         <tr className="font-semibold text-center text-slate-800 bg-slate-100">
           <td
             onClick={() => prevDay()}

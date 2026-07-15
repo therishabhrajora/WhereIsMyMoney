@@ -7,7 +7,7 @@ const Data = {
       "category": "Salary",
       "reason": "Monthly paycheck",
       "hashtags": ["income", "job", "monthly"],
-      "date": 14,
+      "date": 15,
       "month": 7,
       "year": 2026
     },
@@ -18,7 +18,7 @@ const Data = {
       "category": "Food",
       "reason": "Dinner at restaurant",
       "hashtags": ["dining", "weekend"],
-      "date": 14,
+      "date": 15,
       "month": 7,
       "year": 2026
     },
@@ -29,7 +29,7 @@ const Data = {
       "category": "Utilities",
       "reason": "Electricity bill",
       "hashtags": ["bills", "home"],
-      "date": 12,
+      "date": 15,
       "month": 7,
       "year": 2026
     },
@@ -40,7 +40,7 @@ const Data = {
       "category": "Freelance",
       "reason": "Logo design project",
       "hashtags": ["sidehustle", "design"],
-      "date": 10,
+      "date": 15,
       "month": 7,
       "year": 2026
     },
@@ -51,7 +51,7 @@ const Data = {
       "category": "Transportation",
       "reason": "Bus fare",
       "hashtags": ["commute"],
-      "date": 9,
+      "date": 15,
       "month": 7,
       "year": 2026
     }

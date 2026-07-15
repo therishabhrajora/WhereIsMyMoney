@@ -1,6 +1,6 @@
 const Introduction = () => {
   return (
-    <div className="rounded-2xl border border-slate-100 bg-slate-50 p-6 shadow-xl shadow-slate-100 transition-all">
+    <div className="w-[75%] rounded-2xl border border-slate-100 bg-slate-50 p-6 shadow-xl shadow-slate-100 transition-all">
       {/* Title & Introduction */}
       <div className="mb-6">
         <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
