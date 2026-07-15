@@ -4,11 +4,11 @@ import { GlobalContext } from "../api/Context"; // Adjust path based on your fil
 
 const StartMessage = () => {
   // Pull language configuration states from global context
-  const { setCommand, handleChat } = useContext(GlobalContext);
+  const { setCommand, handleMessages } = useContext(GlobalContext);
 
   const handleLanguageSelect = (lang) => {
     // 1. Log user choice directly onto chat stream
-    handleChat(`Selected Language: ${lang}`);
+    handleMessages(`Selected Language: ${lang}`);
     
     // 2. Clear command back to base default chat board view
     setCommand("");

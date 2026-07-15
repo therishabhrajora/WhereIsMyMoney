@@ -23,18 +23,13 @@ const RecordMessage = (props) => {
     setTargetIndex(index);
     setStaticsOpen(!staticsOpen);
   };
-  useEffect(()=>{
-    renderMsg();
-  },[todayExpenseOpen,staticsOpen])
+
 
   const renderMsg = () => {
     if (todayExpenseOpen) {
-      return <MenuMessage
-        todayExpenses={todayExpenses}
-        monthExpenses={monthExpenses}
-      />;
+      return <MenuMessage/>;
     } else if (staticsOpen) {
-      return <StatisticsMessage currentMo/>
+      return <StatisticsMessage />
     } else {
       return (
         <table className="w-full text-sm table-fixed border-separate border-spacing-y-1">
@@ -46,21 +41,21 @@ const RecordMessage = (props) => {
                     Saved
                   </p>
                   <p className="text-2xl font-bold text-slate-900 tracking-tight">
-                    {lastExpense.income === 0 && (
+                    {lastExpense.record.income === 0 && (
                       <span className="font-semibold">
-                        {lastExpense.expense}.0
+                        {lastExpense.record.expense}.0
                       </span>
                     )}
-                    {lastExpense.expense === 0 && (
+                    {lastExpense.record.expense === 0 && (
                       <span className="font-semibold">
-                        {lastExpense.income}.0
+                        {lastExpense.record.income}.0
                       </span>
                     )}
                   </p>
                   <p className="text-xs text-slate-500">
                     comment:{" "}
                     <span className="italic text-slate-700">
-                      {lastExpense.reason}
+                      {lastExpense.record.reason}
                     </span>
                   </p>
                 </div>
@@ -83,7 +78,7 @@ const RecordMessage = (props) => {
                   <p className="text-slate-600">
                     In the category{" "}
                     <span className="font-semibold text-slate-900">
-                      {lastExpense.reason}
+                      {lastExpense.record.reason}
                     </span>
                     :{" "}
                     <span className="text-slate-400 text-xs">

@@ -1,4 +1,4 @@
-const Introduction = () => {
+const Introduction = ({time}) => {
   return (
     <div className="w-[75%] rounded-2xl border border-slate-100 bg-slate-50 p-6 shadow-xl shadow-slate-100 transition-all">
       {/* Title & Introduction */}
@@ -97,6 +97,7 @@ const Introduction = () => {
           </p>
         </div>
       </div>
+       <p className="text-[10px] text-right opacity-50">{time}</p>
       
     </div>
   );

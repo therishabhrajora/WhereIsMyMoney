@@ -8,18 +8,35 @@ import DefaultMessage from "./DefaultMessage";
 import Introduction from "./Introduction";
 
 export const Menu = () => {
-  const { command, setCommand, setMessages, handleChat, handleInputMessages,setIsMenuOpen ,isMenuOpen} =
+  const { command, setCommand, setMessages, handleMessages, setIsMenuOpen, isMenuOpen } =
     useContext(GlobalContext);
   const onCommandSelect = (command) => {
     setCommand(command);
-    handleChat(command);
-    handleInputMessages(command);
     if (command === "/start") {
-      handleChat("startMessage");
+      handleMessages({
+        type: "user",
+        text: command
+      });
+      handleMessages({
+        type: "startMessage"
+      });
     } else if (command === "/help") {
-      handleChat("introduction");
+      handleMessages({
+        type: "user",
+        text: command
+      });
+      handleMessages({
+        type: "introduction"
+      });
     } else if (command === "/menu") {
-      handleChat("Record");
+      handleMessages({
+        type: "user",
+        text: command
+      });
+
+      handleMessages({
+        type: "menu"
+      });
     }
 
     setIsMenuOpen(!isMenuOpen);

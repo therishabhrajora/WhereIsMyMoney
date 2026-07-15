@@ -9,17 +9,16 @@ const MessageSender = () => {
   const {
     isMenuOpen,
     setIsMenuOpen,
-    handleInputMessages,
-    handleChat,
-    expenses,
+    handleMessages,
     setMessages,
-    handleExpenses
+    messages
   } = useContext(GlobalContext);
   const [input, setInput] = useState("");
   const [expense, setExpense] = useState(0);
   const [income, setIncome] = useState(0);
   const [cat, setCat] = useState("");
   const [reason, setReason] = useState("");
+
   const handleToggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -34,17 +33,15 @@ const MessageSender = () => {
     if (input.trim() === "") {
       return;
     }
-    handleChat(input);
-    const numberExist = handleExpense(input);
-    handleInputMessages(input);
-    if (numberExist) {
+    handleMessages({
+      type: "user",
+      text: input
+    });
+    const parsed = handleExpense(input);
+    if (parsed === false) {
       setInput("");
       return;
     }
-
-    // handleChat("Record");
-
-    // FIXED: This will now successfully clear the textbox on submit
     setInput("");
   };
 
@@ -56,7 +53,7 @@ const MessageSender = () => {
 
     // If no number is found, abort parsing
     if (numIndex === -1) {
-      return true;
+      return false;
     }
 
     const number = parseInt(words[numIndex], 10);
@@ -83,11 +80,11 @@ const MessageSender = () => {
       month: new Date().getMonth() + 1,
       year: new Date().getFullYear(),
     };
-    const obj={
-      new:newRecord
-    }
-    handleChat(newRecord);
-    handleExpenses(newRecord);
+    handleMessages({
+      type: "record",
+      record: newRecord
+    });
+    return true;
   };
 
 
