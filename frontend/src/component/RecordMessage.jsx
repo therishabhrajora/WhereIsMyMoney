@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import MenuMessage from "./MenuMessage";
 import StatisticsMessage from "./StatisticsMessage";
 import { GlobalContext } from "../api/Context";
@@ -12,113 +12,262 @@ const RecordMessage = (props) => {
     lastExpense,
   } = props;
 
-  const [targetIndex, setTargetIndex] = useState(-1);
-  const {updateTodayExpenseOpen,todayExpenseOpen,staticsOpen,updateStaticsOpen}=useContext(GlobalContext);
+  const {
+    updateTodayExpenseOpen,
+    todayExpenseOpen,
+    staticsOpen,
+    updateStaticsOpen,
+  } = useContext(GlobalContext);
 
+
+  const isTodayOpen = todayExpenseOpen === msgIndex;
+  const isStaticsOpen = staticsOpen === msgIndex;
 
 
   const todayClick = (index) => {
-    setTargetIndex(index);
-    updateTodayExpenseOpen();
+    updateTodayExpenseOpen(index);
   };
+
+
   const staticsClick = (index) => {
-    setTargetIndex(index);
-    updateStaticsOpen();
+    updateStaticsOpen(index);
+  };
+
+
+  const closeAll = () => {
+    updateTodayExpenseOpen(-1);
+    updateStaticsOpen(-1);
   };
 
 
   const renderMsg = () => {
-    if (todayExpenseOpen) {
+
+    if (isTodayOpen) {
       return <MenuMessage />;
-    } else if (staticsOpen) {
-      return <StatisticsMessage msgIndex={msgIndex} />
-    } else {
-      return (
-        <table className="w-full text-sm table-fixed border-separate border-spacing-y-1">
-          <tbody>
-            <tr className="bg-white">
-              <td colSpan={2} className="p-4 text-slate-700 rounded-t-2xl">
-                <div className="space-y-1 pb-3">
-                  <p className="text-xs font-medium text-emerald-600 uppercase tracking-wider">
-                    Saved
-                  </p>
-                  <p className="text-2xl font-bold text-slate-900 tracking-tight">
-                    {lastExpense.record.income === 0 && (
-                      <span className="font-semibold">
-                        {lastExpense.record.expense}.0
-                      </span>
-                    )}
-                    {lastExpense.record.expense === 0 && (
-                      <span className="font-semibold">
-                        {lastExpense.record.income}.0
-                      </span>
-                    )}
-                  </p>
-                  <p className="text-xs text-slate-500">
-                    comment:{" "}
-                    <span className="italic text-slate-700">
-                      {lastExpense.record.reason}
-                    </span>
-                  </p>
-                </div>
-                <div className="pt-3 space-y-1">
-                  <div className="text-slate-300 font-mono text-xs pb-1">
-                    -----
-                  </div>
-                  <p className="text-slate-600">
-                    this month:{" "}
-                    <span className="font-semibold text-slate-900">
-                      {monthExpenses}
-                    </span>{" "}
-                  </p>
-                  <p className="text-slate-600">
-                    today:{" "}
-                    <span className="font-semibold text-slate-900">
-                      {todayExpenses}
-                    </span>
-                  </p>
-                  <p className="text-slate-600">
-                    In the category{" "}
-                    <span className="font-semibold text-slate-900">
-                      {lastExpense.record.reason}
-                    </span>
-                    :{" "}
-                    <span className="text-slate-400 text-xs">
-                      {categoryExpenses}
-                    </span>
-                  </p>
-                </div>
-              </td>
-            </tr>
-            {/* Fixed backdrop filter structure for rows */}
-            <tr className="font-semibold text-center text-slate-800 bg-slate-100">
-              <td
-                onClick={() => todayClick(msgIndex)}
-                className="py-2.5 px-4 cursor-pointer hover:bg-slate-200 transition-colors rounded-l-lg"
-              >
-                Today
-              </td>
-              <td
-                onClick={() => staticsClick(msgIndex)}
-                className="py-2.5 px-4 cursor-pointer hover:bg-slate-200 transition-colors border-l border-slate-300 rounded-r-lg"
-              >
-                Statistics
-              </td>
-            </tr>
-            <tr className="font-semibold text-center text-slate-800 bg-slate-100">
-              <td
-                colSpan={2}
-                className="py-2.5 px-4 cursor-pointer hover:bg-slate-200 transition-colors rounded-l-lg"
-              >
-                Back
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      );
     }
+
+
+    if (isStaticsOpen) {
+      return <StatisticsMessage msgIndex={msgIndex} />;
+    }
+
+
+    return (
+      <div
+        className="
+          animate-in
+          fade-in
+          slide-in-from-bottom-3
+          duration-500
+        "
+      >
+
+        <div
+          className="
+            overflow-hidden
+            rounded-3xl
+            border
+            border-slate-200
+            bg-white/90
+        
+            backdrop-blur-xl
+          "
+        >
+
+          {/* Header */}
+
+          <div
+            className="
+              bg-gradient-to-r
+              from-emerald-500
+              to-teal-600
+              p-5
+              text-white
+            "
+          >
+
+            <p
+              className="
+                text-xs
+                font-semibold
+                uppercase
+                tracking-[0.2em]
+                text-white/80
+              "
+            >
+              Saved
+            </p>
+
+
+            <div className="mt-2 flex items-center gap-2">
+
+              <span className="text-3xl font-extrabold">
+
+                {lastExpense.record.income === 0 && (
+                  <>-{lastExpense.record.expense}</>
+                )}
+
+                {lastExpense.record.expense === 0 && (
+                  <>+{lastExpense.record.income}</>
+                )}
+
+              </span>
+
+            </div>
+
+
+            <p className="mt-2 text-sm text-white/80">
+              {lastExpense.record.reason ||
+                "No comment"}
+            </p>
+
+          </div>
+
+
+          {/* Statistics */}
+
+          <div className="space-y-4 p-5">
+
+
+            <div className="rounded-2xl bg-slate-50 p-4">
+
+              <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
+                Overview
+              </p>
+
+
+              <div className="space-y-3 text-sm">
+
+
+                <div className="flex justify-between">
+                  <span className="text-slate-500">
+                    This month
+                  </span>
+
+                  <span className="font-bold text-slate-900">
+                    {monthExpenses}
+                  </span>
+                </div>
+
+
+
+                <div className="flex justify-between">
+                  <span className="text-slate-500">
+                    Today
+                  </span>
+
+                  <span className="font-bold text-slate-900">
+                    {todayExpenses}
+                  </span>
+                </div>
+
+
+
+                <div className="flex justify-between">
+                  <span className="text-slate-500">
+                    Category
+                  </span>
+
+                  <span className="font-bold text-emerald-600">
+                    {categoryExpenses}
+                  </span>
+                </div>
+
+
+              </div>
+
+            </div>
+
+
+            {/* Actions */}
+
+            <div className="grid grid-cols-2 gap-3">
+
+
+              <button
+                onClick={() => todayClick(msgIndex)}
+                className="
+                  rounded-2xl
+                  bg-slate-100
+                  py-3
+                  text-sm
+                  font-semibold
+                  text-slate-700
+                  transition-all
+                  duration-300
+                  hover:-translate-y-1
+                  hover:bg-emerald-50
+                  hover:text-emerald-700
+                  hover:shadow-md
+                  active:scale-95
+                "
+              >
+                📅 Today
+              </button>
+
+
+
+              <button
+                onClick={() => staticsClick(msgIndex)}
+                className="
+                  rounded-2xl
+                  bg-slate-100
+                  py-3
+                  text-sm
+                  font-semibold
+                  text-slate-700
+                  transition-all
+                  duration-300
+                  hover:-translate-y-1
+                  hover:bg-blue-50
+                  hover:text-blue-700
+                  hover:shadow-md
+                  active:scale-95
+                "
+              >
+                📊 Statistics
+              </button>
+
+
+            </div>
+
+
+
+            <button
+              onClick={closeAll}
+              className="
+                w-full
+                rounded-2xl
+                border
+                border-slate-200
+                bg-white
+                py-3
+                text-sm
+                font-semibold
+                text-slate-600
+                transition-all
+                duration-300
+                hover:-translate-y-1
+                hover:bg-slate-100
+                hover:shadow-md
+                active:scale-95
+              "
+            >
+              ← Back
+            </button>
+
+
+          </div>
+
+        </div>
+
+      </div>
+    );
   };
+
+
   return renderMsg();
 };
+
 
 export default RecordMessage;
