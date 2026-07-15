@@ -68,7 +68,7 @@ const Record = ({ record, msgIndex, isMenu,time }) => {
     }, 0);
 
   return (
-    <div className="w-[50%] mb-4 max-w-sm rounded-2xl flex flex-col space-y-4 border-stone-200 shadow-sm border-b border-r border-l overflow-hidden animate-in fade-in duration-200 bg-transparent">
+    <div className="w-[50%] md:w-[50%] mb-4 max-w-sm rounded-2xl flex flex-col space-y-4 border-stone-200 shadow-sm border-b border-r border-l overflow-hidden animate-in fade-in duration-200 bg-transparent">
       {isMenu ? (
         <>
           <MenuMessage

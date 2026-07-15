@@ -2,16 +2,18 @@ import { useContext, useState } from "react";
 import Data from "../api/Data";
 import { GlobalContext } from "../api/Context";
 
-const StatisticsMessage = () => {
+const StatisticsMessage = ({msgIndex}) => {
     const { monthNames } = Data;
-    const { expenses } = useContext(GlobalContext);
+    const { messages, staticsOpen, updateStaticsOpen } = useContext(GlobalContext);
 
     // 1. Store a full Date object to safely manage months and years
     const [selectedDate, setSelectedDate] = useState(new Date());
+    const historicalExpenses = messages.filter((item => item.type === "record")).slice(0, msgIndex + 1);
+
 
     // 2. Extract current viewed month and year values from state
-    const monthNum = selectedDate.getMonth() + 1; // 1 - 12
-    const yearNum = selectedDate.getFullYear();
+    const currentMonthNum = selectedDate.getMonth() + 1; // 1 - 12
+    const currentYearNum = selectedDate.getFullYear();
 
     // 3. Increment month safely (handling December to January transitions)
     const nextMonth = () => {
@@ -28,15 +30,17 @@ const StatisticsMessage = () => {
     };
 
     // 5. Filter expenses using the dynamic state variables (monthNum & yearNum)
-    const monthExpenses = expenses
+
+    const monthExpenses = historicalExpenses
         .filter(
             (item) =>
-                Number(item.month) === monthNum &&
-                Number(item.year) === yearNum
+                Number(item.record.month) === currentMonthNum &&
+                Number(item.record.year) === currentYearNum,
         )
         .reduce((sum, item) => {
-            const expenseValue = Number(item.expense || 0);
-            const incomeValue = Number(item.income || 0);
+            const expenseValue = Number(item.record.expense || 0);
+            const incomeValue = Number(item.record.income || 0);
+
             return expenseValue === 0 ? sum + incomeValue : sum - expenseValue;
         }, 0);
 
@@ -53,8 +57,8 @@ const StatisticsMessage = () => {
                         <div className="space-y-1 pb-3">
                             <p className="text-2xl space-x-2 font-semibold text-slate-900 tracking-tight">
                                 {/* Use monthNum directly with your 1-indexed helper array */}
-                                <span>{monthNames[monthNum]}</span>
-                                <span>{yearNum}</span>
+                                <span>{monthNames[currentMonthNum]}</span>
+                                <span>{currentYearNum}</span>
                             </p>
                             <p className="text-xs text-slate-500">
                                 Expenses: {monthExpenses}

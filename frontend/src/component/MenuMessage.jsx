@@ -1,18 +1,25 @@
 import { useContext, useState } from "react";
 import { GlobalContext } from "../api/Context";
+import RecordMessage from "./RecordMessage";
+import Chatting from "./Chatting";
 
 const MenuMessage = ({ time, width }) => {
-  const { messages } = useContext(GlobalContext);
+  const { messages, todayExpenseOpen,
+    updateTodayExpenseOpen } = useContext(GlobalContext);
   const currentDate = new Date();
 
   let [date, setDate] = useState(currentDate);
   const [backBtn, setSetBackbtn] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [backToToday, setBackToToday] = useState(true);
 
   const currentDayNum = date.getDate();
   const currentMonthNum = date.getMonth() + 1; // JS months are 0-11
   const currentYearNum = date.getFullYear();
+
+  const isLookingAtToday =
+    currentDayNum === currentDate.getDate() &&
+    currentMonthNum === (currentDate.getMonth() + 1) &&
+    currentYearNum === currentDate.getFullYear();
 
   // 1. Get the array items first
   const todayExpensesData = messages.filter((item => item.type === "record")).filter(
@@ -67,14 +74,13 @@ const MenuMessage = ({ time, width }) => {
   }
 
   const toggleBackBtn = () => {
-    setSetBackbtn(true);
+    setSetBackbtn(!setBackToToday);
     setSelectedCategory(null);
   }
 
-  const lastInputMsg = messages[messages.length - 2];
   return (
     <>
-      <table className={`text-sm table-fixed border-separate border-spacing-y-1 ${width ? "w-[50%]" : "w-[50%]"}`}>
+      <table className={`text-sm table-fixed border-separate border-spacing-y-1 w-full`}>
         <tbody>
           <tr className="bg-white">
             <td colSpan={2} className="p-4 text-slate-700 rounded-t-2xl">
@@ -115,7 +121,7 @@ const MenuMessage = ({ time, width }) => {
             </tr>
           ) : (
             // FIXED: Wrapped the evaluation statement inside a React Fragment to resolve the layout error
-            backToToday &&
+
             Object.entries(categoryTotals).map(([categoryName, totals], index) => (
               <tr key={categoryName || index} onClick={() => setSelectedCategory(categoryName)} className="border-b border-slate-100 hover:bg-slate-200 transition-colors text-slate-800 bg-slate-100 cursor-pointer">
                 {/* Category Name Column */}
@@ -163,9 +169,7 @@ const MenuMessage = ({ time, width }) => {
                 setSelectedCategory(null);
               } else {
                 // Otherwise, reset the dashboard calendar view back to today
-                setDate(new Date());
-                
-                setSelectedCategory(null);
+                updateTodayExpenseOpen();
               }
             }}
               colSpan={2}

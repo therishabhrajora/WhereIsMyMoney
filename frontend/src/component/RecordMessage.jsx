@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import MenuMessage from "./MenuMessage";
 import StatisticsMessage from "./StatisticsMessage";
+import { GlobalContext } from "../api/Context";
 
 const RecordMessage = (props) => {
   const {
@@ -12,24 +13,25 @@ const RecordMessage = (props) => {
   } = props;
 
   const [targetIndex, setTargetIndex] = useState(-1);
-  const [todayExpenseOpen, setTodayExpenseOpen] = useState(false);
-  const [staticsOpen, setStaticsOpen] = useState(false);
+  const {updateTodayExpenseOpen,todayExpenseOpen,staticsOpen,updateStaticsOpen}=useContext(GlobalContext);
+
+
 
   const todayClick = (index) => {
     setTargetIndex(index);
-    setTodayExpenseOpen(!todayExpenseOpen);
+    updateTodayExpenseOpen();
   };
   const staticsClick = (index) => {
     setTargetIndex(index);
-    setStaticsOpen(!staticsOpen);
+    updateStaticsOpen();
   };
 
 
   const renderMsg = () => {
     if (todayExpenseOpen) {
-      return <MenuMessage/>;
+      return <MenuMessage />;
     } else if (staticsOpen) {
-      return <StatisticsMessage />
+      return <StatisticsMessage msgIndex={msgIndex} />
     } else {
       return (
         <table className="w-full text-sm table-fixed border-separate border-spacing-y-1">

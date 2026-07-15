@@ -9,10 +9,19 @@ export const GlobalProvider = ({ children }) => {
   const [command, setCommand] = useState("");
   const [messages, setMessages] = useState(Data.data);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [todayExpenseOpen, setTodayExpenseOpen] = useState(false);
+  const [staticsOpen, setStaticsOpen] = useState(false);
 
   const handleMessages = (newMessage) => {
     setMessages((prev) => [...prev, newMessage]);
   };
+
+  const updateTodayExpenseOpen = () => {
+    setTodayExpenseOpen(!todayExpenseOpen);
+  }
+  const updateStaticsOpen = () => {
+    setStaticsOpen(!staticsOpen);
+  }
 
 
 
@@ -27,6 +36,10 @@ export const GlobalProvider = ({ children }) => {
     handleMessages,
     isMenuOpen,
     setIsMenuOpen,
+    todayExpenseOpen,
+    updateTodayExpenseOpen,
+    staticsOpen,
+    updateStaticsOpen
   };
 
   return (
