@@ -19,38 +19,30 @@ const RecordMessage = (props) => {
     updateStaticsOpen,
   } = useContext(GlobalContext);
 
-
   const isTodayOpen = todayExpenseOpen === msgIndex;
   const isStaticsOpen = staticsOpen === msgIndex;
-
 
   const todayClick = (index) => {
     updateTodayExpenseOpen(index);
   };
 
-
   const staticsClick = (index) => {
     updateStaticsOpen(index);
   };
-
 
   const closeAll = () => {
     updateTodayExpenseOpen(-1);
     updateStaticsOpen(-1);
   };
 
-
   const renderMsg = () => {
-
     if (isTodayOpen) {
       return <MenuMessage />;
     }
 
-
     if (isStaticsOpen) {
       return <StatisticsMessage msgIndex={msgIndex} />;
     }
-
 
     return (
       <div
@@ -61,19 +53,13 @@ const RecordMessage = (props) => {
           duration-500
         "
       >
-
         <div
           className="
             overflow-hidden
             rounded-3xl
-            border
-            border-slate-200
-            bg-white/90
-        
             backdrop-blur-xl
           "
         >
-
           {/* Header */}
 
           <div
@@ -85,7 +71,6 @@ const RecordMessage = (props) => {
               text-white
             "
           >
-
             <p
               className="
                 text-xs
@@ -98,11 +83,8 @@ const RecordMessage = (props) => {
               Saved
             </p>
 
-
             <div className="mt-2 flex items-center gap-2">
-
               <span className="text-3xl font-extrabold">
-
                 {lastExpense.record.income === 0 && (
                   <>-{lastExpense.record.expense}</>
                 )}
@@ -110,80 +92,54 @@ const RecordMessage = (props) => {
                 {lastExpense.record.expense === 0 && (
                   <>+{lastExpense.record.income}</>
                 )}
-
               </span>
-
             </div>
 
-
             <p className="mt-2 text-sm text-white/80">
-              {lastExpense.record.reason ||
-                "No comment"}
+              {lastExpense.record.reason || "No comment"}
             </p>
-
           </div>
-
 
           {/* Statistics */}
 
           <div className="space-y-4 p-5">
-
-
             <div className="rounded-2xl bg-slate-50 p-4">
-
               <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
                 Overview
               </p>
 
-
               <div className="space-y-3 text-sm">
-
-
                 <div className="flex justify-between">
-                  <span className="text-slate-500">
-                    This month
-                  </span>
+                  <span className="text-slate-500">This month</span>
 
                   <span className="font-bold text-slate-900">
                     {monthExpenses}
                   </span>
                 </div>
 
-
-
                 <div className="flex justify-between">
-                  <span className="text-slate-500">
-                    Today
-                  </span>
+                  <span className="text-slate-500">Today</span>
 
                   <span className="font-bold text-slate-900">
                     {todayExpenses}
                   </span>
                 </div>
 
-
-
                 <div className="flex justify-between">
                   <span className="text-slate-500">
-                    Category
+                    In Category <span className="font-bold">{lastExpense.record.category}</span>
                   </span>
 
                   <span className="font-bold text-emerald-600">
                     {categoryExpenses}
                   </span>
                 </div>
-
-
               </div>
-
             </div>
-
 
             {/* Actions */}
 
             <div className="grid grid-cols-2 gap-3">
-
-
               <button
                 onClick={() => todayClick(msgIndex)}
                 className="
@@ -205,8 +161,6 @@ const RecordMessage = (props) => {
                 📅 Today
               </button>
 
-
-
               <button
                 onClick={() => staticsClick(msgIndex)}
                 className="
@@ -227,11 +181,7 @@ const RecordMessage = (props) => {
               >
                 📊 Statistics
               </button>
-
-
             </div>
-
-
 
             <button
               onClick={closeAll}
@@ -255,19 +205,13 @@ const RecordMessage = (props) => {
             >
               ← Back
             </button>
-
-
           </div>
-
         </div>
-
       </div>
     );
   };
 
-
   return renderMsg();
 };
-
 
 export default RecordMessage;

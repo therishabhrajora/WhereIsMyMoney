@@ -82,20 +82,20 @@ const MenuMessage = ({ time }) => {
         }
       `}</style>
 
-      <div className="dashboard-card overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl">
+      <div className="dashboard-card overflow-hidden rounded-3xl">
         {/* Header */}
 
-        <div className="bg-gradient-to-r from-emerald-500 to-teal-600 p-6 text-white">
+        <div className="bg-gradient-to-r from-emerald-500 to-teal-600 p-4  text-white">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-white/80">Expense Summary</p>
 
-              <h2 className="mt-1 text-3xl font-bold">
+              <h2 className="mt-1 text-2xl font-bold">
                 {currentDayNum}-{currentMonthNum}-{currentYearNum}
               </h2>
             </div>
 
-            <div className="rounded-2xl bg-white/20 px-5 py-3 backdrop-blur">
+            <div className="rounded-2xl bg-white/20 px-4 py-2 backdrop-blur">
               <p className="text-xs uppercase tracking-widest">Balance</p>
 
               <p
@@ -271,7 +271,7 @@ const MenuMessage = ({ time }) => {
           </button>
 
           {/* Time */}
-          <div className="mt-5 border-t border-slate-100 pt-4">
+          <div className=" border-t border-slate-100 ">
             <p className="text-right text-[11px] tracking-wide text-slate-400">
               {time}
             </p>

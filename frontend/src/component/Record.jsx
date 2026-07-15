@@ -94,10 +94,10 @@ const Record = ({ record, msgIndex, isMenu, time }) => {
     >
 
       {/* Top Gradient Line */}
-      <div className="h-1 w-full bg-gradient-to-r from-emerald-400 via-teal-500 to-cyan-500" />
+      <div className="h-1 w-full " />
 
 
-      <div className="p-4">
+      <div>
 
         {isMenu ? (
           <div className="animate-in fade-in duration-300">
@@ -119,7 +119,7 @@ const Record = ({ record, msgIndex, isMenu, time }) => {
               msgIndex={msgIndex}
             />
 
-            <div className="mt-3 border-t border-slate-100 pt-2">
+            <div className="border-t border-slate-100 p-4">
               <p
                 className="
                   text-right
