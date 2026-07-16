@@ -1,104 +1,148 @@
-const Introduction = ({time}) => {
+const Introduction = ({ time }) => {
   return (
-    <div className="w-[75%] rounded-2xl border border-slate-100 bg-slate-50 p-6 shadow-xl shadow-slate-100 transition-all">
-      {/* Title & Introduction */}
-      <div className="mb-6">
-        <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
-          <span>Welcome to your Expense Tracker!</span>
-          <span className="animate-bounce">💰</span>
-        </h2>
-        <p className="mt-2 text-sm leading-relaxed text-slate-500">
-          Taking control of your money starts here. This app helps you monitor
-          your daily spending habits so you can hit your financial goals faster.
-        </p>
+    <div
+      className="
+        w-full
+        max-w-3xl
+        rounded-3xl
+        border
+        border-slate-200/70
+        bg-white
+        p-7
+        shadow-lg
+        transition-all
+        duration-500
+        hover:-translate-y-1
+        hover:shadow-2xl
+        animate-in
+        fade-in
+        slide-in-from-bottom-4
+      "
+    >
+      {/* Header */}
+      <div className="mb-8 flex items-start gap-4">
+        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-3xl shadow-lg animate-pulse">
+          💰
+        </div>
+
+        <div>
+          <h2 className="flex items-center gap-2 text-2xl font-bold text-slate-900">
+            Welcome to your Expense Tracker
+            <span className="animate-bounce">✨</span>
+          </h2>
+
+          <p className="mt-2 text-sm leading-7 text-slate-500">
+            Take control of your finances with a simple chat. Record expenses,
+            monitor income, organize budgets, and understand your spending
+            habits effortlessly.
+          </p>
+        </div>
       </div>
 
-      {/* Feature List */}
-      <div className="space-y-4 border-t border-slate-100 pt-6">
-        <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-          What you can do right now
+      {/* Features */}
+      <div className="mb-8">
+        <h3 className="mb-5 text-xs font-bold uppercase tracking-[0.2em] text-slate-400">
+          What you can do
         </h3>
 
-        <ul className="grid gap-3 text-sm text-slate-600">
-          <li className="flex items-start gap-3">
-            <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-emerald-50 text-xs">
-              ➕
-            </span>
-            <p>
-              <strong className="font-semibold text-slate-900">
-                Add Transactions:
-              </strong>
-              Log income and expenses instantly with custom categories.
+        <div className="grid gap-4 md:grid-cols-3">
+          <div className="rounded-2xl border border-emerald-100 bg-emerald-50 p-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+            <div className="mb-3 text-2xl">➕</div>
+
+            <h4 className="font-semibold text-slate-900">
+              Add Transactions
+            </h4>
+
+            <p className="mt-2 text-sm text-slate-500">
+              Quickly save income and expenses using natural language.
             </p>
-          </li>
-          <li className="flex items-start gap-3">
-            <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-blue-50 text-xs">
-              📊
-            </span>
-            <p>
-              <strong className="font-semibold text-slate-900">
-                Track Budgets:
-              </strong>{" "}
-              Set smart monthly limits and stop overspending before it happens.
+          </div>
+
+          <div className="rounded-2xl border border-blue-100 bg-blue-50 p-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+            <div className="mb-3 text-2xl">📊</div>
+
+            <h4 className="font-semibold text-slate-900">
+              Track Budgets
+            </h4>
+
+            <p className="mt-2 text-sm text-slate-500">
+              Keep spending under control with monthly budget tracking.
             </p>
-          </li>
-          <li className="flex items-start gap-3">
-            <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-purple-50 text-xs">
-              📈
-            </span>
-            <p>
-              <strong className="font-semibold text-slate-900">
-                View Insights:
-              </strong>{" "}
-              Visualize exactly where your money goes with charts and
-              breakdowns.
+          </div>
+
+          <div className="rounded-2xl border border-purple-100 bg-purple-50 p-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+            <div className="mb-3 text-2xl">📈</div>
+
+            <h4 className="font-semibold text-slate-900">
+              View Insights
+            </h4>
+
+            <p className="mt-2 text-sm text-slate-500">
+              Understand where your money goes with reports and analytics.
             </p>
-          </li>
-        </ul>
+          </div>
+        </div>
       </div>
 
-      {/* Bottom Call to Action Hint */}
+      {/* Guide */}
+      <div className="space-y-8 border-t border-slate-100 pt-8">
+        {/* Save Expense */}
+        <div>
+          <h3 className="mb-3 text-lg font-semibold text-slate-900">
+            💸 How to save an expense
+          </h3>
 
-      <div className="">
-        <div className="my-4">
-          <h1 className="text-lg font-semibold  ">How to save an expense</h1>
           <p className="text-sm text-slate-500">
-            Just send me a number and I'll save it to your expenses. For
-            exmaple:
+            Send a message with the amount and category. For example:
           </p>
 
-          <ul className="text-slate-500 text-sm my-4" type="disc">
-            <li>-300 food</li>
-            <li>-car 150</li>
-            <li>-21 cafe ice crean #travel #vacation</li>
-          </ul>
+          <div className="mt-4 rounded-2xl bg-slate-900 p-4 font-mono text-sm text-emerald-300">
+            -300 food <br />
+            -150 car <br />
+            -21 cafe ice cream #travel #vacation <br />
+            +3000 salary
+          </div>
 
-          <div className="text-sm  text-slate-500">
-            This app support plus (+300 salary) and minus (-300 food) signs if
-            you want to track income money;
+          <p className="mt-4 text-sm text-slate-500">
+            Use <strong>+</strong> for income and <strong>-</strong> for
+            expenses.
+          </p>
+        </div>
+
+        {/* Comments */}
+        <div>
+          <h3 className="mb-3 text-lg font-semibold text-slate-900">
+            📝 Comments
+          </h3>
+
+          <p className="text-sm text-slate-500">
+            Save plain text notes along with your expenses.
+          </p>
+
+          <div className="mt-4 rounded-xl bg-slate-100 p-3 font-mono text-sm text-slate-700">
+            Supermarket 300 some food
           </div>
         </div>
 
-        <div className="my-4">
-          <h1 className="text-ls font-semibold">Comments</h1>
-          <p className="text-sm text-slate-500">
-            You can also write any text to save a comment:
-          </p>
-          <p className="text-sm text-slate-500 ml-5 my-4">
-            Supermarket 300 some food{" "}
-          </p>
-        </div>
+        {/* Edit */}
+        <div>
+          <h3 className="mb-3 text-lg font-semibold text-slate-900">
+            ✏️ Edit Expenses
+          </h3>
 
-        <div className="my-4">
-          <h1 className="text-ls font-semibold">how to edit your expenses</h1>
-          <p className="text-sm text-slate-500">
-            You can edi or delete any expense, just edit the message. Change the
-            amount to 0 to delete the expanse.
+          <p className="text-sm leading-7 text-slate-500">
+            Edit or delete any expense by changing the original message.
+            Setting the amount to <strong>0</strong> removes the expense.
           </p>
         </div>
       </div>
-       <p className="text-[10px] text-right opacity-50">{time}</p>
-      
+
+      {/* Footer */}
+      <div className="mt-8 border-t border-slate-100 pt-4">
+        <p className="text-right text-[11px] tracking-wide text-slate-400">
+          {time}
+        </p>
+      </div>
     </div>
   );
 };

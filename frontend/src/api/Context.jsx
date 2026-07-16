@@ -7,20 +7,20 @@ export const GlobalContext = createContext(null);
 export const GlobalProvider = ({ children }) => {
   const [start, setStart] = useState(false);
   const [command, setCommand] = useState("");
-  const [messages, setMessages] = useState(Data.data);
+  const [messages, setMessages] = useState([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [todayExpenseOpen, setTodayExpenseOpen] = useState(false);
-  const [staticsOpen, setStaticsOpen] = useState(false);
+  const [todayExpenseOpen, setTodayExpenseOpen] = useState(-1);
+  const [staticsOpen, setStaticsOpen] = useState(-1);
 
   const handleMessages = (newMessage) => {
     setMessages((prev) => [...prev, newMessage]);
   };
 
-  const updateTodayExpenseOpen = () => {
-    setTodayExpenseOpen(!todayExpenseOpen);
+  const updateTodayExpenseOpen = (index) => {
+    setTodayExpenseOpen(prev => prev === index ? -1 : index);
   }
-  const updateStaticsOpen = () => {
-    setStaticsOpen(!staticsOpen);
+  const updateStaticsOpen = (index) => {
+    setStaticsOpen(prev => prev === index ? -1 : index);
   }
 
 

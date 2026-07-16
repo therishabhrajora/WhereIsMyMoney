@@ -1,91 +1,164 @@
 import { Terminal } from "lucide-react";
 import { useContext } from "react";
 import { GlobalContext } from "../api/Context";
-import StartMessage from "./StartMessage";
-
-import Record from "./Record";
-import DefaultMessage from "./DefaultMessage";
-import Introduction from "./Introduction";
 
 export const Menu = () => {
-  const { command, setCommand, setMessages, handleMessages, setIsMenuOpen, isMenuOpen } =
-    useContext(GlobalContext);
+  const {
+    setCommand,
+    handleMessages,
+    setIsMenuOpen,
+    isMenuOpen,
+  } = useContext(GlobalContext);
+
   const onCommandSelect = (command) => {
     setCommand(command);
-    if (command === "/start") {
-      handleMessages({
-        type: "user",
-        text: command
-      });
-      handleMessages({
-        type: "startMessage"
-      });
-    } else if (command === "/help") {
-      handleMessages({
-        type: "user",
-        text: command
-      });
-      handleMessages({
-        type: "introduction"
-      });
-    } else if (command === "/menu") {
-      handleMessages({
-        type: "user",
-        text: command
-      });
 
-      handleMessages({
-        type: "menu"
-      });
+    handleMessages({
+      type: "user",
+      text: command,
+    });
+
+    switch (command) {
+      case "/start":
+        handleMessages({ type: "startMessage" });
+        break;
+
+      case "/help":
+        handleMessages({ type: "introduction" });
+        break;
+
+      case "/menu":
+        handleMessages({ type: "menu" });
+        break;
+
+      default:
+        break;
     }
 
     setIsMenuOpen(!isMenuOpen);
-
   };
 
-  return (
-    /* Changed bottom-12 to bottom-14 to add clear breathing space above the chat box */
-    <div className="absolute bottom-14 left-1 w-full max-w-sm rounded-2xl border border-slate-100 bg-white p-4 shadow-xl z-50 animate-in fade-in slide-in-from-bottom-2 duration-200">
-      {/* Component Title Header */}
-      <div className="mb-3 flex items-center gap-2 border-b border-slate-50 pb-2">
-        <Terminal className="h-4 w-4 text-slate-400" />
-        <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">
-          Available Commands
-        </h4>
-      </div>
+  const commands = [
+    {
+      title: "How to use the bot",
+      command: "/help",
+      icon: "❓",
+    },
+    {
+      title: "Show command menu",
+      command: "/menu",
+      icon: "📋",
+    },
+    {
+      title: "Start the bot",
+      command: "/start",
+      icon: "🚀",
+    },
+  ];
 
-      {/* Styled Layout Table */}
-      <table className="w-full border-collapse text-left text-sm text-slate-600">
-        <tbody>
-          <tr
-            onClick={() => onCommandSelect("/help")}
-            className="border-b border-slate-50 last:border-0 hover:bg-slate-50/50 transition-colors"
-          >
-            <td className="py-2.5 pr-4 text-slate-500">How to use the bot</td>
-            <td className="py-2.5 text-right font-mono font-bold text-emerald-600">
-              /help
-            </td>
-          </tr>
-          <tr
-            onClick={() => onCommandSelect("/menu")}
-            className="border-b border-slate-50 last:border-0 hover:bg-slate-50/50 transition-colors"
-          >
-            <td className="py-2.5 pr-4 text-slate-500">Show the menu</td>
-            <td className="py-2.5 text-right font-mono font-bold text-emerald-600">
-              /menu
-            </td>
-          </tr>
-          <tr
-            onClick={() => onCommandSelect("/start")}
-            className="border-b border-slate-50 last:border-0 hover:bg-slate-50/50 transition-colors"
-          >
-            <td className="py-2.5 pr-4 text-slate-500">Start the bot</td>
-            <td className="py-2.5 text-right font-mono font-bold text-emerald-600">
-              /start
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  return (
+    <>
+      <style>{`
+        @keyframes menuEnter{
+          from{
+            opacity:0;
+            transform:translateY(20px) scale(.96);
+          }
+          to{
+            opacity:1;
+            transform:translateY(0) scale(1);
+          }
+        }
+
+        .menu-enter{
+          animation:menuEnter .35s ease;
+        }
+      `}</style>
+
+      <div
+        className="
+          menu-enter
+          absolute
+          bottom-16
+          left-3
+          z-50
+          w-[340px]
+          overflow-hidden
+          rounded-3xl
+          border
+          border-white/70
+          bg-white/90
+          shadow-2xl
+          backdrop-blur-xl
+        "
+      >
+        {/* Header */}
+        <div className="flex items-center gap-3 border-b border-slate-100 bg-gradient-to-r from-emerald-500 to-teal-600 px-5 py-4 text-white">
+          <div className="rounded-xl bg-white/20 p-2">
+            <Terminal className="h-5 w-5" />
+          </div>
+
+          <div>
+            <h3 className="font-semibold">Bot Commands</h3>
+            <p className="text-xs text-white/80">
+              Select a command to continue
+            </p>
+          </div>
+        </div>
+
+        {/* Commands */}
+        <div className="p-3">
+          {commands.map((item) => (
+            <button
+              key={item.command}
+              onClick={() => onCommandSelect(item.command)}
+              className="
+                group
+                mb-2
+                flex
+                w-full
+                items-center
+                justify-between
+                rounded-2xl
+                border
+                border-transparent
+                bg-slate-50
+                px-4
+                py-3
+                text-left
+                transition-all
+                duration-300
+                hover:-translate-y-1
+                hover:border-emerald-200
+                hover:bg-emerald-50
+                hover:shadow-lg
+              "
+            >
+              <div className="flex items-center gap-3">
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white text-xl shadow-sm transition group-hover:scale-110">
+                  {item.icon}
+                </div>
+
+                <div>
+                  <p className="font-medium text-slate-800">
+                    {item.title}
+                  </p>
+
+                  <p className="text-xs text-slate-500">
+                    Execute this command
+                  </p>
+                </div>
+              </div>
+
+              <span className="rounded-lg bg-emerald-100 px-3 py-1 font-mono text-sm font-semibold text-emerald-700 transition group-hover:bg-emerald-600 group-hover:text-white">
+                {item.command}
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
+    </>
   );
 };
+
+export default Menu;

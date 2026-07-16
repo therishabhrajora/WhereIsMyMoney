@@ -1,58 +1,240 @@
 import React, { useContext } from "react";
 import { Languages, ChevronLeft } from "lucide-react";
-import { GlobalContext } from "../api/Context"; // Adjust path based on your file tree
+import { GlobalContext } from "../api/Context";
 
 const StartMessage = () => {
-  // Pull language configuration states from global context
   const { setCommand, handleMessages } = useContext(GlobalContext);
 
   const handleLanguageSelect = (lang) => {
-    // 1. Log user choice directly onto chat stream
     handleMessages(`Selected Language: ${lang}`);
-    
-    // 2. Clear command back to base default chat board view
     setCommand("");
   };
 
   return (
-    <div className="w-[75%] max-w-sm  bg-white flex gap-1 flex-col animate-in fade-in duration-200">
-      
-      {/* Component Header Block */}
-      <div className="mb-1 flex items-center gap-2 p-2 rounded-xl hover:text-emerald-700 text-emerald-500 shadow">
-        <Languages className="h-5 w-5 text-emerald-500" />
-        <h2 className="text-sm font-bold text-slate-800 tracking-tight">
-          Please select your language / भाषा चुनें
-        </h2>
-      </div>
+    <div
+      className="
+        w-full
+        max-w-sm
+        animate-in
+        fade-in
+        slide-in-from-bottom-3
+        duration-500
+      "
+    >
 
-      {/* Language Selections Layout Container */}
-      <div className="space-y-1">
-        {/* Option 1: English */}
-        <button
-          onClick={() => handleLanguageSelect("English")}
-          className="w-full flex items-center justify-between rounded-xl border border-slate-100 bg-slate-50/50 px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 hover:border-emerald-200 transition-all active:scale-[0.99] select-none text-left"
-        >
-          <span>🇺🇸 English</span>
-          <span className="text-xs font-normal text-slate-400">Select</span>
-        </button>
+      <div
+        className="
+          overflow-hidden
+          rounded-3xl
+          border
+          border-slate-200
+          bg-white/90
+          p-4
+          shadow-xl
+          backdrop-blur-xl
+        "
+      >
 
-        {/* Option 2: Hindi */}
-        <button
-          onClick={() => handleLanguageSelect("Hindi")}
-          className="w-full flex items-center justify-between rounded-xl border border-slate-100 bg-slate-50/50 px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 hover:border-emerald-200 transition-all active:scale-[0.99] select-none text-left"
-        >
-          <span>🇮🇳 हिन्दी (Hindi)</span>
-          <span className="text-xs font-normal text-slate-400">चुनें</span>
-        </button>
+        {/* Header */}
 
-        {/* Option 3: Back Button */}
-        <button
-          onClick={() => setCommand("")}
-          className="w-full mt-2 flex items-center justify-center gap-1 rounded-xl border border-dashed border-slate-200 px-4 py-2.5 text-xs font-bold text-slate-400 hover:bg-slate-50 hover:text-slate-600 hover:border-slate-300 transition-all active:scale-[0.99]"
+        <div
+          className="
+            mb-4
+            flex
+            items-center
+            gap-3
+            rounded-2xl
+            bg-gradient-to-r
+            from-emerald-500
+            to-teal-600
+            p-4
+            text-white
+          "
         >
-          <ChevronLeft className="h-3.5 w-3.5" />
-          <span>Back to Main Menu</span>
-        </button>
+
+          <div
+            className="
+              flex
+              h-10
+              w-10
+              items-center
+              justify-center
+              rounded-xl
+              bg-white/20
+              backdrop-blur
+            "
+          >
+            <Languages className="h-5 w-5" />
+          </div>
+
+
+          <div>
+
+            <h2 className="text-sm font-bold">
+              Select Language
+            </h2>
+
+            <p className="text-xs text-white/80">
+              भाषा चुनें
+            </p>
+
+          </div>
+
+        </div>
+
+
+
+        {/* Language Buttons */}
+
+        <div className="space-y-3">
+
+
+          <button
+            onClick={() => handleLanguageSelect("English")}
+            className="
+              group
+              flex
+              w-full
+              items-center
+              justify-between
+              rounded-2xl
+              border
+              border-slate-200
+              bg-slate-50
+              px-4
+              py-3.5
+              text-sm
+              font-semibold
+              text-slate-700
+              transition-all
+              duration-300
+              hover:-translate-y-1
+              hover:border-emerald-300
+              hover:bg-emerald-50
+              hover:text-emerald-700
+              hover:shadow-md
+              active:scale-95
+            "
+          >
+
+            <span className="flex items-center gap-2">
+              🇺🇸 English
+            </span>
+
+
+            <span
+              className="
+                rounded-full
+                bg-white
+                px-3
+                py-1
+                text-xs
+                font-normal
+                text-slate-400
+                transition
+                group-hover:bg-emerald-100
+                group-hover:text-emerald-600
+              "
+            >
+              Select
+            </span>
+
+          </button>
+
+
+
+          <button
+            onClick={() => handleLanguageSelect("Hindi")}
+            className="
+              group
+              flex
+              w-full
+              items-center
+              justify-between
+              rounded-2xl
+              border
+              border-slate-200
+              bg-slate-50
+              px-4
+              py-3.5
+              text-sm
+              font-semibold
+              text-slate-700
+              transition-all
+              duration-300
+              hover:-translate-y-1
+              hover:border-orange-300
+              hover:bg-orange-50
+              hover:text-orange-700
+              hover:shadow-md
+              active:scale-95
+            "
+          >
+
+            <span className="flex items-center gap-2">
+              🇮🇳 हिन्दी (Hindi)
+            </span>
+
+
+            <span
+              className="
+                rounded-full
+                bg-white
+                px-3
+                py-1
+                text-xs
+                font-normal
+                text-slate-400
+                transition
+                group-hover:bg-orange-100
+                group-hover:text-orange-600
+              "
+            >
+              चुनें
+            </span>
+
+          </button>
+
+
+
+          {/* Back */}
+
+          <button
+            onClick={() => setCommand("")}
+            className="
+              mt-2
+              flex
+              w-full
+              items-center
+              justify-center
+              gap-2
+              rounded-2xl
+              border
+              border-dashed
+              border-slate-300
+              px-4
+              py-3
+              text-xs
+              font-semibold
+              text-slate-500
+              transition-all
+              duration-300
+              hover:border-slate-400
+              hover:bg-slate-50
+              hover:text-slate-700
+              active:scale-95
+            "
+          >
+
+            <ChevronLeft className="h-4 w-4" />
+
+            Back to Main Menu
+
+          </button>
+
+
+        </div>
+
       </div>
 
     </div>

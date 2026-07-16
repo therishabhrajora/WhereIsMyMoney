@@ -1,190 +1,285 @@
 import { useContext, useState } from "react";
 import { GlobalContext } from "../api/Context";
-import RecordMessage from "./RecordMessage";
-import Chatting from "./Chatting";
 
-const MenuMessage = ({ time, width }) => {
-  const { messages, todayExpenseOpen,
-    updateTodayExpenseOpen } = useContext(GlobalContext);
+const MenuMessage = ({ time }) => {
+  const { messages, updateTodayExpenseOpen } = useContext(GlobalContext);
+
   const currentDate = new Date();
 
-  let [date, setDate] = useState(currentDate);
-  const [backBtn, setSetBackbtn] = useState(false);
+  const [date, setDate] = useState(currentDate);
   const [selectedCategory, setSelectedCategory] = useState(null);
 
   const currentDayNum = date.getDate();
-  const currentMonthNum = date.getMonth() + 1; // JS months are 0-11
+  const currentMonthNum = date.getMonth() + 1;
   const currentYearNum = date.getFullYear();
 
-  const isLookingAtToday =
-    currentDayNum === currentDate.getDate() &&
-    currentMonthNum === (currentDate.getMonth() + 1) &&
-    currentYearNum === currentDate.getFullYear();
+  const todayExpensesData = messages
+    .filter((item) => item.type === "record")
+    .filter(
+      (item) =>
+        Number(item.record.date) === currentDayNum &&
+        Number(item.record.month) === currentMonthNum &&
+        Number(item.record.year) === currentYearNum,
+    );
 
-  // 1. Get the array items first
-  const todayExpensesData = messages.filter((item => item.type === "record")).filter(
-    (item) =>
-      Number(item.record.date) === currentDayNum &&
-      Number(item.record.month) === currentMonthNum &&
-      Number(item.record.year) === currentYearNum,
-  );
-
-
-  // 2. Reuse the array above to calculate the mathematical sum total
   const todayExpenses = todayExpensesData.reduce((sum, item) => {
     const expenseValue = Number(item.record.expense || 0);
     const incomeValue = Number(item.record.income || 0);
+
     return expenseValue === 0 ? sum + incomeValue : sum - expenseValue;
   }, 0);
 
-  // Calculate total expense grouped by category
   const categoryTotals = todayExpensesData.reduce((acc, item) => {
     const cat = item.record.category;
     const expenseValue = Number(item.record.expense || 0);
     const incomeValue = Number(item.record.income || 0);
 
-    // Initialize the category object with separate counters if it doesn't exist
     if (!acc[cat]) {
-      acc[cat] = { expense: 0, income: 0 };
+      acc[cat] = {
+        expense: 0,
+        income: 0,
+      };
     }
 
-    // Accumulate income and expenses separately
     acc[cat].expense += expenseValue;
     acc[cat].income += incomeValue;
 
     return acc;
   }, {});
-  // This creates a structure like: 
-  // { "Food": { expense: 450, income: 0 }, "Salary": { expense: 0, income: 50000 } }
-  // Result format look: { "Transportation": 80, "Food": 450 }
-
 
   const nextDay = () => {
     const next = new Date(date);
-    next.setDate(date.getDate() + 1); // Safely adds 1 day
+    next.setDate(date.getDate() + 1);
+
     setDate(next);
     setSelectedCategory(null);
+  };
 
-  }
   const prevDay = () => {
     const prev = new Date(date);
-    prev.setDate(date.getDate() - 1); // Safely subtracts 1 day
+    prev.setDate(date.getDate() - 1);
+
     setDate(prev);
     setSelectedCategory(null);
-  }
-
-  const toggleBackBtn = () => {
-    setSetBackbtn(!setBackToToday);
-    setSelectedCategory(null);
-  }
+  };
 
   return (
     <>
-      <table className={`text-sm table-fixed border-separate border-spacing-y-1 w-full`}>
-        <tbody>
-          <tr className="bg-white">
-            <td colSpan={2} className="p-4 text-slate-700 rounded-t-2xl">
-              <div className="space-y-1 pb-3">
-                <p className="text-2xl space-x-2 font-semibold text-slate-900 tracking-tight">
-                  <span>{currentDayNum + "-" + currentMonthNum + "-" + currentYearNum}</span>
-                </p>
-                <p className="text-xs text-slate-500">
-                  Expenses:{todayExpenses}
-                </p>
+      <style>{`
+        @keyframes cardIn{
+          from{
+            opacity:0;
+            transform:translateY(20px) scale(.98);
+          }
+          to{
+            opacity:1;
+            transform:translateY(0) scale(1);
+          }
+        }
+
+        .dashboard-card{
+          animation:cardIn .4s ease;
+        }
+      `}</style>
+
+      <div className="dashboard-card overflow-hidden rounded-3xl">
+        {/* Header */}
+
+        <div className="bg-gradient-to-r from-emerald-500 to-teal-600 p-4  text-white">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-white/80">Expense Summary</p>
+
+              <h2 className="mt-1 text-2xl font-bold">
+                {currentDayNum}-{currentMonthNum}-{currentYearNum}
+              </h2>
+            </div>
+
+            <div className="rounded-2xl bg-white/20 px-4 py-2 backdrop-blur">
+              <p className="text-xs uppercase tracking-widest">Balance</p>
+
+              <p
+                className={`mt-1 text-2xl font-bold ${
+                  todayExpenses >= 0 ? "text-green-100" : "text-red-100"
+                }`}
+              >
+                {todayExpenses >= 0 ? `+${todayExpenses}` : todayExpenses}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="p-5">
+          {selectedCategory ? (
+            <div>
+              <div className="mb-5 text-center font-mono text-xs text-slate-400">
+                {currentYearNum}-{String(currentMonthNum).padStart(2, "0")}-
+                {String(currentDayNum).padStart(2, "0")}
               </div>
 
-            </td>
-          </tr>
+              <div className="space-y-3">
+                {todayExpensesData
+                  .filter((item) => item.record.category === selectedCategory)
+                  .map((item) => {
+                    const isIncome = Number(item.record.expense || 0) === 0;
 
-          {selectedCategory ? (
-            <tr className="bg-slate-50">
-              <td colSpan={2} className="p-4 text-slate-700">
-                <div className="text-xs font-mono text-slate-400 mb-2 text-center">
-                  ----- {currentYearNum}-{String(currentMonthNum).padStart(2, '0')}-{String(currentDayNum).padStart(2, '0')} -----
-                </div>
-                <ul className="space-y-1.5 list-disc list-inside text-sm">
-                  {todayExpensesData
-                    .filter((item) => item.record.category === selectedCategory)
-                    .map((item) => {
-                      const isIncome = Number(item.record.expense || 0) === 0;
-                      const amount = isIncome ? `+${item.record.income}` : `-${item.record.expense}`;
-                      const colorClass = isIncome ? "text-emerald-600" : "text-rose-600";
-                      return (
-                        <li key={item.record.id} className="font-mono flex justify-between items-center py-0.5 border-b border-dashed border-slate-200 last:border-0">
-                          <span className="text-slate-600">{item.record.reason || "No description"}</span>
-                          <span className={`${colorClass} font-semibold`}>{amount}</span>
-                        </li>
-                      );
-                    })}
-                </ul>
-              </td>
-            </tr>
+                    const amount = isIncome
+                      ? `+${item.record.income}`
+                      : `-${item.record.expense}`;
+
+                    return (
+                      <div
+                        key={item.record.id}
+                        className="flex items-center justify-between rounded-2xl border border-slate-100 bg-slate-50 p-4 transition hover:shadow-md"
+                      >
+                        <div>
+                          <p className="font-medium text-slate-800">
+                            {item.record.reason || "No description"}
+                          </p>
+
+                          <p className="text-xs text-slate-400">
+                            {selectedCategory}
+                          </p>
+                        </div>
+
+                        <span
+                          className={`rounded-full px-3 py-1 text-sm font-semibold ${
+                            isIncome
+                              ? "bg-emerald-100 text-emerald-700"
+                              : "bg-red-100 text-red-600"
+                          }`}
+                        >
+                          {amount}
+                        </span>
+                      </div>
+                    );
+                  })}
+              </div>
+            </div>
           ) : (
-            // FIXED: Wrapped the evaluation statement inside a React Fragment to resolve the layout error
+            <div className="space-y-3">
+              {Object.entries(categoryTotals).map(
+                ([categoryName, totals], index) => (
+                  <div
+                    key={categoryName || index}
+                    onClick={() => setSelectedCategory(categoryName)}
+                    className="group flex cursor-pointer items-center justify-between rounded-2xl border border-slate-100 bg-slate-50 p-4 transition-all duration-300 hover:-translate-y-1 hover:border-emerald-200 hover:bg-emerald-50 hover:shadow-lg"
+                  >
+                    <div>
+                      <h3 className="font-semibold text-slate-800">
+                        {categoryName}
+                      </h3>
 
-            Object.entries(categoryTotals).map(([categoryName, totals], index) => (
-              <tr key={categoryName || index} onClick={() => setSelectedCategory(categoryName)} className="border-b border-slate-100 hover:bg-slate-200 transition-colors text-slate-800 bg-slate-100 cursor-pointer">
-                {/* Category Name Column */}
-                <td className="p-4 text-slate-700 font-medium">
-                  {categoryName}
-                </td>
+                      <p className="text-xs text-slate-400">
+                        Tap to view transactions
+                      </p>
+                    </div>
 
-                {/* Totals Summary Column */}
-                <td className="p-4 text-right space-y-1">
-                  {totals.income > 0 && (
-                    <div className="text-emerald-600 font-semibold">
-                      +{totals.income}
+                    <div className="text-right">
+                      {totals.income > 0 && (
+                        <div className="font-semibold text-emerald-600">
+                          +{totals.income}
+                        </div>
+                      )}
+
+                      {totals.expense > 0 && (
+                        <div className="font-semibold text-red-500">
+                          -{totals.expense}
+                        </div>
+                      )}
                     </div>
-                  )}
-                  {totals.expense > 0 && (
-                    <div className="text-rose-600 font-semibold">
-                      -{totals.expense}
-                    </div>
-                  )}
-                </td>
-              </tr>
-            ))
+                  </div>
+                ),
+              )}
+            </div>
           )}
-
-
-
-          <tr className="font-semibold text-center text-slate-800 bg-slate-100">
-            <td
-              onClick={() => prevDay()}
-              className="py-2.5 px-4 cursor-pointer hover:bg-slate-200 transition-colors rounded-l-lg"
+          {/* Navigation */}
+          <div className="mt-6 grid grid-cols-2 gap-3">
+            <button
+              onClick={prevDay}
+              className="
+                rounded-2xl
+                bg-slate-100
+                px-5
+                py-3
+                font-semibold
+                text-slate-700
+                transition-all
+                duration-300
+                hover:-translate-y-1
+                hover:bg-slate-200
+                hover:shadow-md
+                active:scale-95
+              "
             >
-              &lt;&lt;
-            </td>
-            <td
-              onClick={() => nextDay()}
-              className="py-2.5 px-4 cursor-pointer hover:bg-slate-200 transition-colors border-l border-slate-300 rounded-r-lg"
+              ← Previous Day
+            </button>
+
+            <button
+              onClick={nextDay}
+              className="
+                rounded-2xl
+                bg-gradient-to-r
+                from-emerald-500
+                to-teal-600
+                px-5
+                py-3
+                font-semibold
+                text-white
+                transition-all
+                duration-300
+                hover:-translate-y-1
+                hover:shadow-lg
+                active:scale-95
+              "
             >
-              &gt;&gt;
-            </td>
-          </tr>
-          <tr className="font-semibold text-center text-slate-800 bg-slate-100">
-            <td onClick={() => {
+              Next Day →
+            </button>
+          </div>
+
+          {/* Back Button */}
+          <button
+            onClick={() => {
               if (selectedCategory) {
-                // If a transaction category list is open, close it first
                 setSelectedCategory(null);
               } else {
-                // Otherwise, reset the dashboard calendar view back to today
                 updateTodayExpenseOpen();
               }
             }}
-              colSpan={2}
-              className="py-2.5 px-4 cursor-pointer hover:bg-slate-200 transition-colors rounded-l-lg"
-            >
-              {selectedCategory ? "Back to Categories" : "Back to Today"}
-            </td>
-          </tr>
-          <tr className="text-[10px] text-right mr-2 mb-3 opacity-50">
-            <td colSpan={2} > {time}</td>
-          </tr>
-        </tbody>
-      </table>
+            className="
+              mt-4
+              w-full
+              rounded-2xl
+              border
+              border-slate-200
+              bg-white
+              px-5
+              py-3
+              font-medium
+              text-slate-700
+              transition-all
+              duration-300
+              hover:-translate-y-1
+              hover:border-emerald-300
+              hover:bg-emerald-50
+              hover:text-emerald-700
+              hover:shadow-md
+              active:scale-[0.98]
+            "
+          >
+            {selectedCategory ? "← Back to Categories" : "🏠 Back to Today"}
+          </button>
+
+          {/* Time */}
+          <div className=" border-t border-slate-100 ">
+            <p className="text-right text-[11px] tracking-wide text-slate-400">
+              {time}
+            </p>
+          </div>
+        </div>
+      </div>
     </>
-  )
-}
+  );
+};
 
 export default MenuMessage;
