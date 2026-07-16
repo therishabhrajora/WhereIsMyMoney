@@ -42,13 +42,13 @@ const StatisticsMessage = ({ msgIndex }) => {
   const monthExpenses = historicalExpenses
     .filter(
       (item) =>
-        Number(item.record.month) === currentMonthNum &&
-        Number(item.record.year) === currentYearNum
+        Number(item.month) === currentMonthNum &&
+        Number(item.year) === currentYearNum
     )
     .reduce((sum, item) => {
 
-      const expenseValue = Number(item.record.expense || 0);
-      const incomeValue = Number(item.record.income || 0);
+      const expenseValue = Number(item.expense || 0);
+      const incomeValue = Number(item.income || 0);
 
       return expenseValue === 0
         ? sum + incomeValue

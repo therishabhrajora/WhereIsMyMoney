@@ -2,7 +2,7 @@ import { SendIcon, Menu as MenuIcon, X } from "lucide-react";
 import { useContext, useState } from "react";
 import { Menu } from "./Menu";
 import { GlobalContext } from "../api/Context";
-import apiClient, { RecordService } from "../api/apiClient";
+import apiClient, { RecordService, UserMessageService } from "../api/apiClient";
 
 const MessageSender = () => {
   const {
@@ -28,6 +28,20 @@ const MessageSender = () => {
       return;
     }
 
+    const messagePayload = {
+      id: Date.now(),                      // Client-side unique timestamp primary key identifier
+      message: input.trim(),           // Matches 'private String message;' in Java
+      date: Math.floor(new Date().getDate()),
+      month: Math.floor(new Date().getMonth() + 1),
+      year: Math.floor(new Date().getFullYear()),
+      type: "user",                        // Matching layout discriminator flags
+    }
+
+    const saveInputMessage = async (input) => {
+      const res = await UserMessageService.addUserMessages(messagePayload);
+       (res);
+    }
+    saveInputMessage(input);
     handleMessages({
       type: "user",
       text: input,
@@ -83,12 +97,12 @@ const MessageSender = () => {
       date: new Date().getDate(),
       month: new Date().getMonth() + 1,
       year: new Date().getFullYear(),
+      type: "record"
     };
-    const res = await RecordService.addRecord(newRecord);
-    console.log(res);
+    const record = await RecordService.addRecord(newRecord);
     handleMessages({
       type: "record",
-      record: newRecord,
+      record: record,
     });
 
     return true;

@@ -28,6 +28,17 @@ apiClient.interceptors.request.use(
 apiClient.interceptors.response.use(
     (response) => response.data, // Automatically strip the Axios wrapper and return just the data payload
     (error) => {
+        //  if (error.response?.status === 401 || error.response?.status === 403) {
+        //     console.warn("Session expired or invalid. Clearing application auth storage records...");
+
+        //     // FIXED: Target and remove ONLY this specific application's tracking keys
+        //     // localStorage.removeItem("token");
+        //     // localStorage.removeItem("userEmail");
+        //     // localStorage.removeItem("userRole");
+
+        //     // Redirect the user back to the login screen immediately
+        //     window.location.href = "/login"; 
+        // }
         const customError = {
             message: error.response?.data?.message || "An unexpected network error occurred.",
             status: error.response?.status || 500,
@@ -60,5 +71,9 @@ export const AnalyticsService = {
     getDailyExpenses: () => apiClient.get("api/analytics/daily"),
     getMonthlyStatistics: () => apiClient.get("api/analytics/monthly"),
 };
+
+export const UserMessageService={
+    addUserMessages:(input)=>apiClient.post("api/user-message/add",input)
+}
 
 export default apiClient;

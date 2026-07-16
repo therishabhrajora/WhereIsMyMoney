@@ -45,4 +45,11 @@ public class Record {
 
     @Column(name = "record_year", nullable = false)
     private Integer year;
+
+    @Column(name = "type", nullable = false)
+    private String type;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false) // Creates a user_id foreign key column in your records table
+    private User user;
 }

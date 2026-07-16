@@ -39,7 +39,7 @@ public class SecurityConfig {
                 .formLogin(form -> form.disable())
                 .httpBasic(httpbasic -> httpbasic.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/records/**").permitAll()
+                        .requestMatchers("/api/records/**","/api/users/**","/api/user-message/**").permitAll()
 
                         // 🔐 Secure endpoints
                         .requestMatchers("/").authenticated()
@@ -54,7 +54,7 @@ public class SecurityConfig {
             config.setAllowCredentials(true);
 
             config.setAllowedOrigins(List.of(
-                    "https://ramyascrubs.netlify.app",
+                    "https://moneyspendwise.netlify.app",
                     "http://localhost:5173"));
 
             config.addAllowedHeader("*");

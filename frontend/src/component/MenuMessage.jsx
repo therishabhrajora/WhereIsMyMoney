@@ -17,22 +17,22 @@ const MenuMessage = ({ time }) => {
     .filter((item) => item.type === "record")
     .filter(
       (item) =>
-        Number(item.record.date) === currentDayNum &&
-        Number(item.record.month) === currentMonthNum &&
-        Number(item.record.year) === currentYearNum,
+        Number(item.date) === currentDayNum &&
+        Number(item.month) === currentMonthNum &&
+        Number(item.year) === currentYearNum,
     );
 
   const todayExpenses = todayExpensesData.reduce((sum, item) => {
-    const expenseValue = Number(item.record.expense || 0);
-    const incomeValue = Number(item.record.income || 0);
+    const expenseValue = Number(item.expense || 0);
+    const incomeValue = Number(item.income || 0);
 
     return expenseValue === 0 ? sum + incomeValue : sum - expenseValue;
   }, 0);
 
   const categoryTotals = todayExpensesData.reduce((acc, item) => {
-    const cat = item.record.category;
-    const expenseValue = Number(item.record.expense || 0);
-    const incomeValue = Number(item.record.income || 0);
+    const cat = item.category;
+    const expenseValue = Number(item.expense || 0);
+    const incomeValue = Number(item.income || 0);
 
     if (!acc[cat]) {
       acc[cat] = {
@@ -119,22 +119,22 @@ const MenuMessage = ({ time }) => {
 
               <div className="space-y-3">
                 {todayExpensesData
-                  .filter((item) => item.record.category === selectedCategory)
+                  .filter((item) => item.category === selectedCategory)
                   .map((item) => {
-                    const isIncome = Number(item.record.expense || 0) === 0;
+                    const isIncome = Number(item.expense || 0) === 0;
 
                     const amount = isIncome
-                      ? `+${item.record.income}`
-                      : `-${item.record.expense}`;
+                      ? `+${item.income}`
+                      : `-${item.expense}`;
 
                     return (
                       <div
-                        key={item.record.id}
+                        key={item.id}
                         className="flex items-center justify-between rounded-2xl border border-slate-100 bg-slate-50 p-4 transition hover:shadow-md"
                       >
                         <div>
                           <p className="font-medium text-slate-800">
-                            {item.record.reason || "No description"}
+                            {item.reason || "No description"}
                           </p>
 
                           <p className="text-xs text-slate-400">

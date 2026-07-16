@@ -85,18 +85,18 @@ const RecordMessage = (props) => {
 
             <div className="mt-2 flex items-center gap-2">
               <span className="text-3xl font-extrabold">
-                {lastExpense.record.income === 0 && (
-                  <>-{lastExpense.record.expense}</>
+                {lastExpense.income === 0 && (
+                  <>-{lastExpense.expense}</>
                 )}
 
-                {lastExpense.record.expense === 0 && (
-                  <>+{lastExpense.record.income}</>
+                {lastExpense.expense === 0 && (
+                  <>+{lastExpense.income}</>
                 )}
               </span>
             </div>
 
             <p className="mt-2 text-sm text-white/80">
-              {lastExpense.record.reason || "No comment"}
+              {lastExpense.reason || "No comment"}
             </p>
           </div>
 
@@ -127,7 +127,7 @@ const RecordMessage = (props) => {
 
                 <div className="flex justify-between">
                   <span className="text-slate-500">
-                    In Category <span className="font-bold">{lastExpense.record.category}</span>
+                    In Category <span className="font-bold">{lastExpense.category}</span>
                   </span>
 
                   <span className="font-bold text-emerald-600">

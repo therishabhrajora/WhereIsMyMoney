@@ -1,9 +1,11 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { GlobalContext } from "../api/Context";
 import Brand from "./Brand";
+import Login from "./Auth";
+import Auth from "./Auth";
 
 const DefaultMessage = () => {
-  const { start, setStart } = useContext(GlobalContext);
+  const { start, setStart, setUserData, isAuthenticated, setIsAuthenticated } = useContext(GlobalContext);
 
   const handleAddSample = () => {
     setStart(!start);
@@ -89,39 +91,40 @@ const DefaultMessage = () => {
           <div className="fade-up">
             <Brand />
           </div>
+          {/* login */}
+          {!isAuthenticated ? <Auth /> :
+            <>
+              <div className="fade-up mt-5 w-full rounded-3xl border border-white/70 bg-white/70 p-10 text-center shadow-2xl backdrop-blur-xl">
 
-          {/* Welcome Card */}
-          <div className="fade-up mt-5 w-full rounded-3xl border border-white/70 bg-white/70 p-10 text-center shadow-2xl backdrop-blur-xl">
+                <div className="floating mb-6 text-6xl">
+                  💰
+                </div>
 
-            <div className="floating mb-6 text-6xl">
-              💰
-            </div>
+                <h2 className="text-4xl font-extrabold tracking-tight text-slate-800">
+                  Welcome to your
+                  <span className="block bg-gradient-to-r from-emerald-500 to-cyan-500 bg-clip-text text-transparent">
+                    Expense Tracker
+                  </span>
+                </h2>
 
-            <h2 className="text-4xl font-extrabold tracking-tight text-slate-800">
-              Welcome to your
-              <span className="block bg-gradient-to-r from-emerald-500 to-cyan-500 bg-clip-text text-transparent">
-                Expense Tracker
-              </span>
-            </h2>
-
-            <p className="mx-auto mt-6 max-w-xl text-base leading-8 text-slate-600">
-              Track every expense, organize your finances, and build better
-              money habits. Your journey toward smarter spending starts with
-              your very first transaction.
-            </p>
-
-            {!start && (
-              <>
-                <p className="mt-8 text-sm text-slate-500">
-                  Click below to add your first expense and begin tracking.
+                <p className="mx-auto mt-6 max-w-xl text-base leading-8 text-slate-600">
+                  Track every expense, organize your finances, and build better
+                  money habits. Your journey toward smarter spending starts with
+                  your very first transaction.
                 </p>
 
-                <div className="relative mt-8 inline-block">
-                  <span className="ring"></span>
+                {!start && (
+                  <>
+                    <p className="mt-8 text-sm text-slate-500">
+                      Click below to add your first expense and begin tracking.
+                    </p>
 
-                  <button
-                    onClick={handleAddSample}
-                    className="
+                    <div className="relative mt-8 inline-block">
+                      <span className="ring"></span>
+
+                      <button
+                        onClick={handleAddSample}
+                        className="
                       glow
                       relative
                       rounded-2xl
@@ -142,18 +145,21 @@ const DefaultMessage = () => {
                       hover:shadow-emerald-400/40
                       active:scale-95
                     "
-                  >
-                    🚀 Get Started
-                  </button>
-                </div>
-              </>
-            )}
-          </div>
+                      >
+                        🚀 Get Started
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
 
-          {/* Footer */}
-          <p className="fade-up mt-8 text-sm text-slate-400">
-            Start managing your finances with confidence.
-          </p>
+              {/* Footer */}
+              <p className="fade-up mt-8 text-sm text-slate-400">
+                Start managing your finances with confidence.
+              </p>
+            </>}
+          {/* Welcome Card */}
+
         </div>
       </div>
     </>

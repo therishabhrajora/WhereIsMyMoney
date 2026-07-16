@@ -4,6 +4,7 @@ import com.whereismymoney.WhereIsMyMoney.Entities.Record;
 import com.whereismymoney.WhereIsMyMoney.Services.RecordService;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,22 +22,21 @@ public class RecordController {
 
     // 1. Get All Records -> Maps to Endpoints.getRecords
     @GetMapping
-    public ResponseEntity<List<Record>> getAllRecords() {
-        ResponseEntity<List<Record>> allRecords = recordService.getAllRecords();
+    public ResponseEntity<?> getAllRecords(Authentication authentication) {
+        ResponseEntity<?> allRecords = recordService.getAllRecords(authentication);
         return allRecords;
 
     }
 
     // 2. Add New Record -> Maps to Endpoints.addRecord
     @PostMapping("/add")
-    public ResponseEntity<Record> addRecord(@RequestBody Record record) {
+    public ResponseEntity<?> addRecord(Authentication authentication, @RequestBody Record record) {
         // Since your entity uses the client-side timestamp 'id' as the primary key
         // (@Id),
         // save() will insert it directly without auto-increment collisions.
 
-        ResponseEntity<Record> record2 = recordService.addRecord(record);
+        ResponseEntity<?> record2 = recordService.addRecord(authentication, record);
         return record2;
-
     }
 
     // 3. Update Record -> Maps to Endpoints.updateRecord(id)

@@ -12,6 +12,8 @@ const Record = ({ record, msgIndex, isMenu, time }) => {
     reason: "None",
   };
 
+  
+
   const currentDate = new Date();
 
   const currentDayNum = currentDate.getDate();
@@ -25,8 +27,8 @@ const Record = ({ record, msgIndex, isMenu, time }) => {
 
   const calculateTotal = (data) =>
     data.reduce((sum, item) => {
-      const expenseValue = Number(item.record.expense || 0);
-      const incomeValue = Number(item.record.income || 0);
+      const expenseValue = Number(item.expense || 0);
+      const incomeValue = Number(item.income || 0);
 
       return expenseValue === 0
         ? sum + incomeValue
@@ -37,9 +39,9 @@ const Record = ({ record, msgIndex, isMenu, time }) => {
   const todayExpenses = calculateTotal(
     historicalExpenses.filter(
       (item) =>
-        Number(item.record.date) === currentDayNum &&
-        Number(item.record.month) === currentMonthNum &&
-        Number(item.record.year) === currentYearNum
+        Number(item.date) === currentDayNum &&
+        Number(item.month) === currentMonthNum &&
+        Number(item.year) === currentYearNum
     )
   );
 
@@ -47,8 +49,8 @@ const Record = ({ record, msgIndex, isMenu, time }) => {
   const monthExpenses = calculateTotal(
     historicalExpenses.filter(
       (item) =>
-        Number(item.record.month) === currentMonthNum &&
-        Number(item.record.year) === currentYearNum
+        Number(item.month) === currentMonthNum &&
+        Number(item.year) === currentYearNum
     )
   );
 
@@ -56,7 +58,7 @@ const Record = ({ record, msgIndex, isMenu, time }) => {
   const yearExpenses = calculateTotal(
     historicalExpenses.filter(
       (item) =>
-        Number(item.record.year) === currentYearNum
+        Number(item.year) === currentYearNum
     )
   );
 
@@ -64,7 +66,7 @@ const Record = ({ record, msgIndex, isMenu, time }) => {
   const categoryExpenses = calculateTotal(
     historicalExpenses.filter(
       (item) =>
-        item.record.category === lastExpense.record.category
+        item.category === lastExpense.category
     )
   );
 

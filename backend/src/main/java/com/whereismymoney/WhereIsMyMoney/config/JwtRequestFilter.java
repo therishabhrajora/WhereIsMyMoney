@@ -2,6 +2,7 @@ package com.whereismymoney.WhereIsMyMoney.config;
 
 import java.io.IOException;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,7 +26,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private final CustomUserDetailService userDetailService;
     private final JwtUtil jwtUtil;
 
-    public JwtRequestFilter(CustomUserDetailService userDetailService, JwtUtil jwtUtil) {
+    public JwtRequestFilter(@Lazy CustomUserDetailService userDetailService, JwtUtil jwtUtil) {
         this.userDetailService = userDetailService;
         this.jwtUtil = jwtUtil;
     }

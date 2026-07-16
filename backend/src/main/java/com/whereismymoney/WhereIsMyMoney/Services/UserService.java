@@ -38,7 +38,7 @@ public class UserService {
 
     }
 
-    private long id = -1;
+    private long id = 0;
 
     public ResponseEntity<UserResponseDto> registerUser(UserRegisterDto registerDto) {
         // String id=UUID.randomUUID().toString();

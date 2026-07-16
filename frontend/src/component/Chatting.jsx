@@ -6,7 +6,9 @@ import Record from "./Record";
 import MenuMessage from "./MenuMessage";
 
 const Chatting = () => {
+  // console.log(messages);
   const { messages } = useContext(GlobalContext);
+  console.log("after destructring",messages);
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
@@ -97,7 +99,7 @@ const Chatting = () => {
                       "
                     >
                       <p className="leading-relaxed break-words">
-                        {message.text}
+                        {message.message}
                       </p>
 
                       <p className="mt-1 text-[10px] text-right tracking-wide text-white/70">

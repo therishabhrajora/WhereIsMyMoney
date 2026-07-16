@@ -31,6 +31,13 @@ export const Menu = () => {
         handleMessages({ type: "menu" });
         break;
 
+      case "/logout":
+        localStorage.removeItem("token");
+        localStorage.removeItem("userEmail");
+        localStorage.removeItem("userRole");
+        location.reload();
+        break;
+
       default:
         break;
     }
@@ -52,6 +59,11 @@ export const Menu = () => {
     {
       title: "Start the bot",
       command: "/start",
+      icon: "🚀",
+    },
+    {
+      title: "Logout",
+      command: "/logout",
       icon: "🚀",
     },
   ];
