@@ -7,10 +7,13 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Component;
 
 import com.whereismymoney.WhereIsMyMoney.Entities.User;
 import com.whereismymoney.WhereIsMyMoney.Repositories.UserRepo;
 
+
+@Component
 public class CustomUserDetailService implements UserDetailsService {
     private final UserRepo userRepo;
 
