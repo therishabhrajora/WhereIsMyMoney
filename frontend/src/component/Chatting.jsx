@@ -59,13 +59,11 @@ const Chatting = () => {
       <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-emerald-50">
         <div className="mx-auto max-w-2xl px-4 py-6 pb-24">
           {messages.map((message, index) => {
-            const formattedTime = `${
-              currentTime < 10 ? `0${currentTime}` : currentTime
-            }:${
-              currentMinutes < 10
+            const formattedTime = `${currentTime < 10 ? `0${currentTime}` : currentTime
+              }:${currentMinutes < 10
                 ? `0${currentMinutes}`
                 : currentMinutes
-            }`;
+              }`;
 
             switch (message?.type) {
               case "user":

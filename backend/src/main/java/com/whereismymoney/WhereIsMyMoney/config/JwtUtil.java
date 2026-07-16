@@ -24,7 +24,7 @@ public class JwtUtil {
             .setSubject(userDetails.getUsername())
             .setIssuer(project)
             .setIssuedAt(new Date())
-            .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
+            .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
             .signWith(key)
             .compact();
 }
