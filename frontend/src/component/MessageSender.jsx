@@ -2,6 +2,7 @@ import { SendIcon, Menu as MenuIcon, X } from "lucide-react";
 import { useContext, useState } from "react";
 import { Menu } from "./Menu";
 import { GlobalContext } from "../api/Context";
+import apiClient, { RecordService } from "../api/apiClient";
 
 const MessageSender = () => {
   const {
@@ -42,7 +43,7 @@ const MessageSender = () => {
     setInput("");
   };
 
-  const handleExpense = (input) => {
+  const handleExpense = async (input) => {
     const words = input.trim().split(/\s+/);
 
     const numIndex = words.findIndex((word) =>
@@ -78,12 +79,13 @@ const MessageSender = () => {
       income: number > 0 ? number : 0,
       category: extractedCat,
       reason: cleanReason,
-      hashtags,
+      hashtags: hashtags && hashtags !== "" ? (Array.isArray(hashtags) ? hashtags : [hashtags]) : [],
       date: new Date().getDate(),
       month: new Date().getMonth() + 1,
       year: new Date().getFullYear(),
     };
-
+    const res = await RecordService.addRecord(newRecord);
+    console.log(res);
     handleMessages({
       type: "record",
       record: newRecord,

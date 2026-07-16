@@ -15,8 +15,10 @@ const apiClient = axios.create({
 // Request Interceptor: Inject auth tokens or log requests here if needed
 apiClient.interceptors.request.use(
     (config) => {
-        // Example: const token = localStorage.getItem('token');
-        // if (token) config.headers.Authorization = `Bearer ${token}`;
+        const token = localStorage.getItem("token");
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
         return config;
     },
     (error) => Promise.reject(error)
@@ -37,6 +39,10 @@ apiClient.interceptors.response.use(
 );
 
 // Structured API Service Methods mapping directly to your backend layer routes
+export const AuthService = {
+    register: (registerData) => apiClient.post("api/users/register", registerData),
+    login: (loginData) => apiClient.post("api/users/login", loginData),
+};
 export const MessageService = {
     getMessages: () => apiClient.get("api/messages"),
     sendMessage: (messageData) => apiClient.post("api/messages/send", messageData),

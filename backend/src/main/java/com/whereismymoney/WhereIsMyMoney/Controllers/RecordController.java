@@ -10,7 +10,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/records")
-@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true") // Maps to your React dev server port
 public class RecordController {
 
     private final RecordService recordService;
@@ -34,6 +33,7 @@ public class RecordController {
         // Since your entity uses the client-side timestamp 'id' as the primary key
         // (@Id),
         // save() will insert it directly without auto-increment collisions.
+
         ResponseEntity<Record> record2 = recordService.addRecord(record);
         return record2;
 

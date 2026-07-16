@@ -15,14 +15,7 @@ function App() {
 
   return (
     <div
-      className="
-        relative
-        min-h-screen
-        bg-gradient-to-br
-        from-slate-50
-        via-white
-        to-emerald-50
-      "
+      className="relative min-h-screen bg-gradient-to-b from-slate-50 via-white to-emerald-50"
     >
 
       {user ? (

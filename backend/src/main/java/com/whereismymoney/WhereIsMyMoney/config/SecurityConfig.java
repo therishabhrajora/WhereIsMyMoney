@@ -1,63 +1,84 @@
 package com.whereismymoney.WhereIsMyMoney.config;
 
+import java.util.List;
+
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
-import java.util.Collections;
+import com.whereismymoney.WhereIsMyMoney.Services.CustomUserDetailService;
+import com.whereismymoney.WhereIsMyMoney.helper.DatabaseConstants;
 
 @Configuration
-@EnableWebSecurity
+@EnableAutoConfiguration
 public class SecurityConfig {
+    String CORS_ORIGIN = DatabaseConstants.CORS_ORIGIN;
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+    private JwtRequestFilter jwtRequestFilter;
+    private CustomUserDetailService userDetailService;
 
-                .authorizeHttpRequests(auth -> auth
-                        // Allow all traffic to hit the homepage root path without credentials
-                        .requestMatchers("/").permitAll()
-                        // Require valid authentication credentials for all functional record/analytics
-                        // endpoints
-                        .requestMatchers("/api/records/**", "/api/analytics/**").authenticated()
-                        // Catch-all: all other requests require authentication
-                        .anyRequest().authenticated());
-
-        return http.build();
+    public SecurityConfig(JwtRequestFilter jwtRequestFilter, CustomUserDetailService userDetailService) {
+        this.jwtRequestFilter = jwtRequestFilter;
+        this.userDetailService = userDetailService;
     }
 
     @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
+    public SecurityFilterChain sequrityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf(csrf -> csrf.disable())
+                .formLogin(form -> form.disable())
+                .httpBasic(httpbasic -> httpbasic.disable())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/records/**").permitAll()
 
-        // Explicitly allow your React local development origin address link
-        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:5173"));
+                        // 🔐 Secure endpoints
+                        .requestMatchers("/").authenticated()
 
-        // Define HTTP method verb operations allowed across origins
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                        // fallback: block anything else
+                        .anyRequest().denyAll())
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
+                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-        // Allow common standard headers along with authorization vectors
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept"));
+        http.cors(cors -> cors.configurationSource(request -> {
+            CorsConfiguration config = new CorsConfiguration();
+            config.setAllowCredentials(true);
 
-        // Allow cookies and authentication headers to pass securely across domains
-        configuration.setAllowCredentials(true);
+            config.setAllowedOrigins(List.of(
+                    "https://ramyascrubs.netlify.app",
+                    "http://localhost:5173"));
 
-        // Map these rules globally across all incoming api endpoint routes
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
+            config.addAllowedHeader("*");
+            config.addAllowedMethod("*");
+            return config;
+        }));
+
+        // http.oauth2Login(oauth -> {
+        // oauth.loginPage("/collections/account");
+        // oauth.successHandler(oAuthenticationSuccessHandler);
+        // });
+
+        http.logout(logout -> logout
+                .logoutUrl("/collections/logout")
+                .logoutSuccessUrl("/collections?logout=true")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
+                .permitAll());
+
+        http.sessionManagement(session -> session
+                .invalidSessionUrl("/login?invalidSession=true"));
+
+        return http.build();
+
     }
 
     @Bean

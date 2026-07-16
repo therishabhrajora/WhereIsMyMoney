@@ -11,7 +11,7 @@ const Brand = () => {
           animate-in
           fade-in
           slide-in-from-top-3
-          duration-700
+          duration-600
         "
       >
 
