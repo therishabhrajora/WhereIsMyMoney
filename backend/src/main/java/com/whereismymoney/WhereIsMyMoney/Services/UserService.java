@@ -38,7 +38,6 @@ public class UserService {
 
     }
 
-    private long id = 0;
     public ResponseEntity<UserResponseDto> registerUser(UserRegisterDto registerDto) {
         // String id=UUID.randomUUID().toString();
         if (userRepo.findByEmail(registerDto.getEmail()) != null) {
@@ -46,7 +45,6 @@ public class UserService {
         }
 
         User newUser = User.builder()
-                .id(id++)
                 .email(registerDto.getEmail())
                 .password(passwordEncoder.encode(registerDto.getPassword()))
                 .role(registerDto.getRole() != null ? registerDto.getRole() : "ROLE_USER")

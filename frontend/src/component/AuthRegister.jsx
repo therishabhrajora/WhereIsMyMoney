@@ -39,7 +39,7 @@ const Register = ({ onRegisterSuccess, onSwitchToLogin }) => {
             // 3. Dispatch signup payload request to Spring Boot backend
            
             const response = await AuthService.register(registerPayload);
-             ("Registration Response:", response);
+             
 
             setSuccessMessage("Account created successfully! Redirecting...");
             
