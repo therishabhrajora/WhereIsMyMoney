@@ -16,7 +16,7 @@ export const GlobalProvider = ({ children }) => {
   const [staticsOpen, setStaticsOpen] = useState(-1);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-
+   
   const setAllMessagesBatch = (recordsArray) => {
     const formatted = recordsArray.map(r => ({
       type: "record", // Crucial for your switch-case render routing paths
@@ -30,13 +30,13 @@ export const GlobalProvider = ({ children }) => {
   };
 
   const updateTodayExpenseOpen = (index) => {
-    setTodayExpenseOpen(prev => prev === index ? -1 : index);
-  }
+    setTodayExpenseOpen((prev) => (prev === index ? -1 : index));
+  };
   const updateStaticsOpen = (index) => {
-    setStaticsOpen(prev => prev === index ? -1 : index);
-  }
+    setStaticsOpen((prev) => (prev === index ? -1 : index));
+  };
 
-
+  
 
   // Consolidate values inside a single data container package object
   const valuePackage = {

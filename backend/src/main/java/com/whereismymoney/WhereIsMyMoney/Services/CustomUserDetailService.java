@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import com.whereismymoney.WhereIsMyMoney.Entities.User;
 import com.whereismymoney.WhereIsMyMoney.Repositories.UserRepo;
 
-
 @Service
 public class CustomUserDetailService implements UserDetailsService {
     private final UserRepo userRepo;
@@ -25,7 +24,7 @@ public class CustomUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepo.findByEmail(email);
+        User user = userRepo.findByEmail(email);         
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),
                 user.getPassword(),

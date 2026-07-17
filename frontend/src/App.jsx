@@ -14,7 +14,6 @@ function App() {
   const { start, messages, setIsAuthenticated, setAllMessagesBatch, handleMessages, setMessages } = useContext(GlobalContext);
   const [loading, setLoading] = useState(true);
   let count = 0;
-
   useEffect(() => {
     const fetchRecords = async () => {
       try {
@@ -35,7 +34,6 @@ function App() {
 
       }
     };
-
     const token = localStorage.getItem("token");
     if (token) {
       setIsAuthenticated(true);
@@ -46,32 +44,23 @@ function App() {
     }
   }, []);
 
-
   if (loading)
     return <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-slate-50 via-white to-emerald-50">
-      <div className="space-y-4 text-center animate-pulse">
-        {/* Animated Spinner Icon Element */}
-        <div className="mx-auto h-10 w-10 animate-spin rounded-full border-4 border-slate-200 border-t-emerald-600"></div>
-        <p className="text-sm font-semibold tracking-wide text-slate-500 uppercase">
-          Syncing account database...
-        </p>
+        <div className="space-y-4 text-center animate-pulse">
+          {/* Animated Spinner Icon Element */}
+          <div className="mx-auto h-10 w-10 animate-spin rounded-full border-4 border-slate-200 border-t-emerald-600"></div>
+          <p className="text-sm font-semibold tracking-wide text-slate-500 uppercase">
+            Syncing account database...
+          </p>
+        </div>
       </div>
-    </div>
-
-
-
 
   return (
-    <div
-      className="relative min-h-screen bg-gradient-to-b from-slate-50 via-white to-emerald-50"
+    <div className="relative min-h-screen bg-gradient-to-b from-slate-50 via-white to-emerald-50"
     >
-
       {user ? (
-
         <PrivateRoute />
-
       ) : (
-
         <div
           className="
             animate-in
@@ -79,24 +68,17 @@ function App() {
             duration-500
           "
         >
-
           <DefaultMessage />
-
 
           {start && (
             <>
               <Chatting messages={messages} />
 
               <MessageSender />
-
             </>
-
           )}
-
         </div>
-
       )}
-
     </div>
   );
 }

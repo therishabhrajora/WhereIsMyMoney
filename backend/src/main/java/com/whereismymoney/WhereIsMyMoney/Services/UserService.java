@@ -39,10 +39,8 @@ public class UserService {
     }
 
     private long id = 0;
-
     public ResponseEntity<UserResponseDto> registerUser(UserRegisterDto registerDto) {
         // String id=UUID.randomUUID().toString();
-
         if (userRepo.findByEmail(registerDto.getEmail()) != null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

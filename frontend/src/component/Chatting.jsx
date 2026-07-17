@@ -10,7 +10,7 @@ const Chatting = () => {
   const { messages } = useContext(GlobalContext);
   console.log("after destructring",messages);
   const messagesEndRef = useRef(null);
-
+  
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -68,8 +68,10 @@ const Chatting = () => {
               }`;
 
             switch (message?.type) {
+              
               case "user":
                 return (
+                  
                   <div
                     key={index}
                     className="flex w-full justify-end mb-4 message-slide"

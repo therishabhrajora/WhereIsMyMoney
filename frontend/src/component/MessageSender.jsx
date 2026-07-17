@@ -5,11 +5,8 @@ import { GlobalContext } from "../api/Context";
 import apiClient, { RecordService, UserMessageService } from "../api/apiClient";
 
 const MessageSender = () => {
-  const {
-    isMenuOpen,
-    setIsMenuOpen,
-    handleMessages,
-  } = useContext(GlobalContext);
+  const { isMenuOpen, setIsMenuOpen, handleMessages } =
+    useContext(GlobalContext);
 
   const [input, setInput] = useState("");
 
@@ -29,25 +26,21 @@ const MessageSender = () => {
     }
 
     const messagePayload = {
-      id: Date.now(),                      // Client-side unique timestamp primary key identifier
-      message: input.trim(),           // Matches 'private String message;' in Java
+      id: Date.now(), // Client-side unique timestamp primary key identifier
+      message: input.trim(), // Matches 'private String message;' in Java
       date: Math.floor(new Date().getDate()),
       month: Math.floor(new Date().getMonth() + 1),
       year: Math.floor(new Date().getFullYear()),
-      type: "user",                        // Matching layout discriminator flags
-    }
+      type: "user", // Matching layout discriminator flags
+    };
+
+    const parsed = handleExpense(input);
 
     const saveInputMessage = async (input) => {
       const res = await UserMessageService.addUserMessages(messagePayload);
-       (res);
-    }
+      handleMessages(res);
+    };
     saveInputMessage(input);
-    handleMessages({
-      type: "user",
-      text: input,
-    });
-
-    const parsed = handleExpense(input);
 
     if (parsed === false) {
       setInput("");
@@ -60,9 +53,7 @@ const MessageSender = () => {
   const handleExpense = async (input) => {
     const words = input.trim().split(/\s+/);
 
-    const numIndex = words.findIndex((word) =>
-      /^-?\d+$/.test(word)
-    );
+    const numIndex = words.findIndex((word) => /^-?\d+$/.test(word));
 
     if (numIndex === -1) {
       return false;
@@ -70,22 +61,13 @@ const MessageSender = () => {
 
     const number = parseInt(words[numIndex], 10);
 
-    const extractedCat = words
-      .slice(0, numIndex)
-      .join(" ");
+    const extractedCat = words.slice(0, numIndex).join(" ");
 
-    const extractedReason = words
-      .slice(numIndex + 1)
-      .join(" ");
+    const extractedReason = words.slice(numIndex + 1).join(" ");
 
-    const hashtags = words
-      .filter((word) => word.startsWith("#"))
-      .join(" ");
+    const hashtags = words.filter((word) => word.startsWith("#")).join(" ");
 
-    const cleanReason = extractedReason
-      .replace(/#\S+/g, "")
-      .trim();
-
+    const cleanReason = extractedReason.replace(/#\S+/g, "").trim();
 
     const newRecord = {
       id: Date.now(),
@@ -93,21 +75,22 @@ const MessageSender = () => {
       income: number > 0 ? number : 0,
       category: extractedCat,
       reason: cleanReason,
-      hashtags: hashtags && hashtags !== "" ? (Array.isArray(hashtags) ? hashtags : [hashtags]) : [],
+      hashtags:
+        hashtags && hashtags !== ""
+          ? Array.isArray(hashtags)
+            ? hashtags
+            : [hashtags]
+          : [],
       date: new Date().getDate(),
       month: new Date().getMonth() + 1,
       year: new Date().getFullYear(),
-      type: "record"
+      type: "record",
     };
     const record = await RecordService.addRecord(newRecord);
-    handleMessages({
-      type: "record",
-      record: record,
-    });
+    handleMessages(record);
 
     return true;
   };
-
 
   return (
     <>
@@ -132,7 +115,6 @@ const MessageSender = () => {
         }
       `}</style>
 
-
       <div
         className="
           fixed
@@ -145,9 +127,7 @@ const MessageSender = () => {
           message-dock
         "
       >
-
         {isMenuOpen && <Menu />}
-
 
         <div
           className="
@@ -163,7 +143,6 @@ const MessageSender = () => {
             backdrop-blur-xl
           "
         >
-
           {/* Menu Button */}
 
           <button
@@ -200,7 +179,6 @@ const MessageSender = () => {
             )}
           </button>
 
-
           {/* Input */}
 
           <form
@@ -212,7 +190,6 @@ const MessageSender = () => {
               gap-2
             "
           >
-
             <div
               className="
                 flex-1
@@ -225,7 +202,6 @@ const MessageSender = () => {
                 focus-within:ring-emerald-500/40
               "
             >
-
               <input
                 type="text"
                 value={input}
@@ -241,9 +217,7 @@ const MessageSender = () => {
                 "
                 placeholder="Try: -300 food #travel"
               />
-
             </div>
-
 
             {/* Send */}
 
@@ -270,11 +244,8 @@ const MessageSender = () => {
             >
               <SendIcon className="h-5 w-5" />
             </button>
-
           </form>
-
         </div>
-
       </div>
     </>
   );
