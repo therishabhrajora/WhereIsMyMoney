@@ -1,5 +1,5 @@
 # ---------- Stage 1: Build the JAR ----------
-FROM maven:3.9.10-amazoncorretto-17-al2023 AS build
+FROM maven:3.9.10-amazoncorretto-21-al2023 AS build
 
 WORKDIR /app
 
