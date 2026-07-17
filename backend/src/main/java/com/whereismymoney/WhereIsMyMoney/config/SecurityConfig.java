@@ -39,10 +39,10 @@ public class SecurityConfig {
                 .formLogin(form -> form.disable())
                 .httpBasic(httpbasic -> httpbasic.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/records/**","/api/users/**","/api/user-message/**").permitAll()
+                        .requestMatchers("/","/api/users/**").permitAll()
 
                         // 🔐 Secure endpoints
-                        .requestMatchers("/").authenticated()
+                        .requestMatchers("/api/records/**","/api/user-message/**").authenticated()
 
                         // fallback: block anything else
                         .anyRequest().denyAll())
