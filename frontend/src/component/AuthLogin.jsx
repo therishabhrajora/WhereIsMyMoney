@@ -43,6 +43,7 @@ const Login = ({ onLoginSuccess, onSwitchToRegister }) => {
       // Execute success callback to redirect user or refresh global states
       if (onLoginSuccess) {
         onLoginSuccess(response);
+        
       }
     } catch (error) {
       // Handles unmapped network breaks or explicit 401 exceptions cleanly

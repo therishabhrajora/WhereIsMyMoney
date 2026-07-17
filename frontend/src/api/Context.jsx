@@ -15,16 +15,8 @@ export const GlobalProvider = ({ children }) => {
   const [todayExpenseOpen, setTodayExpenseOpen] = useState(-1);
   const [staticsOpen, setStaticsOpen] = useState(-1);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-   
-  const setAllMessagesBatch = (recordsArray) => {
-    const formatted = recordsArray.map(r => ({
-      type: "record", // Crucial for your switch-case render routing paths
-      record: r,
-      id: r.id
-    }));
-    setMessages(formatted);
-  };
   const handleMessages = (newMessage) => {
     setMessages((prev) => [...prev, newMessage]);
   };
@@ -56,7 +48,8 @@ export const GlobalProvider = ({ children }) => {
     setUserData,
     isAuthenticated,
     setIsAuthenticated,
-    setAllMessagesBatch
+    setLoading,
+    loading
   };
 
   return (

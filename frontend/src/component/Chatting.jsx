@@ -7,17 +7,46 @@ import MenuMessage from "./MenuMessage";
 
 const Chatting = () => {
   // console.log(messages);
-  const { messages } = useContext(GlobalContext);
-  console.log("after destructring",messages);
+  const { messages, loading, setLoading } = useContext(GlobalContext);
+  console.log("after destructring", messages);
   const messagesEndRef = useRef(null);
-  
+
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+    if (loading) {
+      setLoading(false);
+      return;
+    }
+
+    // FIXED 2: Added a short timeout wrapper so the browser finishes painting 
+    // new DOM message nodes before executing the scroll computation layout.
+    const scrollTimeout = setTimeout(() => {
+      messagesEndRef.current?.scrollIntoView({ 
+        behavior: "smooth",
+        block: "end" // Explicitly target the layout viewport baseline boundary
+      });
+    }, 80);
+
+    return () => clearTimeout(scrollTimeout);
+  }, [messages, loading, setLoading]);
+
+
 
   const currentDate = new Date();
   const currentTime = currentDate.getHours();
   const currentMinutes = currentDate.getMinutes();
+
+  if (loading)
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-slate-50 via-white to-emerald-50">
+        <div className="space-y-4 text-center animate-pulse">
+          {/* Animated Spinner Icon Element */}
+          <div className="mx-auto h-10 w-10 animate-spin rounded-full border-4 border-slate-200 border-t-emerald-600"></div>
+          <p className="text-sm font-semibold tracking-wide text-slate-500 uppercase">
+            Syncing account database...
+          </p>
+        </div>
+      </div>
+    );
 
   return (
     <>
@@ -61,17 +90,13 @@ const Chatting = () => {
       <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-emerald-50">
         <div className="mx-auto max-w-2xl px-4 py-6 pb-24">
           {messages.map((message, index) => {
-            const formattedTime = `${currentTime < 10 ? `0${currentTime}` : currentTime
-              }:${currentMinutes < 10
-                ? `0${currentMinutes}`
-                : currentMinutes
-              }`;
+            const formattedTime = `${
+              currentTime < 10 ? `0${currentTime}` : currentTime
+            }:${currentMinutes < 10 ? `0${currentMinutes}` : currentMinutes}`;
 
             switch (message?.type) {
-              
               case "user":
                 return (
-                  
                   <div
                     key={index}
                     className="flex w-full justify-end mb-4 message-slide"

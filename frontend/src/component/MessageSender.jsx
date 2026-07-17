@@ -34,19 +34,17 @@ const MessageSender = () => {
       type: "user", // Matching layout discriminator flags
     };
 
-    const parsed = handleExpense(input);
-
     const saveInputMessage = async (input) => {
       const res = await UserMessageService.addUserMessages(messagePayload);
       handleMessages(res);
+      const parsed = handleExpense(input);
+      if (parsed.numIndex === false) {
+        setInput("");
+        return;
+      }
     };
     saveInputMessage(input);
-
-    if (parsed === false) {
-      setInput("");
-      return;
-    }
-
+    
     setInput("");
   };
 
@@ -89,7 +87,10 @@ const MessageSender = () => {
     const record = await RecordService.addRecord(newRecord);
     handleMessages(record);
 
-    return true;
+    return {
+      numIndex: true,
+      record: record,
+    };
   };
 
   return (

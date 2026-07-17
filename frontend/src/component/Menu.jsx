@@ -13,11 +13,6 @@ export const Menu = () => {
   const onCommandSelect = (command) => {
     setCommand(command);
 
-    handleMessages({
-      type: "user",
-      text: command,
-    });
-
     switch (command) {
       case "/start":
         handleMessages({ type: "startMessage" });
