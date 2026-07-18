@@ -35,8 +35,10 @@ const MessageSender = () => {
     };
 
     const saveInputMessage = async (input) => {
+      
       const res = await UserMessageService.addUserMessages(messagePayload);
-      handleMessages(res);
+ 
+      handleMessages(res.data);
       const parsed = handleExpense(input);
       if (parsed.numIndex === false) {
         setInput("");
@@ -85,7 +87,8 @@ const MessageSender = () => {
       type: "record",
     };
     const record = await RecordService.addRecord(newRecord);
-    handleMessages(record);
+
+    handleMessages(record.data);
 
     return {
       numIndex: true,

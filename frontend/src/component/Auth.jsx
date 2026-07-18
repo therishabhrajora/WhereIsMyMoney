@@ -19,9 +19,10 @@ const Auth = () => {
       try {
         // 1. Await your API call to resolve the promise safely
         const records = await RecordService.getRecords();
-        if (records && records.length > 0) {
-            for(let r of records){
-                console.log(r);
+        const data=records.data;
+        if (data && data.length > 0) {
+            for(let r of data){
+             
                 handleMessages(r);
             }
           
@@ -35,7 +36,7 @@ const Auth = () => {
       }
     };
     const token = localStorage.getItem("token");
-    console.log(token);
+
 
     if (token) {
       setIsAuthenticated(true);

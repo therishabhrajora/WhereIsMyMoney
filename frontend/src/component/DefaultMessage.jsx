@@ -94,7 +94,7 @@ const DefaultMessage = () => {
           {/* login */}
           {!isAuthenticated ? <Auth /> :
             <>
-              <div className="fade-up mt-5 w-full rounded-3xl border border-white/70 bg-white/70 p-10 text-center shadow-2xl backdrop-blur-xl">
+              <div className="fade-up mt-4 w-full rounded-3xl border border-white/70 bg-white/70 p-4 text-center shadow-2xl backdrop-blur-xl">
 
                 <div className="floating mb-6 text-6xl">
                   💰

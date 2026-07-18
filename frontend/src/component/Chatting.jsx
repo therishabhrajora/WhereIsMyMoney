@@ -8,7 +8,7 @@ import MenuMessage from "./MenuMessage";
 const Chatting = () => {
   // console.log(messages);
   const { messages, loading, setLoading } = useContext(GlobalContext);
-  console.log("after destructring", messages);
+  // console.log("after destructring", messages);
   const messagesEndRef = useRef(null);
 
   useEffect(() => {

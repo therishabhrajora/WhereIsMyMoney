@@ -1,9 +1,12 @@
 package com.whereismymoney.WhereIsMyMoney.Services;
 
+import java.lang.System.LoggerFinder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -29,6 +32,8 @@ public class RecordService {
         this.userMessageRepo = userMessageRepo;
     }
 
+    Logger logger=LoggerFactory.getLogger(RecordService.class);
+
     public ResponseEntity<?> getAllRecords(Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User is missing");
@@ -51,13 +56,15 @@ public class RecordService {
             Long time2 = (obj2 instanceof Record) ? ((Record) obj2).getId() : ((UserMessage) obj2).getId();
             return time1.compareTo(time2);
         });
-
-        System.out.println("=============================="+all);
+        logger.info("=========="+"GetRecords"+all.getFirst()+"===========");
+        
 
         return ResponseEntity.ok(all);
     }
 
     public ResponseEntity<?> addRecord(Authentication authentication, Record record) {
+        logger.info("addrecord==="+record.getId()+"===========");
+
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User is missing");
         }
@@ -72,6 +79,8 @@ public class RecordService {
     }
 
     public ResponseEntity<Record> updateRecord(Long id, Record recordDetails) {
+        logger.info("update======"+id+"===========");
+
         Optional<Record> recordOptional = recordRepo.findById(id);
 
         if (recordOptional.isEmpty()) {
@@ -95,6 +104,8 @@ public class RecordService {
     }
 
     public ResponseEntity<String> deleteRecordById(Long id) {
+        logger.info("deleteRecord======"+id+"===========");
+
         if (!recordRepo.existsById(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Record not found.");
         }

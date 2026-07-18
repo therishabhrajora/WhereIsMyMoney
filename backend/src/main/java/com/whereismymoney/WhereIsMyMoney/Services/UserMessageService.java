@@ -2,6 +2,8 @@ package com.whereismymoney.WhereIsMyMoney.Services;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +25,7 @@ public class UserMessageService {
         this.userRepo = userRepo;
         this.userMessageRepo = userMessageRepo;
     }
-
+    Logger logger=LoggerFactory.getLogger(UserMessageService.class);
     public ResponseEntity<?> getAllUserMessage(Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("user is missing");
@@ -36,11 +38,14 @@ public class UserMessageService {
         }
 
         List<UserMessage> all = userMessageRepo.findByUser(currentUser);
+        logger.info("usermessage======="+all.getFirst()+"===========");
+
         return ResponseEntity.ok(all);
     }
 
     public ResponseEntity<?> addUserMessage(Authentication authentication, UserMessage userMessage) {
-        System.out.println("===================" + userMessage);
+        logger.info("addMessage======="+userMessage.getId()+"===========");
+        
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("user is missing");
         }

@@ -19,6 +19,7 @@ const StartMessage = () => {
         fade-in
         slide-in-from-bottom-3
         duration-500
+        my-4
       "
     >
 

@@ -55,7 +55,8 @@ public class SecurityConfig {
 
             config.setAllowedOrigins(List.of(
                     "https://moneyspendwise.netlify.app",
-                    "http://localhost:5173"));
+                    "http://localhost:5173",
+                "https://nl1mk3c6-5173.inc1.devtunnels.ms"));
 
             config.addAllowedHeader("*");
             config.addAllowedMethod("*");

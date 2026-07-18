@@ -82,7 +82,9 @@ const MenuMessage = ({ time }) => {
         }
       `}</style>
 
-      <div className="dashboard-card overflow-hidden rounded-3xl">
+      <div
+        className="dashboard-card overflow-hidden rounded-3xl my-4 border border-slate-200 shadow-md hover:shadow-lg"
+      >
         {/* Header */}
 
         <div className="bg-gradient-to-r from-emerald-500 to-teal-600 p-4  text-white">

@@ -63,8 +63,8 @@ const Register = ({ onRegisterSuccess, onSwitchToLogin }) => {
     };
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4 py-12 sm:px-6 lg:px-8 animate-in fade-in duration-300">
-            <div className="w-full max-w-md space-y-8 bg-white p-8 rounded-3xl border border-slate-100 shadow-xl shadow-slate-100">
+        <div className="flex min-h-fit items-center justify-center bg-slate-50 my-4 px-4 py-10 sm:px-6 lg:px-8 lg:py-2 lg:mt-2 animate-in fade-in duration-300">
+            <div className="w-full max-w-md space-y-4 bg-white p-4 rounded-3xl border border-slate-100 shadow-xl shadow-slate-100 lg:p-2 lg:space-y-2">
                 <div>
                     <h2 className="mt-2 text-center text-3xl font-extrabold tracking-tight text-slate-900">
                         Create your account
@@ -74,7 +74,7 @@ const Register = ({ onRegisterSuccess, onSwitchToLogin }) => {
                     </p>
                 </div>
 
-                <form className="mt-8 space-y-6" onSubmit={handleRegisterSubmit}>
+                <form className="mt-8 space-y-6 lg:space-y-4" onSubmit={handleRegisterSubmit}>
                     {/* Display validation or database constraint error responses */}
                     {errorMessage && (
                         <div className="rounded-xl bg-rose-50 p-3 text-sm font-medium text-rose-600 border border-rose-100 animate-in shake-in duration-200">

@@ -4,6 +4,8 @@ import java.nio.file.attribute.UserPrincipal;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -37,8 +39,10 @@ public class UserService {
         this.jwtUtil = jwtUtil;
 
     }
+    Logger logger=LoggerFactory.getLogger(UserService.class);
 
     public ResponseEntity<UserResponseDto> registerUser(UserRegisterDto registerDto) {
+        logger.info("====Register======="+registerDto.getEmail()+"===========");
         // String id=UUID.randomUUID().toString();
         if (userRepo.findByEmail(registerDto.getEmail()) != null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -60,6 +64,8 @@ public class UserService {
     }
 
     public ResponseEntity<Object> getById(long id2) {
+        logger.info("=========="+id2+"===========");
+
         Optional<User> userOptional = userRepo.findById(id2);
         if (userOptional.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -79,7 +85,7 @@ public class UserService {
 
     public ResponseEntity<?> login(UserLoginDto loginDto) {
         try {
-
+        logger.info("====Login======"+loginDto.getEmail()+"===========");
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             loginDto.getEmail(),

@@ -4,7 +4,6 @@ const Brand = () => {
 
       <header
         className="
-          mb-8
           flex
           items-center
           justify-between

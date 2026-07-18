@@ -31,13 +31,14 @@ const Login = ({ onLoginSuccess, onSwitchToRegister }) => {
     try {
       // 2. Dispatch request and await the backend verification response
       const response = await AuthService.login(loginPayload);
-      ("Authentication Response:", response);
+     
+      
 
       // 3. Persist the generated JWT token string locally
-      if (response.token) {
-        localStorage.setItem("token", response.token);
-        localStorage.setItem("userEmail", response.email);
-        localStorage.setItem("userRole", response.role);
+      if (response.data.token) {
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("userEmail", response.data.email);
+        localStorage.setItem("userRole", response.data.role);
       }
 
       // Execute success callback to redirect user or refresh global states
@@ -56,8 +57,8 @@ const Login = ({ onLoginSuccess, onSwitchToRegister }) => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-50 rounded-3xl px-8 animate-in fade-in duration-300">
-      <div className="w-full max-w-md space-y-8 bg-white p-8 rounded-3xl border border-slate-100 shadow-xl shadow-slate-100">
+    <div className="flex min-h-fit items-center justify-center bg-slate-50 my-4 px-2 py-10 sm:px-6 lg:px-8 lg:py-2 lg:my-2 animate-in fade-in duration-300">
+      <div className="w-full max-w-md space-y-4 bg-white p-4 rounded-3xl border border-slate-100 shadow-xl shadow-slate-100">
         <div>
           <h2 className="mt-2 text-center text-3xl font-extrabold tracking-tight text-slate-900">
             Sign in to your account
