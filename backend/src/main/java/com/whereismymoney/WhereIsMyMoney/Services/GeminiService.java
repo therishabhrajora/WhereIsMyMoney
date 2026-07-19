@@ -1,5 +1,6 @@
 package com.whereismymoney.WhereIsMyMoney.Services;
 
+import org.jspecify.annotations.Nullable;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.InMemoryChatMemoryRepository;
@@ -74,18 +75,23 @@ public class GeminiService {
                                                                     ? hashtags
                                                                     : [hashtags]
                                                                   : [],
-                                                            }; and only give raw JSON object string back, do not include markdown backticks or any other text if any category not match craete new one category of that and store them .
+                                                            }; and only give raw JSON object string back, do not include markdown backticks or any other text if any category not match create new one category of that and store them .
                                                         """
                                 .formatted(userPrompt, category);
 
                 System.out.println(prompt);
 
-                return this.chatClient.prompt()
+                @Nullable
+                String content = this.chatClient.prompt()
                                 .user(prompt)
                                 .advisors(advisorSpec -> advisorSpec.param("chat_memory_conversation_id",
                                                 conversationId))
                                 .call()
                                 .content();
+
+                System.out.println(content);
+
+                return content;
 
         }
 
