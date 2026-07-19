@@ -25,7 +25,6 @@ public class RecordController {
     public ResponseEntity<?> getAllRecords(Authentication authentication) {
         ResponseEntity<?> allRecords = recordService.getAllRecords(authentication);
         return allRecords;
-
     }
 
     // 2. Add New Record -> Maps to Endpoints.addRecord

@@ -106,7 +106,7 @@ const StatisticsMessage = ({ msgIndex }) => {
                     {monthExpenses
                       .filter((item) => item.category === selectedCategory)
                       .map((item) => {
-                        console.log(item);
+                      
                         const isIncome = Number(item.expense || 0) === 0;
                         const amount = isIncome
                           ? `+₹${item.income}`

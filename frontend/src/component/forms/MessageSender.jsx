@@ -36,15 +36,15 @@ const MessageSender = () => {
 
     const saveInputMessage = async (input) => {
       const res = await UserMessageService.addUserMessages(messagePayload);
-      console.log(typeof input)
+     
       handleMessages(res.data);
       const response = await GeminiService.chat({
         message: input,
         id: "1"
       });
       const rawText = response.data;
-      console.log("record");
-      console.log(rawText);
+   
+    
       const newRecord = {
         ...rawText,
         id: Date.now(),
@@ -54,8 +54,12 @@ const MessageSender = () => {
         type: "record",
       };
       const record = await RecordService.addRecord(newRecord);
-      console.log(record);
+   
       handleMessages(record.data);
+
+      // const analyze=await GeminiService.analyze("1");
+      // console.log(analyze);
+
 
       // const parsed = handleExpense(input);
       // if (parsed.numIndex === false) {
@@ -64,6 +68,8 @@ const MessageSender = () => {
       // }
     };
     saveInputMessage(input);
+
+
 
 
 

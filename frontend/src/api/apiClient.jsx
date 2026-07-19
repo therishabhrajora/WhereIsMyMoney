@@ -1,12 +1,12 @@
 import axios from "axios";
 
-// const BASE_URL = "http://localhost:9090/";
-const BASE_URL = "https://whereismymoney-87yj.onrender.com/";
+const BASE_URL = "http://localhost:9090/";
+// const BASE_URL = "https://whereismymoney-87yj.onrender.com/";
 
 // Create a configured Axios instance
 const apiClient = axios.create({
   baseURL: BASE_URL,
-  timeout: 120000, // 10 seconds timeout limit
+  timeout: 120000,
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
@@ -33,10 +33,12 @@ apiClient.interceptors.response.use(
       const status = error.response.status;
       if (status === 401 || status === 403) {
         localStorage.removeItem("token");
-        localStorage.clear(); 
+        localStorage.clear();
         window.location.href - "/login";
       } else if (status === 500) {
         alert("internal server error");
+      } else if (status === 429 || error.inludes("429")) {
+        alert("you quota of request expired for today");
       }
     } else if (error.request) {
       alert("network Error:no response recieved from server");
@@ -80,9 +82,9 @@ export const UserMessageService = {
 
 export const GeminiService = {
   // Example updated axios caller definition
-  chat: (input) => apiClient.post("api/ai/chat",input),
+  chat: (input) => apiClient.post("api/ai/chat", input),
 
-  analyze: (input) => apiClient.post("api/ai/analyze", input)
+  analyze: (id) => apiClient.get(`api/ai/analyze/${id}`)
 }
 
 

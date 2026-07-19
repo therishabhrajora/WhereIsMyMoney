@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "records")
 @Data
@@ -50,6 +52,7 @@ public class Record {
     private String type;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false) // Creates a user_id foreign key column in your records table
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore // Creates a user_id foreign key column in your records table
     private User user;
 }
