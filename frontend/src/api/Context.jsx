@@ -9,7 +9,7 @@ export const GlobalProvider = ({ children }) => {
   const [userData, setUserData] = useState(null);
   const [start, setStart] = useState(false);
   const [command, setCommand] = useState("");
-  const [messages, setMessages] = useState(Data.data);
+  const [messages, setMessages] = useState([]);
   const [records, setRecords] = useState([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [todayExpenseOpen, setTodayExpenseOpen] = useState(-1);

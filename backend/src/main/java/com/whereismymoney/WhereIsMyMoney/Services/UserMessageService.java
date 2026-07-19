@@ -38,7 +38,7 @@ public class UserMessageService {
         }
 
         List<UserMessage> all = userMessageRepo.findByUser(currentUser);
-        logger.info("usermessage======="+all.getFirst()+"===========");
+        // logger.info("usermessage======="+all.getFirst()+"===========");
 
         return ResponseEntity.ok(all);
     }

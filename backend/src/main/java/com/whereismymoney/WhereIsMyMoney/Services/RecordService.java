@@ -56,7 +56,7 @@ public class RecordService {
             Long time2 = (obj2 instanceof Record) ? ((Record) obj2).getId() : ((UserMessage) obj2).getId();
             return time1.compareTo(time2);
         });
-        logger.info("=========="+"GetRecords"+all.getFirst()+"===========");
+        // logger.info("=========="+"GetRecords"+all.getFirst()+"===========");
         
 
         return ResponseEntity.ok(all);
