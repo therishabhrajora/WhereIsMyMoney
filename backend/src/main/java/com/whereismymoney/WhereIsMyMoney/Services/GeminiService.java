@@ -74,7 +74,7 @@ public class GeminiService {
                                                                     ? hashtags
                                                                     : [hashtags]
                                                                   : [],
-                                                            }; and only give raw JSON object string back, do not include markdown backticks or any other text.
+                                                            }; and only give raw JSON object string back, do not include markdown backticks or any other text if any category not match craete new one category of that and store them .
                                                         """
                                 .formatted(userPrompt, category);
 
