@@ -31,11 +31,10 @@ apiClient.interceptors.response.use(
   (error) => {
     if (error.response) {
       const status = error.response.status;
-      if (status === 401) {
+      if (status === 401 || status === 403) {
         localStorage.removeItem("token");
+        localStorage.clear(); 
         window.location.href - "/login";
-      } else if (status === 403) {
-        alert("Forbidden:you lack permissions.");
       } else if (status === 500) {
         alert("internal server error");
       }

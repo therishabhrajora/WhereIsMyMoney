@@ -1,7 +1,6 @@
 package com.whereismymoney.WhereIsMyMoney.config;
 
 import java.io.IOException;
-
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,6 +16,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.FilterChain;
+// Import the exception class explicitly from the JWT library
+import io.jsonwebtoken.ExpiredJwtException; 
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
@@ -37,9 +38,27 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         final String authHeader = request.getHeader(header);
         String username = null;
         String jwt = null;
+
         if (authHeader != null && authHeader.startsWith(bearer)) {
             jwt = authHeader.substring(7);
-            username = jwtUtil.extractUsername(jwt);
+            
+            // FIX: Wrap inside a try-catch block to intercept expired token exceptions gracefully
+            try {
+                username = jwtUtil.extractUsername(jwt);
+            } catch (ExpiredJwtException e) {
+                logger.warn("JWT token has expired. Sending 401 Unauthorized state to frontend.");
+                
+                // 1. Clear out any corrupt authentication details from the current runtime session context
+                SecurityContextHolder.clearContext();
+                
+                // 2. Enforce explicit HTTP 401 status metadata headers on the response payload pipeline
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.setContentType("application/json");
+                response.getWriter().write("{\"error\": \"Token Expired\", \"message\": \"" + e.getMessage() + "\"}");
+                
+                // 3. Break execution early here to prevent the request from hitting your controllers
+                return; 
+            }
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {    
@@ -53,5 +72,4 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(request, response);
     }
-
 }
