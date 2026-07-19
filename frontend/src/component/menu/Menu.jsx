@@ -1,6 +1,6 @@
 import { Terminal } from "lucide-react";
 import { useContext } from "react";
-import { GlobalContext } from "../api/Context";
+import { GlobalContext } from "../../api/Context";
 
 export const Menu = () => {
   const {

@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from "react";
-import DefaultMessage from "../component/DefaultMessage";
+import DefaultMessage from "../component/menu/DefaultMessage";
 import Data from "./Data"
 import apiClient, { RecordService, UserMessageService } from "./apiClient";
 
@@ -9,7 +9,7 @@ export const GlobalProvider = ({ children }) => {
   const [userData, setUserData] = useState(null);
   const [start, setStart] = useState(false);
   const [command, setCommand] = useState("");
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState(Data.data);
   const [records, setRecords] = useState([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [todayExpenseOpen, setTodayExpenseOpen] = useState(-1);

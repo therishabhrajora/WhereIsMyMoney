@@ -1,8 +1,8 @@
 import React, { useContext, useState } from "react";
-import { GlobalContext } from "../api/Context";
+import { GlobalContext } from "../../api/Context";
 import Brand from "./Brand";
-import Login from "./Auth";
-import Auth from "./Auth";
+import Login from "../auth/Auth";
+import Auth from "../auth/Auth";
 
 const DefaultMessage = () => {
   const { start, setStart, setUserData, isAuthenticated, setIsAuthenticated } = useContext(GlobalContext);

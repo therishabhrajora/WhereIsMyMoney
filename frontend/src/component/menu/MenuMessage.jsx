@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { GlobalContext } from "../api/Context";
+import { GlobalContext } from "../../api/Context";
 
 const MenuMessage = ({ time }) => {
   const { messages, updateTodayExpenseOpen } = useContext(GlobalContext);

@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import { GlobalContext } from "../api/Context";
-import MenuMessage from "./MenuMessage";
+import { GlobalContext } from "../../api/Context";
+import MenuMessage from "../menu/MenuMessage";
 import RecordMessage from "./RecordMessage";
 
 const Record = ({ record, msgIndex, isMenu, time }) => {

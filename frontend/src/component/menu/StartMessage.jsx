@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Languages, ChevronLeft } from "lucide-react";
-import { GlobalContext } from "../api/Context";
+import { GlobalContext } from "../../api/Context";
 
 const StartMessage = () => {
   const { setCommand, handleMessages } = useContext(GlobalContext);

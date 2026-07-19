@@ -6,10 +6,9 @@ const BASE_URL = "https://whereismymoney-87yj.onrender.com/";
 // Create a configured Axios instance
 const apiClient = axios.create({
   baseURL: BASE_URL,
-  timeout: 60000, // 10 seconds timeout limit
+  timeout: 120000, // 10 seconds timeout limit
   headers: {
     "Content-Type": "application/json",
-    "X-Tunnel-Skip-Anti-Phishing-Warning": "true",
     Accept: "application/json",
   },
 });
@@ -79,5 +78,14 @@ export const AnalyticsService = {
 export const UserMessageService = {
   addUserMessages: (input) => apiClient.post("api/user-message/add", input),
 };
+
+export const GeminiService = {
+  // Example updated axios caller definition
+  chat: (input) => apiClient.post("api/ai/chat",input),
+
+  analyze: (input) => apiClient.post("api/ai/analyze", input)
+}
+
+
 
 export default apiClient;

@@ -1,7 +1,7 @@
 import { useContext } from "react";
-import MenuMessage from "./MenuMessage";
-import StatisticsMessage from "./StatisticsMessage";
-import { GlobalContext } from "../api/Context";
+import MenuMessage from "../menu/MenuMessage";
+import StatisticsMessage from "../menu/StatisticsMessage";
+import { GlobalContext } from "../../api/Context";
 
 const RecordMessage = (props) => {
   const {

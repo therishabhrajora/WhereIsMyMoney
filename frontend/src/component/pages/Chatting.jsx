@@ -1,9 +1,9 @@
 import { useContext, useEffect, useRef } from "react";
-import { GlobalContext } from "../api/Context";
-import StartMessage from "./StartMessage";
-import Introduction from "./Introduction";
-import Record from "./Record";
-import MenuMessage from "./MenuMessage";
+import { GlobalContext } from "../../api/Context";
+import StartMessage from "../menu/StartMessage";
+import Introduction from "../menu/Introduction";
+import Record from "../pages/Record";
+import MenuMessage from "../menu/MenuMessage";
 
 const Chatting = () => {
   // console.log(messages);
@@ -90,6 +90,7 @@ const Chatting = () => {
       <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-emerald-50">
         <div className="mx-auto max-w-2xl px-4 py-6 pb-24">
           {messages.map((message, index) => {
+            console.log(message);
             const formattedTime = `${
               currentTime < 10 ? `0${currentTime}` : currentTime
             }:${currentMinutes < 10 ? `0${currentMinutes}` : currentMinutes}`;

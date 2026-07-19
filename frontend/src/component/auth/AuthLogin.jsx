@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { AuthService } from "../api/apiClient"; // Update path based on your project structure
+import { AuthService } from "../../api/apiClient"; // Update path based on your project structure
 import Register from "./AuthRegister";
 
 

@@ -1,8 +1,8 @@
 import React, { useContext, useState } from "react";
-import { AuthService, RecordService } from "../api/apiClient"; // Update path based on your project structure
+import { AuthService, RecordService } from "../../api/apiClient"; // Update path based on your project structure
 import Register from "./AuthRegister";
 import Login from "./AuthLogin";
-import { GlobalContext } from "../api/Context";
+import { GlobalContext } from "../../api/Context";
 
 const Auth = () => {
   const { isAuthenticated, setIsAuthenticated, handleMessages, setLoading } =

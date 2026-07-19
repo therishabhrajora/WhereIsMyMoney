@@ -1,8 +1,8 @@
 import { SendIcon, Menu as MenuIcon, X } from "lucide-react";
 import { useContext, useState } from "react";
-import { Menu } from "./Menu";
-import { GlobalContext } from "../api/Context";
-import apiClient, { RecordService, UserMessageService } from "../api/apiClient";
+import Menu from "../menu/Menu";
+import { GlobalContext } from "../../api/Context";
+import apiClient, { GeminiService, RecordService, UserMessageService } from "../../api/apiClient";
 
 const MessageSender = () => {
   const { isMenuOpen, setIsMenuOpen, handleMessages } =
@@ -35,18 +35,38 @@ const MessageSender = () => {
     };
 
     const saveInputMessage = async (input) => {
-      
       const res = await UserMessageService.addUserMessages(messagePayload);
- 
+      console.log(typeof input)
       handleMessages(res.data);
-      const parsed = handleExpense(input);
-      if (parsed.numIndex === false) {
-        setInput("");
-        return;
-      }
+      const response = await GeminiService.chat({
+        message: input,
+        id: "1"
+      });
+      const rawText = response.data;
+      console.log("record");
+      console.log(rawText);
+      const newRecord = {
+        ...rawText,
+        id: Date.now(),
+        date: new Date().getDate(),
+        month: new Date().getMonth() + 1,
+        year: new Date().getFullYear(),
+        type: "record",
+      };
+      const record = await RecordService.addRecord(newRecord);
+      console.log(record);
+      handleMessages(record.data);
+
+      // const parsed = handleExpense(input);
+      // if (parsed.numIndex === false) {
+      //   setInput("");
+      //   return;
+      // }
     };
     saveInputMessage(input);
-    
+
+
+
     setInput("");
   };
 

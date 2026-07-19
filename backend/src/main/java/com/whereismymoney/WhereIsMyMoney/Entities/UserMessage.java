@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 public class UserMessage {
     @Id
     private long id;
-
+    @Column(columnDefinition = "TEXT")
     private String message;
     @Column(name = "message_date", nullable = false)
     private Integer date;

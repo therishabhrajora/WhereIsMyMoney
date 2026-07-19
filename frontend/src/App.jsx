@@ -1,12 +1,13 @@
 import "./App.css";
 import { useContext, useEffect, useState } from "react";
+
+import DefaultMessage from "./component/menu/DefaultMessage";
+import MessageSender from "./component/forms/MessageSender";
+
+import Chatting from "./component/pages/Chatting";
+import PrivateRoute from "./component/pages/PrivateRoute";
 import { GlobalContext } from "./api/Context";
 
-import DefaultMessage from "./component/DefaultMessage";
-import MessageSender from "./component/MessageSender";
-import Chatting from "./component/Chatting";
-import PrivateRoute from "./component/PrivateRoute";
-import { RecordService } from "./api/apiClient";
 
 function App() {
   const user = localStorage.getItem("user");
@@ -33,7 +34,6 @@ function App() {
           {start && (
             <>
               <Chatting messages={messages} />
-
               <MessageSender />
             </>
           )}
