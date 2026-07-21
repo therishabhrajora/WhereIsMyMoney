@@ -25,7 +25,9 @@ public class UserMessageService {
         this.userRepo = userRepo;
         this.userMessageRepo = userMessageRepo;
     }
-    Logger logger=LoggerFactory.getLogger(UserMessageService.class);
+
+    Logger logger = LoggerFactory.getLogger(UserMessageService.class);
+
     public ResponseEntity<?> getAllUserMessage(Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("user is missing");
@@ -44,8 +46,8 @@ public class UserMessageService {
     }
 
     public ResponseEntity<?> addUserMessage(Authentication authentication, UserMessage userMessage) {
-        logger.info("addMessage======="+userMessage.getId()+"===========");
-        
+        logger.info("addMessage=======" + userMessage.getId() + "===========");
+
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("user is missing");
         }
@@ -58,14 +60,12 @@ public class UserMessageService {
         userMessage.setUser(currentUser);
 
         UserMessage userMessage2 = userMessageRepo.save(userMessage);
-        
+
         return ResponseEntity.ok(userMessage2.builder()
                 .id(userMessage2.getId())
                 .message(userMessage2.getMessage())
                 .date(userMessage2.getDate())
-                .month(userMessage2.getMonth())
                 .type(userMessage2.getType())
-                .year(userMessage2.getYear())
                 .build());
 
     }

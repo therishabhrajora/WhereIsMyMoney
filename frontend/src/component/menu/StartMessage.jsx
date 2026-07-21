@@ -45,7 +45,7 @@ const StartMessage = () => {
             items-center
             gap-3
             rounded-2xl
-            bg-gradient-to-r
+            bg-linear-to-r
             from-emerald-500
             to-teal-600
             p-4

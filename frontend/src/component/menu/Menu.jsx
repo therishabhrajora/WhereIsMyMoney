@@ -100,7 +100,7 @@ export const Menu = () => {
         "
       >
         {/* Header */}
-        <div className="flex items-center gap-3 border-b border-slate-100 bg-gradient-to-r from-emerald-500 to-teal-600 px-5 py-4 text-white">
+        <div className="flex items-center gap-3 border-b border-slate-100 bg-linear-to-r from-emerald-500 to-teal-600 px-5 py-4 text-white">
           <div className="rounded-xl bg-white/20 p-2">
             <Terminal className="h-5 w-5" />
           </div>

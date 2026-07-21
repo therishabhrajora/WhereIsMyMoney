@@ -8,6 +8,8 @@ const MessageSender = () => {
   const { isMenuOpen, setIsMenuOpen, handleMessages } =
     useContext(GlobalContext);
 
+
+
   const [input, setInput] = useState("");
 
   const handleToggleMenu = () => {
@@ -28,31 +30,29 @@ const MessageSender = () => {
     const messagePayload = {
       id: Date.now(), // Client-side unique timestamp primary key identifier
       message: input.trim(), // Matches 'private String message;' in Java
-      date: Math.floor(new Date().getDate()),
-      month: Math.floor(new Date().getMonth() + 1),
-      year: Math.floor(new Date().getFullYear()),
+      date: new Date().toISOString().split('T')[0],
       type: "user", // Matching layout discriminator flags
     };
 
     const saveInputMessage = async (input) => {
       const res = await UserMessageService.addUserMessages(messagePayload);
-     
+
       handleMessages(res.data);
+
+      // for AI response
       const response = await GeminiService.chat({
         message: input,
         id: "1"
       });
-      const rawText = response.data;
-   
-    
+     
+      const rawText = response.data;  
       const newRecord = {
         ...rawText,
         id: Date.now(),
-        date: new Date().getDate(),
-        month: new Date().getMonth() + 1,
-        year: new Date().getFullYear(),
+        date: new Date().toISOString().split('T')[0],
         type: "record",
       };
+    
       const record = await RecordService.addRecord(newRecord);
    
       handleMessages(record.data);
@@ -107,9 +107,7 @@ const MessageSender = () => {
             ? hashtags
             : [hashtags]
           : [],
-      date: new Date().getDate(),
-      month: new Date().getMonth() + 1,
-      year: new Date().getFullYear(),
+      date: new Date().toISOString().split('T')[0],
       type: "record",
     };
     const record = await RecordService.addRecord(newRecord);
@@ -261,7 +259,7 @@ const MessageSender = () => {
                 items-center
                 justify-center
                 rounded-full
-                bg-gradient-to-br
+                bg-linear-to-br
                 from-emerald-400
                 to-emerald-600
                 text-white

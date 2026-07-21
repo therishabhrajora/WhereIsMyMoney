@@ -22,7 +22,7 @@ const Introduction = ({ time }) => {
     >
       {/* Header */}
       <div className="mb-8 mt-4 flex items-start gap-4">
-        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-3xl shadow-lg animate-pulse">
+        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-linear-to-br from-emerald-500 to-teal-600 text-3xl shadow-lg animate-pulse">
           💰
         </div>
 

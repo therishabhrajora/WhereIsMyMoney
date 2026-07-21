@@ -22,8 +22,8 @@ public class RecordController {
 
     // 1. Get All Records -> Maps to Endpoints.getRecords
     @GetMapping
-    public ResponseEntity<?> getAllRecords(Authentication authentication) {
-        ResponseEntity<?> allRecords = recordService.getAllRecords(authentication);
+    public ResponseEntity<?> getAllRecords() {
+        ResponseEntity<?> allRecords = recordService.getAllRecords();
         return allRecords;
     }
 
@@ -33,8 +33,8 @@ public class RecordController {
         // Since your entity uses the client-side timestamp 'id' as the primary key
         // (@Id),
         // save() will insert it directly without auto-increment collisions.
-
-        ResponseEntity<?> record2 = recordService.addRecord(authentication, record);
+        System.out.println(record);
+        ResponseEntity<?> record2 = recordService.addRecord(record);
         return record2;
     }
 

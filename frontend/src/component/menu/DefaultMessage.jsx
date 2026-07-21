@@ -79,7 +79,7 @@ const DefaultMessage = () => {
         }
       `}</style>
 
-      <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-slate-50 via-white to-emerald-50">
+      <div className="relative min-h-screen overflow-hidden bg-linear-to-br from-slate-50 via-white to-emerald-50">
 
         {/* Background Blur */}
         <div className="absolute left-10 top-20 h-56 w-56 rounded-full bg-emerald-300/20 blur-3xl" />
@@ -102,7 +102,7 @@ const DefaultMessage = () => {
 
                 <h2 className="text-4xl font-extrabold tracking-tight text-slate-800">
                   Welcome to your
-                  <span className="block bg-gradient-to-r from-emerald-500 to-cyan-500 bg-clip-text text-transparent">
+                  <span className="block bg-linear-to-r from-emerald-500 to-cyan-500 bg-clip-text text-transparent">
                     Expense Tracker
                   </span>
                 </h2>
@@ -128,7 +128,7 @@ const DefaultMessage = () => {
                       glow
                       relative
                       rounded-2xl
-                      bg-gradient-to-r
+                      bg-linear-to-r
                       from-emerald-500
                       via-emerald-600
                       to-teal-600

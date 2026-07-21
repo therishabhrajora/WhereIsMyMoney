@@ -7,6 +7,7 @@ import MessageSender from "./component/forms/MessageSender";
 import Chatting from "./component/pages/Chatting";
 import PrivateRoute from "./component/pages/PrivateRoute";
 import { GlobalContext } from "./api/Context";
+import ChatWindow from "./component/pages/ChatWindow";
 
 
 function App() {
@@ -17,7 +18,7 @@ function App() {
  
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-b from-slate-50 via-white to-emerald-50"
+    <div className="relative min-h-screen bg-linear-to-b from-slate-50 via-white to-emerald-50"
     >
       {user ? (
         <PrivateRoute />
@@ -35,6 +36,7 @@ function App() {
             <>
               <Chatting messages={messages} />
               <MessageSender />
+              <ChatWindow/>
             </>
           )}
         </div>

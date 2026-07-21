@@ -39,7 +39,7 @@ public class SecurityConfig {
                 .formLogin(form -> form.disable())
                 .httpBasic(httpbasic -> httpbasic.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/","/api/users/**","/api/ai/**").permitAll()
+                        .requestMatchers("/","/api/users/**","/api/ai/**","/api/chat/**").permitAll()
 
                         // 🔐 Secure endpoints
                         .requestMatchers("/api/records/**","/api/user-message/**").authenticated()

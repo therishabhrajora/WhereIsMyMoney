@@ -87,7 +87,7 @@ const MenuMessage = ({ time }) => {
       >
         {/* Header */}
 
-        <div className="bg-gradient-to-r from-emerald-500 to-teal-600 p-4  text-white">
+        <div className="bg-linear-to-r from-emerald-500 to-teal-600 p-4  text-white">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-white/80">Expense Summary</p>
@@ -221,7 +221,7 @@ const MenuMessage = ({ time }) => {
               onClick={nextDay}
               className="
                 rounded-2xl
-                bg-gradient-to-r
+                bg-linear-to-r
                 from-emerald-500
                 to-teal-600
                 px-5

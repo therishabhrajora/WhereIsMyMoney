@@ -7,9 +7,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.whereismymoney.WhereIsMyMoney.Dto.UserDtos.Message;
 import com.whereismymoney.WhereIsMyMoney.Services.GeminiService;
+import com.whereismymoney.WhereIsMyMoney.Entities.*;
+import com.whereismymoney.WhereIsMyMoney.Entities.Record;
 
 import jakarta.websocket.server.PathParam;
 
@@ -23,11 +24,10 @@ public class GeminiController {
     }
 
     @PostMapping("/chat")
-public String chat(@RequestBody Message message) {
-    System.out.println("Message: " + message.getMessage() + " | Session: " + message.getId());
-     return geminiService.getChatResponse(message.getMessage(),message.getId());
-}
-
+    public Record chat(@RequestBody Message message) {
+        System.out.println("Message: " + message.getMessage() + " | Session: " + message.getId());
+        return geminiService.addRecord(message.getMessage(), message.getId());
+    }
 
     @GetMapping("/analyze/{id}")
     public String analyzeData(@PathVariable String id) {

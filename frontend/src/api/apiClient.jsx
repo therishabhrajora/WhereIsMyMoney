@@ -50,7 +50,6 @@ apiClient.interceptors.response.use(
   },
 );
 
-// Structured API Service Methods mapping directly to your backend layer routes
 export const AuthService = {
   register: (registerData) =>
     apiClient.post("api/users/register", registerData),
@@ -84,8 +83,12 @@ export const GeminiService = {
   // Example updated axios caller definition
   chat: (input) => apiClient.post("api/ai/chat", input),
 
-  analyze: (id) => apiClient.get(`api/ai/analyze/${id}`)
+  analyze: (id) => apiClient.get(`api/ai/analyze/${id}`),
+
+  getChatResponse:(chatRequest)=>apiClient.post(`api/chat/send`,chatRequest)
+
 }
+
 
 
 

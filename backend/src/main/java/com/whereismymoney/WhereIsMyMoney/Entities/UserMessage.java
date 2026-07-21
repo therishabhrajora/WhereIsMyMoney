@@ -1,6 +1,13 @@
 package com.whereismymoney.WhereIsMyMoney.Entities;
 
+
+import java.time.LocalDate;
+
+import com.whereismymoney.WhereIsMyMoney.config.FinancialStringDataConverter;
+
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Converter;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -22,16 +29,15 @@ import lombok.NoArgsConstructor;
 public class UserMessage {
     @Id
     private long id;
+
     @Column(columnDefinition = "TEXT")
+    @Convert(converter = FinancialStringDataConverter.class)
     private String message;
+
     @Column(name = "message_date", nullable = false)
-    private Integer date;
+    private LocalDate date;
 
-    @Column(name = "message_month", nullable = false)
-    private Integer month;
-
-    @Column(name = "message_year", nullable = false)
-    private Integer year;
+    
 
     @Column(name = "type", nullable = false)
     private String type;

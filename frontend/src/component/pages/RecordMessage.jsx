@@ -64,7 +64,7 @@ const RecordMessage = (props) => {
 
           <div
             className="
-              bg-gradient-to-r
+              bg-linear-to-r
               from-emerald-500
               to-teal-600
               p-5

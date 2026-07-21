@@ -66,7 +66,7 @@ const StatisticsMessage = ({ msgIndex }) => {
       <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white/90 shadow-xl backdrop-blur-xl">
 
         {/* Header */}
-        <div className="bg-gradient-to-r from-blue-500 to-indigo-600 p-5 text-white">
+        <div className="bg-linear-to-r from-blue-500 to-indigo-600 p-5 text-white">
           <p className="text-xs uppercase tracking-[0.2em] text-white/70 font-semibold">
             Statistics
           </p>

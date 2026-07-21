@@ -6,9 +6,9 @@ import Record from "../pages/Record";
 import MenuMessage from "../menu/MenuMessage";
 
 const Chatting = () => {
-  // console.log(messages);
+ 
   const { messages, loading, setLoading } = useContext(GlobalContext);
-  // console.log("after destructring", messages);
+  
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
@@ -37,7 +37,7 @@ const Chatting = () => {
 
   if (loading)
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-slate-50 via-white to-emerald-50">
+      <div className="flex min-h-screen flex-col items-center justify-center bg-linear-to-b from-slate-50 via-white to-emerald-50">
         <div className="space-y-4 text-center animate-pulse">
           {/* Animated Spinner Icon Element */}
           <div className="mx-auto h-10 w-10 animate-spin rounded-full border-4 border-slate-200 border-t-emerald-600"></div>
@@ -87,7 +87,7 @@ const Chatting = () => {
         }
       `}</style>
 
-      <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-emerald-50">
+      <div className="min-h-screen bg-linear-to-b from-slate-50 via-white to-emerald-50">
         <div className="mx-auto max-w-2xl px-4 py-6 pb-24">
           {messages.map((message, index) => {
        
@@ -107,7 +107,7 @@ const Chatting = () => {
                         max-w-[75%]
                         rounded-[22px]
                         rounded-br-md
-                        bg-gradient-to-br
+                        bg-linear-to-br
                         from-emerald-500
                         via-emerald-600
                         to-emerald-700
