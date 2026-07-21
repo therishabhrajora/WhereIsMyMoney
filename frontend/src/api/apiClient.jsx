@@ -6,7 +6,7 @@ const BASE_URL = "https://whereismymoney-87yj.onrender.com/";
 // Create a configured Axios instance
 const apiClient = axios.create({
   baseURL: BASE_URL,
-  timeout: 120000,
+  timeout: 150000,
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
