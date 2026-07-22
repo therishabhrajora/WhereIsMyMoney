@@ -126,7 +126,7 @@ public class UserService {
         String token = UUID.randomUUID().toString();
         PasswordResetToken resetToken = new PasswordResetToken();
         resetToken.setToken(token);
-        resetToken.setUser(user);
+        resetToken.setUser(user);   
         resetToken.setExpiryDate(LocalDateTime.now().plusMinutes(15));
         tokenRepo.deleteByUser(user);
         tokenRepo.save(resetToken);
