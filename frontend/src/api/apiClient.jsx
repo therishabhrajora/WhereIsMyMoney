@@ -54,6 +54,8 @@ export const AuthService = {
   register: (registerData) =>
     apiClient.post("api/users/register", registerData),
   login: (loginData) => apiClient.post("api/users/login", loginData),
+  forgotPassword: (payload) => apiClient.post("api/users/forgot-password", payload),
+
 };
 export const MessageService = {
   getMessages: () => apiClient.get("api/messages"),

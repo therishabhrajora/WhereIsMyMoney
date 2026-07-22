@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
@@ -43,5 +44,27 @@ public class UserController {
     public ResponseEntity<?> loginUser(@RequestBody UserLoginDto loginDto) {
         ResponseEntity<?> login = userService.login(loginDto);
         return login;
+    }
+
+    @PostMapping("/forgot-password")
+    public void resetForgotPassword(@RequestBody Map<String, String> payload) {
+        userService.resetPassword(payload);
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> handlePasswordUpdate(@RequestBody Map<String, String> payload) {
+        String token = payload.get("token");
+        String newPassword = payload.get("newPassword");
+
+        if (token == null || newPassword == null || newPassword.trim().isEmpty()) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Missing token or password details."));
+        }
+
+        try {
+            userService.updatePasswordUsingToken(token, newPassword.trim());
+            return ResponseEntity.ok(Map.of("message", "Password updated successfully."));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
     }
 }

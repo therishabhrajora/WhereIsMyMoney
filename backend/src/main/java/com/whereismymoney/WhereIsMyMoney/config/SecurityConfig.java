@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -34,21 +35,6 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain sequrityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(csrf -> csrf.disable())
-                .formLogin(form -> form.disable())
-                .httpBasic(httpbasic -> httpbasic.disable())
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/","/api/users/**","/api/ai/**","/api/chat/**").permitAll()
-
-                        // 🔐 Secure endpoints
-                        .requestMatchers("/api/records/**","/api/user-message/**").authenticated()
-
-                        // fallback: block anything else
-                        .anyRequest().denyAll())
-                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
-                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
         http.cors(cors -> cors.configurationSource(request -> {
             CorsConfiguration config = new CorsConfiguration();
             config.setAllowCredentials(true);
@@ -56,12 +42,27 @@ public class SecurityConfig {
             config.setAllowedOrigins(List.of(
                     "https://moneyspendwise.netlify.app",
                     "http://localhost:5173",
-                "https://nl1mk3c6-5173.inc1.devtunnels.ms"));
+                    "https://nl1mk3c6-5173.inc1.devtunnels.ms"));
 
             config.addAllowedHeader("*");
             config.addAllowedMethod("*");
             return config;
         }));
+        http
+                .csrf(csrf -> csrf.disable())
+                .formLogin(form -> form.disable())
+                .httpBasic(httpbasic -> httpbasic.disable())
+                .authorizeHttpRequests(auth -> auth
+                        
+                        .requestMatchers("/**", "/api/users/**", "/api/ai/**", "/api/chat/**").permitAll()
+
+                        // 🔐 Secure endpoints
+                        .requestMatchers("/api/records/**", "/api/user-message/**").authenticated()
+
+                        // fallback: block anything else
+                        .anyRequest().denyAll())
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
+                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         // http.oauth2Login(oauth -> {
         // oauth.loginPage("/collections/account");

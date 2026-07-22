@@ -3,7 +3,7 @@ import { AuthService } from "../../api/apiClient"; // Update path based on your 
 import Register from "./AuthRegister";
 
 
-const Login = ({ onLoginSuccess, onSwitchToRegister }) => {
+const Login = ({ onLoginSuccess, onSwitchToRegister,onSwitchToForgotPassword }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("ROLE_USER");
@@ -103,6 +103,7 @@ const Login = ({ onLoginSuccess, onSwitchToRegister }) => {
                 placeholder="••••••••"
                 className="w-full text-sm px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-900/5 focus:border-slate-900 transition-all placeholder:text-slate-300"
               />
+              <p onClick={onSwitchToForgotPassword} className="text-xs tracking-tight my-2 text-indigo-500 hover:cursor-pointer">Forgot Password ?</p>
             </div>
 
             {/* Custom Input Structure Section mapping directly to your roles assignment values */}

@@ -3,29 +3,36 @@ import { AuthService, RecordService } from "../../api/apiClient"; // Update path
 import Register from "./AuthRegister";
 import Login from "./AuthLogin";
 import { GlobalContext } from "../../api/Context";
+import ForgotPassword from "./ForgotPassword";
 
 const Auth = () => {
   const { isAuthenticated, setIsAuthenticated, handleMessages, setLoading } =
     useContext(GlobalContext);
 
   const [registerOpen, setRegisterOpen] = useState(false);
+  const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false);
 
   const handleRegisterSuccess = (response) => {
     setRegisterOpen(false);
   };
+
+
+  const handleForgotPasswordSuccess = (response) => {
+    setForgotPasswordOpen(false);
+  }
 
   const handleLoginSuccess = (response) => {
     const fetchRecords = async () => {
       try {
         // 1. Await your API call to resolve the promise safely
         const records = await RecordService.getRecords();
-        const data=records.data;
+        const data = records.data;
         if (data && data.length > 0) {
-            for(let r of data){
-             
-                handleMessages(r);
-            }
-          
+          for (let r of data) {
+
+            handleMessages(r);
+          }
+
         }
         // 2. Process your records cleanly
       } catch (error) {
@@ -41,21 +48,27 @@ const Auth = () => {
     if (token) {
       setIsAuthenticated(true);
       fetchRecords();
-    } 
+    }
     setIsAuthenticated(true);
   };
 
-  return registerOpen ? (
-    <Register
+  if (registerOpen) {
+    return <Register
       onSwitchToLogin={() => setRegisterOpen(false)}
       onRegisterSuccess={handleRegisterSuccess}
     />
-  ) : (
-    <Login
+  } else if (forgotPasswordOpen) {
+    return <ForgotPassword
+      onSwitchToLogin={() => setForgotPasswordOpen(false)}
+      onForgotpasswordSuccess={handleForgotPasswordSuccess}
+    />
+  } else {
+    return <Login
       onSwitchToRegister={() => setRegisterOpen(true)}
       onLoginSuccess={handleLoginSuccess}
+      onSwitchToForgotPassword={() => setForgotPasswordOpen(true)}
     />
-  );
+  }
 };
 
 export default Auth;
