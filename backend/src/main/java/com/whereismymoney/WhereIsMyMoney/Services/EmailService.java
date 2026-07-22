@@ -19,7 +19,7 @@ public class EmailService {
 
     public void sendResetPasswordEmail(String toEmail, String resetLink) {
         // 1. Define your verified SendGrid single sender identity address
-        Email from = new Email("YOUR_VERIFIED_SENDGRID_EMAIL@gmail.com");
+        Email from = new Email("rishabhrajora20@gmail.com");
         Email to = new Email(toEmail);
         String subject = "ExpenseTrackr — Reset Your Password";
         
