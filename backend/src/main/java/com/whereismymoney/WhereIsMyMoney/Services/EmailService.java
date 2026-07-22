@@ -1,32 +1,30 @@
 package com.whereismymoney.WhereIsMyMoney.Services;
 
-import java.util.Date;
-
-
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+import com.sendgrid.Method;
+import com.sendgrid.Request;
+import com.sendgrid.Response;
+import com.sendgrid.SendGrid;
+import com.sendgrid.helpers.mail.Mail;
+import com.sendgrid.helpers.mail.objects.Content;
+import com.sendgrid.helpers.mail.objects.Email;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class EmailService {
 
-    private final JavaMailSender mailSender;
-
-    EmailService(JavaMailSender mailSender) {
-        this.mailSender = mailSender;
-    }
+    // Automatically reads your existing API key environment variable from Render
+    @Value("${SPRING_SENDGRID_API_KEY}")
+    private String sendGridApiKey;
 
     public void sendResetPasswordEmail(String toEmail, String resetLink) {
-        try{
- SimpleMailMessage message = new SimpleMailMessage();
-
-        // Match the email sender account declared in application.properties
-        message.setFrom("rishabhrajora20@gmail.com");
-        message.setTo(toEmail);
-        message.setSubject("ExpenseTrackr — Reset Your Password");
-        message.setSentDate(new Date());
-        // Format a clear, professional email body layout
-        message.setText("""
+        // 1. Define your verified SendGrid single sender identity address
+        Email from = new Email("YOUR_VERIFIED_SENDGRID_EMAIL@gmail.com");
+        Email to = new Email(toEmail);
+        String subject = "ExpenseTrackr — Reset Your Password";
+        
+        // 2. Format a professional email body layout text message
+        String messageBody = """
                 Hello,
 
                 We received a request to reset the password linked to this email address on ExpenseTrackr.
@@ -39,15 +37,27 @@ public class EmailService {
 
                 Best regards,
                 The ExpenseTrackr Security Team
-                """.formatted(resetLink));
+                """.formatted(resetLink);
 
-        // Dispatch payload through Gmail's network threads
-        System.out.println(message);
-        mailSender.send(message);
-        }catch(Exception e){
-            System.out.println(e);
+        Content content = new Content("text/plain", messageBody);
+        Mail mail = new Mail(from, subject, to, content);
 
+        // 3. Initialize SendGrid over a standard secure web port (443) instead of SMTP
+        SendGrid sg = new SendGrid(sendGridApiKey);
+        Request request = new Request();
+
+        try {
+            request.setMethod(Method.POST);
+            request.setEndpoint("mail/send");
+            request.setBody(mail.build());
+            
+            // Fires an HTTP API web call that bypasses Render cloud firewalls natively
+            Response response = sg.api(request);
+            
+            System.out.println("SendGrid Web API status response code: " + response.getStatusCode());
+        } catch (Exception ex) {
+            System.err.println("SendGrid Web API execution failed: " + ex.getMessage());
+            throw new RuntimeException("Failed to successfully route transaction email.");
         }
-       
     }
 }
