@@ -17,11 +17,13 @@ const Register = ({ onRegisterSuccess, onSwitchToLogin }) => {
 
         // 1. Client-side input validation checks
         if (!email || !password || !confirmPassword) {
+            toast.warning("Please fill out all required validation fields.");
             setErrorMessage("Please fill out all required validation fields.");
             return;
         }
 
         if (password !== confirmPassword) {
+            toast.error("Passwords do not match. Please verify entries. ❌");
             setErrorMessage("Passwords do not match. Please verify entries.");
             return;
         }
@@ -37,12 +39,15 @@ const Register = ({ onRegisterSuccess, onSwitchToLogin }) => {
 
         try {
             // 3. Dispatch signup payload request to Spring Boot backend
-           
+
             const response = await AuthService.register(registerPayload);
-             
+            toast.success("Account created successfully! Redirecting... 🎉", {
+                autoClose: 1500 // Automatically closes right when the redirect triggers
+            });
+
 
             setSuccessMessage("Account created successfully! Redirecting...");
-            
+
             // Clear input fields upon successful signup completion
             setEmail("");
             setPassword("");
@@ -55,8 +60,10 @@ const Register = ({ onRegisterSuccess, onSwitchToLogin }) => {
                 }, 1500);
             }
         } catch (error) {
-            // Catches database email duplication errors or general network issues
-            setErrorMessage(error.message || "Registration failed. Email might already be in use.");
+            const apiErrorMessage = error.response?.data?.message || error.message || "Registration failed. Email might already be in use.";
+        
+        toast.error(apiErrorMessage);
+        setErrorMessage(apiErrorMessage);
         } finally {
             setLoading(false);
         }
@@ -171,10 +178,10 @@ const Register = ({ onRegisterSuccess, onSwitchToLogin }) => {
                             {loading ? "Registering Profile..." : "Secure Sign Up"}
                         </button>
                     </div>
-                    
+
                     <div className="text-center text-sm text-slate-600">
                         Already have an account?{" "}
-                        <span 
+                        <span
                             onClick={onSwitchToLogin}
                             className="font-semibold text-slate-950 hover:underline cursor-pointer transition-all"
                         >

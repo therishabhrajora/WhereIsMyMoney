@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
+import { AuthService } from '../../api/apiClient';
 
 export default function ResetPassword() {
   const [searchParams] = useSearchParams();
@@ -14,7 +15,8 @@ export default function ResetPassword() {
   const handlePasswordReset = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      setStatusMessage({ type: 'error', text: 'Passwords do not match!' });
+      // 1. Error toast for mismatched inputs
+      toast.error('Passwords do not match! ❌');
       return;
     }
 
@@ -22,29 +24,29 @@ export default function ResetPassword() {
     setStatusMessage({ type: '', text: '' });
 
     try {
-      const response = await fetch('http://localhost:9090/api/users/reset-password', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          token: token,
-          newPassword: password.trim()
-        }),
-      });
+      const body = {
+        token: token,
+        newPassword: password.trim()
+      };
+      const response = await AuthService.resetPassword(body);
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to update password.');
+      if (response.status != 200) {
+        throw new Error(response.data.error || 'Failed to update password.');
       }
 
+      toast.success('Password reset successful! Redirecting to login... 🔐', {
+        autoClose: 3000
+      });
+
       setStatusMessage({ type: 'success', text: 'Password reset successful! Redirecting to login...' });
-      
+
       setTimeout(() => navigate("/login"), 3000);
       setTimeout(() => window.location.reload(), 4000);
       // Redirects to sign-in page after 3 seconds
 
     } catch (error) {
-      setStatusMessage({ type: 'error', text: error.message });
+      const apiErrorMessage = error.response?.data?.message || error.message || 'Something went wrong.';
+      toast.error(apiErrorMessage);
     } finally {
       setIsLoading(false);
     }

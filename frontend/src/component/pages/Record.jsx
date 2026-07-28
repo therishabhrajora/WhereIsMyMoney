@@ -21,7 +21,7 @@ const Record = ({ record, msgIndex, isMenu, time }) => {
   const paddedDay = String(currentDayNum).padStart(2, '0');
 
   // "2026-07-21"
-  const targetIsoDate = `${currentYearNum}-${paddedMonth}-${paddedDay}`;
+  const targetIsoDate = `${currentYearNum}-${paddedMonth}-${paddedDay}`; 
 
   // Filter messages up to the current message index item
   const historicalExpenses = messages
@@ -86,8 +86,6 @@ const Record = ({ record, msgIndex, isMenu, time }) => {
         animate-in fade-in slide-in-from-bottom-4
       "
     >
-      {/* Top  linear Line */}
-      <div className="h-1 w-full" />
 
       <div>
         {isMenu ? (
@@ -108,7 +106,7 @@ const Record = ({ record, msgIndex, isMenu, time }) => {
               msgIndex={msgIndex}
             />
 
-            <div className="border-t border-slate-100 p-4">
+            <div className=" pr-4 pb-4">
               <p className="text-right text-[11px] tracking-wide text-slate-400">
                 {time}
               </p>

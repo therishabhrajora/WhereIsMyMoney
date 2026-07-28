@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toast } from 'react-toastify';
 
 // const BASE_URL = "http://localhost:9090/";
 const BASE_URL = "https://whereismymoney-87yj.onrender.com/";
@@ -6,7 +7,7 @@ const BASE_URL = "https://whereismymoney-87yj.onrender.com/";
 // Create a configured Axios instance
 const apiClient = axios.create({
   baseURL: BASE_URL,
-  timeout: 150000,
+  timeout: 300000,
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
@@ -34,16 +35,21 @@ apiClient.interceptors.response.use(
       if (status === 401 || status === 403) {
         localStorage.removeItem("token");
         localStorage.clear();
+        toast.error("Session expired. Please log in again.");
         window.location.href - "/login";
       } else if (status === 500) {
-        alert("internal server error");
-      } else if (status === 429 || error.inludes("429")) {
-        alert("you quota of request expired for today");
+        toast.error("Internal server error. Please try again later.");
+        // alert("internal server error");
+
+      } else if (status === 429 || (error.message && error.message.includes("429"))) {
+        toast.warning("Your request quota has expired for today. 🛑");
+      } else {
+        toast.error(error.response.data?.message || "An error occurred.");
       }
     } else if (error.request) {
-      alert("network Error:no response recieved from server");
+      toast.error("Network Error: No response received from server. Check your connection.");
     } else {
-      alert("configuration error");
+      toast.error("Configuration error. Failed to send request.");
       console.log(error.message);
     }
     return Promise.reject(error);
@@ -55,8 +61,9 @@ export const AuthService = {
     apiClient.post("api/users/register", registerData),
   login: (loginData) => apiClient.post("api/users/login", loginData),
   forgotPassword: (payload) => apiClient.post("api/users/forgot-password", payload),
-
+  resetPassword: (payload) => apiClient.post("api/users/reset-password", payload),
 };
+
 export const MessageService = {
   getMessages: () => apiClient.get("api/messages"),
   sendMessage: (messageData) =>
@@ -82,13 +89,9 @@ export const UserMessageService = {
 };
 
 export const GeminiService = {
-  // Example updated axios caller definition
   chat: (input) => apiClient.post("api/ai/chat", input),
-
   analyze: (id) => apiClient.get(`api/ai/analyze/${id}`),
-
-  getChatResponse:(chatRequest)=>apiClient.post(`api/chat/send`,chatRequest)
-
+  getChatResponse: (chatRequest) => apiClient.post(`api/chat/send`, chatRequest)
 }
 
 

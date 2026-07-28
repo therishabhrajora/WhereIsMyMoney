@@ -4,6 +4,7 @@ import Register from "./AuthRegister";
 import Login from "./AuthLogin";
 import { GlobalContext } from "../../api/Context";
 import ForgotPassword from "./ForgotPassword";
+import { toast } from "react-toastify";
 
 const Auth = () => {
   const { isAuthenticated, setIsAuthenticated, handleMessages, setLoading } =
@@ -14,15 +15,18 @@ const Auth = () => {
 
   const handleRegisterSuccess = (response) => {
     setRegisterOpen(false);
+    toast.success("Account registered successfully! Please log in. 🎉");
   };
 
 
   const handleForgotPasswordSuccess = (response) => {
     setForgotPasswordOpen(false);
+    toast.info("Password reset instructions sent to your email. 📬");
   }
 
   const handleLoginSuccess = (response) => {
     const fetchRecords = async () => {
+
       try {
         // 1. Await your API call to resolve the promise safely
         const records = await RecordService.getRecords();
@@ -34,22 +38,29 @@ const Auth = () => {
           }
 
         }
+        toast.success("Welcome back! Your dashboard has been synchronized. 📈");
         // 2. Process your records cleanly
       } catch (error) {
         console.error(
           "Failed to load records on initial mount:",
           error.message,
         );
+        toast.warning("Logged in, but failed to load your historical records. Try refreshing.");
+      } finally {
+        setLoading(false);
       }
     };
-    const token = localStorage.getItem("token");
 
+    const token = localStorage.getItem("token") || response?.data?.token;
 
-    if (token) {
-      setIsAuthenticated(true);
-      fetchRecords();
+    if (!token) {
+      toast.error("Authentication failed: No secure session token returned.");
+      return;
     }
     setIsAuthenticated(true);
+    setLoading(true);
+    fetchRecords()
+
   };
 
   if (registerOpen) {

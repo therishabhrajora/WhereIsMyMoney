@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { AuthService } from "../../api/apiClient"; // Update path based on your project structure
 import Register from "./AuthRegister";
+import { toast } from "react-toastify";
 
 
-const Login = ({ onLoginSuccess, onSwitchToRegister,onSwitchToForgotPassword }) => {
+const Login = ({ onLoginSuccess, onSwitchToRegister, onSwitchToForgotPassword }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("ROLE_USER");
@@ -15,6 +16,7 @@ const Login = ({ onLoginSuccess, onSwitchToRegister,onSwitchToForgotPassword }) 
     setErrorMessage("");
 
     if (!email || !password) {
+      toast.warning("Please enter both email and password.");
       setErrorMessage("Please enter both email and password.");
       return;
     }
@@ -31,8 +33,8 @@ const Login = ({ onLoginSuccess, onSwitchToRegister,onSwitchToForgotPassword }) 
     try {
       // 2. Dispatch request and await the backend verification response
       const response = await AuthService.login(loginPayload);
-     
-      
+
+
 
       // 3. Persist the generated JWT token string locally
       if (response.data.token) {
@@ -41,16 +43,20 @@ const Login = ({ onLoginSuccess, onSwitchToRegister,onSwitchToForgotPassword }) 
         localStorage.setItem("userRole", response.data.role);
       }
 
+      toast.success("Login successful! Authenticating... 🔐");
+
       // Execute success callback to redirect user or refresh global states
       if (onLoginSuccess) {
         onLoginSuccess(response);
-        
+
       }
     } catch (error) {
       // Handles unmapped network breaks or explicit 401 exceptions cleanly
-      setErrorMessage(
-        error.message || "Invalid credentials. Authentication failed.",
-      );
+      const apiErrorMessage = error.response?.data?.message || error.message || "Invalid credentials. Authentication failed.";
+
+      // 4. Error toast for bad credentials or server errors
+      toast.error(apiErrorMessage);
+      setErrorMessage(apiErrorMessage);
     } finally {
       setLoading(false);
     }
@@ -115,22 +121,20 @@ const Login = ({ onLoginSuccess, onSwitchToRegister,onSwitchToForgotPassword }) 
                 <button
                   type="button"
                   onClick={() => setRole("ROLE_USER")}
-                  className={`flex-1 py-2.5 text-xs font-bold tracking-wide uppercase rounded-xl border transition-all ${
-                    role === "ROLE_USER"
+                  className={`flex-1 py-2.5 text-xs font-bold tracking-wide uppercase rounded-xl border transition-all ${role === "ROLE_USER"
                       ? "bg-slate-900 border-slate-900 text-white shadow-sm"
                       : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"
-                  }`}
+                    }`}
                 >
                   Standard User
                 </button>
                 <button
                   type="button"
                   onClick={() => setRole("ROLE_ADMIN")}
-                  className={`flex-1 py-2.5 text-xs font-bold tracking-wide uppercase rounded-xl border transition-all ${
-                    role === "ROLE_ADMIN"
+                  className={`flex-1 py-2.5 text-xs font-bold tracking-wide uppercase rounded-xl border transition-all ${role === "ROLE_ADMIN"
                       ? "bg-slate-900 border-slate-900 text-white shadow-sm"
                       : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"
-                  }`}
+                    }`}
                 >
                   System Admin
                 </button>

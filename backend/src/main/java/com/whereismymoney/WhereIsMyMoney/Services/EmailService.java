@@ -16,6 +16,8 @@ public class EmailService {
     // Automatically reads your existing API key environment variable from Render
     @Value("${SPRING_SENDGRID_API_KEY}")
     private String sendGridApiKey;
+    // @Value("${spring.mail.password}")
+    // private String sendGridApiKey;
 
     public void sendResetPasswordEmail(String toEmail, String resetLink) {
         // 1. Define your verified SendGrid single sender identity address

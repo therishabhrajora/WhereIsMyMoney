@@ -10,6 +10,7 @@ import { GlobalContext } from "./api/Context";
 import ChatWindow from "./component/pages/ChatWindow";
 import { Route, Router, Routes } from "react-router-dom";
 import ResetPassword from "./component/auth/ResetPassword";
+import { ToastContainer } from "react-toastify";
 
 
 function App() {
@@ -54,7 +55,9 @@ function App() {
       <Routes>
         <Route path="/reset-password" element={<ResetPassword />}></Route>
       </Routes>
+      <ToastContainer position="top-right" autoClose={3000} />
     </div>
+
   );
 }
 

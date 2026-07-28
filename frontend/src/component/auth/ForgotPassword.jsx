@@ -9,7 +9,12 @@ export default function ForgotPassword({ onForgotPasswordSuccess, onSwitchToLogi
 
     const handleResetSubmit = async (e) => {
         e.preventDefault();
-        if (!email.trim()) return;
+        if (!email.trim()) {
+            // 1. Alert user if they click submit with an empty input field
+            toast.warning("Please enter your email address first.");
+            return;
+        }
+
 
         setIsLoading(true);
         setErrorMessage('');
@@ -17,11 +22,15 @@ export default function ForgotPassword({ onForgotPasswordSuccess, onSwitchToLogi
         try {
             // Replace with your actual Spring Boot Security auth endpoint link
             console.log(email)
-            const response = await AuthService.forgotPassword({email:email})
+            const response = await AuthService.forgotPassword({ email: email })
             console.log(response);
-            if (response.status!=200) {
+            if (response.status != 200) {
                 throw new Error('No account found with this email address.');
             }
+
+            toast.success("Reset link sent! Checking account status... 📨", {
+                autoClose: 3000 // Closes smoothly right when the state changes below
+            });
             // Transition smoothly to success checkmark view
             if (onForgotPasswordSuccess) {
                 setTimeout(() => {
@@ -29,7 +38,10 @@ export default function ForgotPassword({ onForgotPasswordSuccess, onSwitchToLogi
                 }, 3000);
             }
         } catch (error) {
-            setErrorMessage(error.message || 'Something went wrong. Please try again.');
+            const apiErrorMessage = error.response?.data?.message || error.message || 'Something went wrong. Please try again.';
+
+            toast.error(apiErrorMessage);
+            setErrorMessage(apiErrorMessage);
         } finally {
             setIsLoading(false);
         }

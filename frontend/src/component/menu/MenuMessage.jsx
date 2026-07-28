@@ -4,32 +4,31 @@ import { GlobalContext } from "../../api/Context";
 const MenuMessage = ({ time }) => {
   const { messages, updateTodayExpenseOpen } = useContext(GlobalContext);
 
-  const currentDate = new Date();
+  const getTodayIsoString = (dateObj = new Date()) => {
+    const year = dateObj.getFullYear();
+    const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+    const day = String(dateObj.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
 
-  const [date, setDate] = useState(currentDate);
+  const [date, setDate] = useState(getTodayIsoString()); // "YYYY-MM-DD"
   const [selectedCategory, setSelectedCategory] = useState(null);
 
-  const currentDayNum = date.getDate();
-  const currentMonthNum = date.getMonth() + 1;
-  const currentYearNum = date.getFullYear();
-
-  const todayExpensesData = messages
+  const filteredExpensesData = messages
     .filter((item) => item.type === "record")
-    .filter(
-      (item) =>
-        Number(item.date) === currentDayNum &&
-        Number(item.month) === currentMonthNum &&
-        Number(item.year) === currentYearNum,
-    );
+    .filter((item) => item.date === date);
 
-  const todayExpenses = todayExpensesData.reduce((sum, item) => {
+
+
+
+  const todayExpenses = filteredExpensesData.reduce((sum, item) => {
     const expenseValue = Number(item.expense || 0);
     const incomeValue = Number(item.income || 0);
 
     return expenseValue === 0 ? sum + incomeValue : sum - expenseValue;
   }, 0);
 
-  const categoryTotals = todayExpensesData.reduce((acc, item) => {
+  const categoryTotals = filteredExpensesData.reduce((acc, item) => {
     const cat = item.category;
     const expenseValue = Number(item.expense || 0);
     const incomeValue = Number(item.income || 0);
@@ -48,18 +47,18 @@ const MenuMessage = ({ time }) => {
   }, {});
 
   const nextDay = () => {
-    const next = new Date(date);
-    next.setDate(date.getDate() + 1);
+    const current = new Date(date + "T00:00:00"); // Standardized timezone safety
+    current.setDate(current.getDate() + 1);
 
-    setDate(next);
+    setDate(getTodayIsoString(current));
     setSelectedCategory(null);
   };
 
   const prevDay = () => {
-    const prev = new Date(date);
-    prev.setDate(date.getDate() - 1);
+    const current = new Date(date + "T00:00:00");
+    current.setDate(current.getDate() - 1);
 
-    setDate(prev);
+    setDate(getTodayIsoString(current));
     setSelectedCategory(null);
   };
 
@@ -83,7 +82,7 @@ const MenuMessage = ({ time }) => {
       `}</style>
 
       <div
-        className="dashboard-card overflow-hidden rounded-3xl my-4 border border-slate-200 shadow-md hover:shadow-lg"
+        className="dashboard-card overflow-hidden rounded-3xl "
       >
         {/* Header */}
 
@@ -93,7 +92,7 @@ const MenuMessage = ({ time }) => {
               <p className="text-sm text-white/80">Expense Summary</p>
 
               <h2 className="mt-1 text-2xl font-bold">
-                {currentDayNum}-{currentMonthNum}-{currentYearNum}
+                {date}
               </h2>
             </div>
 
@@ -101,9 +100,8 @@ const MenuMessage = ({ time }) => {
               <p className="text-xs uppercase tracking-widest">Balance</p>
 
               <p
-                className={`mt-1 text-2xl font-bold ${
-                  todayExpenses >= 0 ? "text-green-100" : "text-red-100"
-                }`}
+                className={`mt-1 text-2xl font-bold ${todayExpenses >= 0 ? "text-green-100" : "text-red-100"
+                  }`}
               >
                 {todayExpenses >= 0 ? `+${todayExpenses}` : todayExpenses}
               </p>
@@ -115,12 +113,11 @@ const MenuMessage = ({ time }) => {
           {selectedCategory ? (
             <div>
               <div className="mb-5 text-center font-mono text-xs text-slate-400">
-                {currentYearNum}-{String(currentMonthNum).padStart(2, "0")}-
-                {String(currentDayNum).padStart(2, "0")}
+                {date}
               </div>
 
               <div className="space-y-3">
-                {todayExpensesData
+                {filteredExpensesData
                   .filter((item) => item.category === selectedCategory)
                   .map((item) => {
                     const isIncome = Number(item.expense || 0) === 0;
@@ -145,11 +142,10 @@ const MenuMessage = ({ time }) => {
                         </div>
 
                         <span
-                          className={`rounded-full px-3 py-1 text-sm font-semibold ${
-                            isIncome
-                              ? "bg-emerald-100 text-emerald-700"
-                              : "bg-red-100 text-red-600"
-                          }`}
+                          className={`rounded-full px-3 py-1 text-sm font-semibold ${isIncome
+                            ? "bg-emerald-100 text-emerald-700"
+                            : "bg-red-100 text-red-600"
+                            }`}
                         >
                           {amount}
                         </span>

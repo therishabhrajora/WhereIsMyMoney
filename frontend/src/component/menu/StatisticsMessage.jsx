@@ -3,38 +3,44 @@ import Data from "../../api/Data";
 import { GlobalContext } from "../../api/Context";
 
 const StatisticsMessage = ({ msgIndex }) => {
-  const { monthNames } = Data;
+ const { monthNames } = Data;
   const { messages, updateStaticsOpen } = useContext(GlobalContext);
 
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedCategory, setSelectedCategory] = useState(null);
 
-  const historicalExpenses = messages
-    .filter((item) => item.type === "record")
-    .slice(0, msgIndex + 1);
+  // 1. Guard against undefined msgIndex to avoid app crashes
+  const historicalExpenses = typeof msgIndex !== 'undefined' 
+    ? messages.filter((item) => item.type === "record").slice(0, msgIndex + 1)
+    : messages.filter((item) => item.type === "record");
 
   const currentMonthNum = selectedDate.getMonth() + 1;
   const currentYearNum = selectedDate.getFullYear();
 
+  // 2. CRITICAL FIX: Set day to 1 before shifting months to avoid calendar day-overflow bugs
   const nextMonth = () => {
     const next = new Date(selectedDate);
-    next.setMonth(selectedDate.getMonth() + 1);
+    next.setDate(1); 
+    next.setMonth(next.getMonth() + 1);
     setSelectedDate(next);
-    setSelectedCategory(null); // Clear selected category when changing months
+    setSelectedCategory(null); 
   };
 
   const prevMonth = () => {
     const prev = new Date(selectedDate);
-    prev.setMonth(selectedDate.getMonth() - 1);
+    prev.setDate(1); 
+    prev.setMonth(prev.getMonth() - 1);
     setSelectedDate(prev);
-    setSelectedCategory(null); // Clear selected category when changing months
+    setSelectedCategory(null); 
   };
 
-  const monthExpenses = historicalExpenses.filter(
-    (item) =>
-      Number(item.month) === currentMonthNum &&
-      Number(item.year) === currentYearNum
-  );
+  // 3. Robust parsing logic for item.month and item.year
+  const monthExpenses = historicalExpenses.filter((item) => {
+    const itemMonth = item.date ? new Date(item.date).getMonth() + 1 : Number(item.month);
+    const itemYear = item.date ? new Date(item.date).getFullYear() : Number(item.year);
+    
+    return itemMonth === currentMonthNum && itemYear === currentYearNum;
+  });
 
   const netBalance = monthExpenses.reduce((sum, item) => {
     const expenseValue = Number(item.expense || 0);
@@ -63,7 +69,7 @@ const StatisticsMessage = ({ msgIndex }) => {
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-3 duration-500">
-      <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white/90 shadow-xl backdrop-blur-xl">
+      <div className="overflow-hidden rounded-3xl  bg-white/90  backdrop-blur-xl">
 
         {/* Header */}
         <div className="bg-linear-to-r from-blue-500 to-indigo-600 p-5 text-white">
@@ -74,7 +80,7 @@ const StatisticsMessage = ({ msgIndex }) => {
           <div className="mt-2 flex items-center justify-between">
             <h2 className="text-2xl font-extrabold">          
               {monthNames[currentMonthNum]} {currentYearNum}
-            </h2>x  
+            </h2>
           </div>
 
           <div className="mt-4 rounded-2xl bg-white/20 p-3 backdrop-blur">

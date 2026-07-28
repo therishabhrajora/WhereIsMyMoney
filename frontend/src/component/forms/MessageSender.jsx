@@ -8,8 +8,6 @@ const MessageSender = () => {
   const { isMenuOpen, setIsMenuOpen, handleMessages } =
     useContext(GlobalContext);
 
-
-
   const [input, setInput] = useState("");
 
   const handleToggleMenu = () => {
@@ -24,57 +22,77 @@ const MessageSender = () => {
     e.preventDefault();
 
     if (input.trim() === "") {
+      // 1. Alert user if they accidentally press send with an empty text input field
+      toast.warning("Please type a message before sending.");
       return;
     }
 
+    const userQuery = input.trim();
+
     const messagePayload = {
-      id: Date.now(), // Client-side unique timestamp primary key identifier
-      message: input.trim(), // Matches 'private String message;' in Java
+      id: Date.now(),
+      message: userQuery,
       date: new Date().toISOString().split('T')[0],
-      type: "user", // Matching layout discriminator flags
+      type: "user",
     };
 
-    const saveInputMessage = async (input) => {
-      const res = await UserMessageService.addUserMessages(messagePayload);
+    const saveInputMessage = async (inputStr) => {
+      // 2. Instantiate a managed loading toast reference for asynchronous background processes
+      const toastId = toast.loading("Processing transaction data... 🤖");
 
-      handleMessages(res.data);
+      try {
+        // Step A: Save the user text string message to backend database
+        const res = await UserMessageService.addUserMessages(messagePayload);
+        handleMessages(res.data);
 
-      // for AI response
-      const response = await GeminiService.chat({
-        message: input,
-        id: "1"
-      });
-     
-      const rawText = response.data;  
-      const newRecord = {
-        ...rawText,
-        id: Date.now(),
-        date: new Date().toISOString().split('T')[0],
-        type: "record",
-      };
-    
-      const record = await RecordService.addRecord(newRecord);
-   
-      handleMessages(record.data);
+        // Step B: Request AI parsing from Gemini API engine
+        const response = await GeminiService.chat({
+          message: inputStr,
+          id: "1"
+        });
 
-      // const analyze=await GeminiService.analyze("1");
-      // console.log(analyze);
+        const rawText = response.data;
+        const newRecord = {
+          ...rawText,
+          id: Date.now(),
+          date: new Date().toISOString().split('T')[0],
+          type: "record",
+        };
 
+        // Step C: Save formatted record data entity back to backend storage database
+        const record = await RecordService.addRecord(newRecord);
+        handleMessages(record.data);
 
-      // const parsed = handleExpense(input);
-      // if (parsed.numIndex === false) {
-      //   setInput("");
-      //   return;
-      // }
+        // 3. Update the existing loading toast block directly to a success state layout
+        toast.update(toastId, {
+          render: "Transaction successfully logged! 💰",
+          type: "success",
+          isLoading: false,
+          autoClose: 2500
+        });
+
+      } catch (error) {
+        console.error("Pipeline processing crash:", error);
+
+        const apiErrorMessage = error.response?.data?.message || "Failed to parse data processing network. Try again.";
+
+        // 4. Update the loading toast block to an error state layout if any step fails
+        toast.update(toastId, {
+          render: apiErrorMessage,
+          type: "error",
+          isLoading: false,
+          autoClose: 3500
+        });
+      }
     };
-    saveInputMessage(input);
 
+    // Run the asynchronous engine wrapper pipeline safely
+    saveInputMessage(userQuery);
 
-
-
-
+    // Clear component raw text state inputs immediately to allow uninterrupted user interaction loops
     setInput("");
   };
+
 
   const handleExpense = async (input) => {
     const words = input.trim().split(/\s+/);
