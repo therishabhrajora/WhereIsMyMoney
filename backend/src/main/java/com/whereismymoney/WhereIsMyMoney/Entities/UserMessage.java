@@ -38,7 +38,7 @@ public class UserMessage {
     @Column(name = "message_date", nullable = false)
     private LocalDate date;
 
-     @Column(name = "message_time", nullable = false, columnDefinition = "TIME(0) DEFAULT '00:00:00'")
+     @Column(name = "message_time", columnDefinition = "TIME(0) DEFAULT '00:00:00'")
     private LocalTime time;
 
     @Column(name = "type", nullable = false)
