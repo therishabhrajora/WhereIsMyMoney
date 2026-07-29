@@ -52,7 +52,7 @@ public class Record {
     @Column(name = "record_date", nullable = false)
     private LocalDate date;
 
-    @Column(name = "record_time", nullable = false)
+     @Column(name = "message_time", nullable = false, columnDefinition = "TIME(0) DEFAULT '00:00:00'")
     private LocalTime time;
 
     @Column(name = "type", nullable = false)
