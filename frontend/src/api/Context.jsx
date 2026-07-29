@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useEffect, useRef, useState } from "react";
 import DefaultMessage from "../component/menu/DefaultMessage";
 import Data from "./Data"
 import apiClient, { RecordService, UserMessageService } from "./apiClient";
@@ -16,6 +16,23 @@ export const GlobalProvider = ({ children }) => {
   const [staticsOpen, setStaticsOpen] = useState(-1);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [showExpenseAgents, setShowExpenseAgents] = useState(false);
+  const endRef = useRef(null);
+
+
+  const scrollToBottom = () => {
+    const scroll = () => {
+      console.log("hello")
+      if (endRef.current) {
+        endRef.current.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+    setTimeout(() => {
+      scroll()
+      console.log("timeout")
+    }, 10);
+
+  };
 
   const handleMessages = (newMessage) => {
     setMessages((prev) => [...prev, newMessage]);
@@ -28,7 +45,7 @@ export const GlobalProvider = ({ children }) => {
     setStaticsOpen((prev) => (prev === index ? -1 : index));
   };
 
-  
+
 
   // Consolidate values inside a single data container package object
   const valuePackage = {
@@ -49,7 +66,11 @@ export const GlobalProvider = ({ children }) => {
     isAuthenticated,
     setIsAuthenticated,
     setLoading,
-    loading
+    loading,
+    showExpenseAgents,
+    setShowExpenseAgents,
+    endRef,
+    scrollToBottom,
   };
 
   return (

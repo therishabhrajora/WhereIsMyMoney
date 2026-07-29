@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { AuthService } from "../../api/apiClient"; // Update path based on your project structure
+import { AuthService } from "../../api/apiClient"; 
+import { toast } from "react-toastify";// Update path based on your project structure
 
 const Register = ({ onRegisterSuccess, onSwitchToLogin }) => {
     const [email, setEmail] = useState("");

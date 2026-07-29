@@ -12,16 +12,18 @@ const Record = ({ record, msgIndex, isMenu, time }) => {
     reason: "None",
   };
 
+
+
   const currentDate = new Date();
   const currentDayNum = currentDate.getDate();
   const currentMonthNum = currentDate.getMonth() + 1;
   const currentYearNum = currentDate.getFullYear();
 
-  const paddedMonth = String(currentMonthNum).padStart(2, '0'); 
+  const paddedMonth = String(currentMonthNum).padStart(2, '0');
   const paddedDay = String(currentDayNum).padStart(2, '0');
 
   // "2026-07-21"
-  const targetIsoDate = `${currentYearNum}-${paddedMonth}-${paddedDay}`; 
+  const targetIsoDate = `${currentYearNum}-${paddedMonth}-${paddedDay}`;
 
   // Filter messages up to the current message index item
   const historicalExpenses = messages
@@ -39,7 +41,7 @@ const Record = ({ record, msgIndex, isMenu, time }) => {
         : sum - expenseValue;
     }, 0);
 
-  
+
 
   // 1. TODAY EXPENSES: Simple direct string check matching "2026-07-21"
   const todayExpenses = calculateTotal(
@@ -51,7 +53,7 @@ const Record = ({ record, msgIndex, isMenu, time }) => {
     historicalExpenses.filter((item) => {
       if (!item.date) return false;
       const [yearStr, monthStr] = item.date.split('-');
-      
+
       return (
         Number(monthStr) === currentMonthNum &&
         Number(yearStr) === currentYearNum
@@ -64,7 +66,7 @@ const Record = ({ record, msgIndex, isMenu, time }) => {
     historicalExpenses.filter((item) => {
       if (!item.date) return false;
       const [yearStr] = item.date.split('-');
-      
+
       return Number(yearStr) === currentYearNum;
     })
   );
@@ -94,6 +96,7 @@ const Record = ({ record, msgIndex, isMenu, time }) => {
               monthExpenses={monthExpenses}
               todayExpenses={todayExpenses}
               width={true}
+
             />
           </div>
         ) : (
@@ -104,6 +107,7 @@ const Record = ({ record, msgIndex, isMenu, time }) => {
               categoryExpenses={categoryExpenses}
               lastExpense={lastExpense}
               msgIndex={msgIndex}
+
             />
 
             <div className=" pr-4 pb-4">

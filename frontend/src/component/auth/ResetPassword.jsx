@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { AuthService } from '../../api/apiClient';
+import { toast } from "react-toastify";
 
 export default function ResetPassword() {
   const [searchParams] = useSearchParams();

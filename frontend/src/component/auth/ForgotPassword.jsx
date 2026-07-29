@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { AuthService } from '../../api/apiClient';
+import { toast } from "react-toastify";
 
 export default function ForgotPassword({ onForgotPasswordSuccess, onSwitchToLogin }) {
     const [email, setEmail] = useState('');

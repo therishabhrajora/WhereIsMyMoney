@@ -6,10 +6,23 @@ import Record from "../pages/Record";
 import MenuMessage from "../menu/MenuMessage";
 
 const Chatting = () => {
- 
+
   const { messages, loading, setLoading } = useContext(GlobalContext);
-  
+
   const messagesEndRef = useRef(null);
+
+  const formatTo12Hour = (timeStr) => {
+    if (!timeStr) return "";
+
+    // Combine the item date and time strings safely to avoid timezone shifting
+    const dateObj = new Date(`1970-01-01T${timeStr}`);
+
+    return dateObj.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    });
+  };
 
   useEffect(() => {
     if (loading) {
@@ -20,7 +33,7 @@ const Chatting = () => {
     // FIXED 2: Added a short timeout wrapper so the browser finishes painting 
     // new DOM message nodes before executing the scroll computation layout.
     const scrollTimeout = setTimeout(() => {
-      messagesEndRef.current?.scrollIntoView({ 
+      messagesEndRef.current?.scrollIntoView({
         behavior: "smooth",
         block: "end" // Explicitly target the layout viewport baseline boundary
       });
@@ -90,10 +103,6 @@ const Chatting = () => {
       <div className="min-h-screen bg-linear-to-b from-slate-50 via-white to-emerald-50">
         <div className="mx-auto max-w-2xl px-4 py-6 pb-24">
           {messages.map((message, index) => {
-       
-            const formattedTime = `${
-              currentTime < 10 ? `0${currentTime}` : currentTime
-            }:${currentMinutes < 10 ? `0${currentMinutes}` : currentMinutes}`;
 
             switch (message?.type) {
               case "user":
@@ -131,7 +140,7 @@ const Chatting = () => {
                       </p>
 
                       <p className="mt-1 text-[10px] text-right tracking-wide text-white/70">
-                        {formattedTime}
+                        {formatTo12Hour(message.time)}
                       </p>
                     </div>
                   </div>
@@ -141,7 +150,7 @@ const Chatting = () => {
                 return (
                   <div key={index} className="chat-fade">
                     <Record
-                      time={formattedTime}
+                      time={formatTo12Hour(message.time)}
                       record={message}
                       isMenu={message.type === "menu"}
                       msgIndex={index}
@@ -152,21 +161,21 @@ const Chatting = () => {
               case "introduction":
                 return (
                   <div key={index} className="chat-fade">
-                    <Introduction time={formattedTime} />
+                    <Introduction time={formatTo12Hour(message.time)} />
                   </div>
                 );
 
               case "menu":
                 return (
                   <div key={index} className="chat-fade">
-                    <MenuMessage time={formattedTime} />
+                    <MenuMessage time={formatTo12Hour(message.time)} />
                   </div>
                 );
 
               case "startMessage":
                 return (
                   <div key={index} className="chat-fade">
-                    <StartMessage time={formattedTime} />
+                    <StartMessage time={formatTo12Hour(message.time)} />
                   </div>
                 );
 
@@ -175,8 +184,8 @@ const Chatting = () => {
             }
           })}
 
-          <div ref={messagesEndRef} />
         </div>
+        <div ref={messagesEndRef} />
       </div>
     </>
   );

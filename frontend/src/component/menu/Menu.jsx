@@ -8,7 +8,10 @@ export const Menu = () => {
     handleMessages,
     setIsMenuOpen,
     isMenuOpen,
+    setShowExpenseAgents,
+    scrollToBottom,
   } = useContext(GlobalContext);
+
 
   const onCommandSelect = (command) => {
     setCommand(command);
@@ -24,6 +27,11 @@ export const Menu = () => {
 
       case "/menu":
         handleMessages({ type: "menu" });
+        break;
+
+      case "/more":
+        setShowExpenseAgents(true);
+        scrollToBottom()
         break;
 
       case "/logout":
@@ -55,6 +63,11 @@ export const Menu = () => {
       title: "Start the bot",
       command: "/start",
       icon: "🚀",
+    },
+    {
+      title: "Try more expense agents",
+      command: "/more",
+      icon: "🤖",
     },
     {
       title: "Logout",

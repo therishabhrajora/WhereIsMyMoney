@@ -1,5 +1,6 @@
 package com.whereismymoney.WhereIsMyMoney.Services;
 
+import java.time.LocalTime;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -57,6 +58,8 @@ public class UserMessageService {
         if (currentUser == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User profile not found.");
         }
+
+       
         userMessage.setUser(currentUser);
 
         UserMessage userMessage2 = userMessageRepo.save(userMessage);
@@ -66,6 +69,7 @@ public class UserMessageService {
                 .message(userMessage2.getMessage())
                 .date(userMessage2.getDate())
                 .type(userMessage2.getType())
+                .time(userMessage2.getTime())
                 .build());
 
     }

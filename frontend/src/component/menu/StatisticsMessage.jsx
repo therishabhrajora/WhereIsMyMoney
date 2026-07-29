@@ -102,7 +102,7 @@ const StatisticsMessage = ({ msgIndex }) => {
                   {/* FIX 1: Added a button to clear the selected category and go back */}
                   <button
                     onClick={() => setSelectedCategory(null)}
-                    className="mb-3 text-xs font-semibold text-blue-600 hover:underline flex items-center gap-1"
+                    className="mb-3 hover:cursor-pointer text-xs font-semibold text-blue-600 hover:underline flex items-center gap-1"
                   >
                     ← Back to Categories
                   </button>
@@ -135,7 +135,7 @@ const StatisticsMessage = ({ msgIndex }) => {
                               </p>
                               <p className="text-[10px] text-slate-400">
                                 
-                                Date: {item.date}/{item.month}/{item.year}
+                                {item.date}
                               </p>
                             </div>
 

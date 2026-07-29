@@ -2,6 +2,7 @@ package com.whereismymoney.WhereIsMyMoney.Entities;
 
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 import com.whereismymoney.WhereIsMyMoney.config.FinancialStringDataConverter;
 
@@ -37,7 +38,8 @@ public class UserMessage {
     @Column(name = "message_date", nullable = false)
     private LocalDate date;
 
-    
+    @Column(name = "message_time", nullable = false)
+    private LocalTime time;
 
     @Column(name = "type", nullable = false)
     private String type;

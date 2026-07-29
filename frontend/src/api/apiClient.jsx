@@ -58,7 +58,7 @@ apiClient.interceptors.response.use(
 
 export const AuthService = {
   register: (registerData) =>
-    apiClient.post("api/users/register", registerData),
+  apiClient.post("api/users/register", registerData),
   login: (loginData) => apiClient.post("api/users/login", loginData),
   forgotPassword: (payload) => apiClient.post("api/users/forgot-password", payload),
   resetPassword: (payload) => apiClient.post("api/users/reset-password", payload),
@@ -92,6 +92,10 @@ export const GeminiService = {
   chat: (input) => apiClient.post("api/ai/chat", input),
   analyze: (id) => apiClient.get(`api/ai/analyze/${id}`),
   getChatResponse: (chatRequest) => apiClient.post(`api/chat/send`, chatRequest)
+}
+
+export const ExchangeRates = {
+  rates: (base) => apiClient.get(`api/currency/rates/${base}`)
 }
 
 

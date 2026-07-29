@@ -2,6 +2,7 @@ package com.whereismymoney.WhereIsMyMoney.Services;
 
 import java.lang.System.LoggerFinder;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -86,6 +87,7 @@ public class RecordService {
         if (currentUser == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User profile not found.");
         }
+        record.setTime(LocalTime.now());
         record.setUser(currentUser);
         System.out.println(record);
         Record savedRecord = recordRepo.save(record);

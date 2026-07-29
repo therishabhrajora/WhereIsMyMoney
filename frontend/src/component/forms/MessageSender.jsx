@@ -2,6 +2,7 @@ import { SendIcon, Menu as MenuIcon, X } from "lucide-react";
 import { useContext, useState } from "react";
 import Menu from "../menu/Menu";
 import { GlobalContext } from "../../api/Context";
+import { toast } from "react-toastify";
 import apiClient, { GeminiService, RecordService, UserMessageService } from "../../api/apiClient";
 
 const MessageSender = () => {
@@ -28,11 +29,21 @@ const MessageSender = () => {
     }
 
     const userQuery = input.trim();
+    const now = new Date();
+
+    // Format Date: YYYY-MM-DD
+    const dateStr = now.toLocaleDateString('en-CA'); // 'en-CA' outputs exactly YYYY-MM-DD
+
+    // Format Time: HH:MM:SS (24-hour style matching your object schema)
+    const timeStr = now.toTimeString().split(' ')[0];
+
+    
 
     const messagePayload = {
       id: Date.now(),
       message: userQuery,
       date: new Date().toISOString().split('T')[0],
+      time:timeStr,
       type: "user",
     };
 

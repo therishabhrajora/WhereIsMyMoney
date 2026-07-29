@@ -1,5 +1,7 @@
 package com.whereismymoney.WhereIsMyMoney.Dto.UserDtos;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import com.google.auto.value.AutoValue.Builder;
@@ -13,12 +15,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class RecordDto {
-
     private Double expense;
     private Double income;
     private String category;
     private String reason;
     private String type;
     private List<String> hashTags;
-
 }

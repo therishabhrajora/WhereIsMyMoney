@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -50,6 +51,9 @@ public class Record {
 
     @Column(name = "record_date", nullable = false)
     private LocalDate date;
+
+    @Column(name = "record_time", nullable = false)
+    private LocalTime time;
 
     @Column(name = "type", nullable = false)
     private String type;
