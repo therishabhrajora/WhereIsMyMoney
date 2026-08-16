@@ -5,8 +5,8 @@ import { toast } from "react-toastify";
 
 
 const Login = ({ onLoginSuccess, onSwitchToRegister, onSwitchToForgotPassword }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("user@gmail.com");
+  const [password, setPassword] = useState("12345");
   const [role, setRole] = useState("ROLE_USER");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");

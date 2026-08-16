@@ -17,14 +17,18 @@ import com.whereismymoney.WhereIsMyMoney.Repositories.UserRepo;
 public class CustomUserDetailService implements UserDetailsService {
     private final UserRepo userRepo;
 
-    @Autowired
     public CustomUserDetailService(UserRepo userRepo) {
         this.userRepo = userRepo;
     }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepo.findByEmail(email);         
+        User user = userRepo.findByEmail(email);     
+        System.out.println("====================CustomUserDetailService: Loading user by email: " + email
+                + ", Found user: " + (user != null ? user.getEmail() : "null"));
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found with email: " + email);
+        }    
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),
                 user.getPassword(),
