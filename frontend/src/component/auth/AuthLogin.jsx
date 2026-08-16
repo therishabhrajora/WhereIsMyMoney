@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import { AuthService } from "../../api/apiClient"; // Update path based on your project structure
 import Register from "./AuthRegister";
 import { toast } from "react-toastify";
+import { Copy } from "lucide-react";
 
 
 const Login = ({ onLoginSuccess, onSwitchToRegister, onSwitchToForgotPassword }) => {
-  const [email, setEmail] = useState("user@gmail.com");
+  const [email, setEmail] = useState("user@spendwise.com");
   const [password, setPassword] = useState("12345");
   const [role, setRole] = useState("ROLE_USER");
   const [loading, setLoading] = useState(false);
@@ -73,8 +74,16 @@ const Login = ({ onLoginSuccess, onSwitchToRegister, onSwitchToForgotPassword })
             Enter your transaction management system credentials
           </p>
         </div>
-
-        <form className="mt-8 space-y-6" onSubmit={handleLoginSubmit}>
+        <div className="mt-6 text-center text-sm text-slate-500 border border-slate-100 rounded-xl p-3 bg-slate-50">
+          <p>For testing purpose use given credentials:</p>
+          <p
+            onClick={() => navigator.clipboard.writeText("user@spendwise.com")}
+            title="Copy Email" className="text-xs text-slate-500 flex items-center justify-center gap-4"><span>Email: user@spendwise.com</span> <span className="cursor-pointer"><Copy width={10} height={10} /></span></p>
+          <p
+            onClick={() => navigator.clipboard.writeText("12345")}
+            title="Copy Password" className="text-xs text-slate-500 flex items-center justify-center gap-4"><span>Password: 12345</span> <span className="cursor-pointer"><Copy width={10} height={10} /></span></p>
+        </div>
+        <form   className="mt-8 space-y-6" onSubmit={handleLoginSubmit}>
           {/* Display contextual runtime validation error updates safely */}
           {errorMessage && (
             <div className="rounded-xl bg-rose-50 p-3 text-sm font-medium text-rose-600 border border-rose-100 animate-in shake-in duration-200">
@@ -122,8 +131,8 @@ const Login = ({ onLoginSuccess, onSwitchToRegister, onSwitchToForgotPassword })
                   type="button"
                   onClick={() => setRole("ROLE_USER")}
                   className={`flex-1 py-2.5 text-xs font-bold tracking-wide uppercase rounded-xl border transition-all ${role === "ROLE_USER"
-                      ? "bg-slate-900 border-slate-900 text-white shadow-sm"
-                      : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"
+                    ? "bg-slate-900 border-slate-900 text-white shadow-sm"
+                    : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"
                     }`}
                 >
                   Standard User
@@ -132,8 +141,8 @@ const Login = ({ onLoginSuccess, onSwitchToRegister, onSwitchToForgotPassword })
                   type="button"
                   onClick={() => setRole("ROLE_ADMIN")}
                   className={`flex-1 py-2.5 text-xs font-bold tracking-wide uppercase rounded-xl border transition-all ${role === "ROLE_ADMIN"
-                      ? "bg-slate-900 border-slate-900 text-white shadow-sm"
-                      : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"
+                    ? "bg-slate-900 border-slate-900 text-white shadow-sm"
+                    : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"
                     }`}
                 >
                   System Admin
