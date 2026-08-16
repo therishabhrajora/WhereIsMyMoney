@@ -12,8 +12,8 @@ public class KeepAliveTask {
     private static final Logger logger = LoggerFactory.getLogger(KeepAliveTask.class);
     private final RestTemplate restTemplate = new RestTemplate();
 
-    // Runs automatically every 5 minutes (300,000 milliseconds)
-    @Scheduled(fixedRate = 300000)
+    // Runs automatically every 10 minutes (600,000 milliseconds)
+    @Scheduled(fixedRate =900000)
     public void pingServerAutomatically() {
         try {
             // Replace this with your actual live production URL path
