@@ -54,7 +54,7 @@ public class SecurityConfig {
                 .httpBasic(httpbasic -> httpbasic.disable())
                 .authorizeHttpRequests(auth -> auth
                         
-                        .requestMatchers("/**", "/api/users/**", "/api/ai/**", "/api/chat/**","/api/currency/**").permitAll()
+                        .requestMatchers("/**", "/api/users/**", "/api/ai/**", "/api/chat/**","/api/currency/**","/").permitAll()
 
                         // 🔐 Secure endpoints
                         .requestMatchers("/api/records/**", "/api/user-message/**").authenticated()
